@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import {
+    Text,
+    View,
+    StyleSheet,
+    Button,
+} from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+
 
 
 class SpendingsScreen extends React.Component {
@@ -7,7 +14,7 @@ class SpendingsScreen extends React.Component {
 
     constructor(man) {
         super();
-        this.state = { value: 'November' };
+        this.state = { value: 'Choose a period' };
     }
 
 
@@ -18,19 +25,32 @@ class SpendingsScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle, styles.boldText}>Consumption Status</Text>
                     <View>
-                        <Text style={styles.headerText}>Get an overview of your consumption status</Text>
+                        <Text style={styles.headerTitle}>Consumption Status</Text>
+                    </View>
+                    <View style={styles.headerText}>
+                        <Text>Get an overview of your consumption status</Text>
                     </View>
                 </View>
-                <View style={styles.header}>
-                    <Text style={styles.boldText}>Month: {this.state.value}</Text>
-                </View>
-                <View style={styles.button}>
-                    <Button title='Change month' onPress={() => this.changeValue('December')}></Button>
+
+                <View style={styles.container}>
+                    <Text style={{ fontWeight: 'bold' }}>Period: {this.state.value}</Text>
+                    <View style={{ flex: 3, flexDirection: 'row' }}>
+                        <View style={styles.button}>
+                            <Button style={styles.buttonAnalytics} title='Week' onPress={() => this.changeValue('1.7 - 8.7')}></Button>
+                        </View>
+                        <View style={styles.button}>
+                            <Button style={styles.buttonAnalytics} title='Month' onPress={() => this.changeValue('July')}></Button>
+                        </View>
+                        <View style={styles.button}>
+                            <Button style={styles.buttonAnalytics} title='Year' onPress={() => this.changeValue('2020')}></Button>
+                        </View>
+                    </View>
                 </View>
             </View >
+
         );
     }
 }
@@ -47,17 +67,20 @@ const styles = StyleSheet.create({
         margin: 20,
     },
     headerTitle: {
+        fontWeight: 'bold',
+        fontSize: 20,
     },
     headerText: {
         borderRadius: 10,
-        padding: 20,
         backgroundColor: '#64BCF0',
-    },
-    boldText: {
-        fontWeight: 'bold',
+        padding: 20,
     },
     button: {
         backgroundColor: '#f0f0',
+        padding: 20,
+    },
+    buttonAnalytics: {
+
     }
 });
 
