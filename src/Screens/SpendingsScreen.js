@@ -3,9 +3,8 @@ import {
     Text,
     View,
     StyleSheet,
-    Button,
+    TouchableOpacity,
 } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 
 
@@ -25,7 +24,6 @@ class SpendingsScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.headerTitle}>Consumption Status</Text>
@@ -36,18 +34,31 @@ class SpendingsScreen extends React.Component {
                 </View>
 
                 <View style={styles.container}>
-                    <Text style={{ fontWeight: 'bold' }}>Period: {this.state.value}</Text>
-                    <View style={{ flex: 3, flexDirection: 'row' }}>
-                        <View style={styles.button}>
-                            <Button style={styles.buttonAnalytics} title='Week' onPress={() => this.changeValue('1.7 - 8.7')}></Button>
-                        </View>
-                        <View style={styles.button}>
-                            <Button style={styles.buttonAnalytics} title='Month' onPress={() => this.changeValue('July')}></Button>
-                        </View>
-                        <View style={styles.button}>
-                            <Button style={styles.buttonAnalytics} title='Year' onPress={() => this.changeValue('2020')}></Button>
+                    <View style={{ backgroundColor: 'white', borderRadius: 10, padding: 10 }}>
+                        <Text style={{ fontWeight: 'bold' }}>Period: {this.state.value}</Text>
+                        <View style={{ flex: 3, flexDirection: 'row' }}>
+                            <View style={{ padding: 20, width: 100, paddingHorizontal: 2 }}>
+                                <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Week</Text></TouchableOpacity>
+                            </View>
+                            <View style={{ padding: 20, width: 100, paddingHorizontal: 2 }}>
+                                <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Month</Text></TouchableOpacity>
+                            </View>
+                            <View style={{ padding: 20, width: 100, paddingHorizontal: 2 }}>
+                                <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Year</Text></TouchableOpacity>
+                            </View>
                         </View>
                     </View>
+                </View>
+
+                <View style={styles.container}>
+                    <View style={{ flex: 3, flexDirection: 'row' }}>
+                        <View style={{ padding: 20, width: 150, paddingHorizontal: 2 }}>
+                            <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>My previous period</Text></TouchableOpacity>
+                        </View>
+                        <View style={{ padding: 20, width: 150, paddingHorizontal: 2 }}>
+                            <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Total consumption</Text></TouchableOpacity>
+                        </View>
+                    </View >
                 </View>
             </View >
 
@@ -63,8 +74,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     header: {
-        padding: 20,
+        padding: 10,
         margin: 20,
+        width: '100%'
     },
     headerTitle: {
         fontWeight: 'bold',
@@ -75,13 +87,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#64BCF0',
         padding: 20,
     },
-    button: {
-        backgroundColor: '#f0f0',
-        padding: 20,
+    buttonStyle: {
+        backgroundColor: 'rgba(0,0,0,0)',
+        marginLeft: 5,
+        marginRight: 5,
+        borderRadius: 50,
+        borderWidth: 2,
+        padding: 10,
+        width: '100%',
     },
-    buttonAnalytics: {
-
-    }
 });
 
 
