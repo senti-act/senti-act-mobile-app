@@ -4,7 +4,10 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
+    Image,
 } from 'react-native';
+
+
 
 
 
@@ -13,7 +16,7 @@ class SpendingsScreen extends React.Component {
 
     constructor(man) {
         super();
-        this.state = { value: 'Choose a period' };
+        this.state = { value: 'Choose a periodd' };
     }
 
 
@@ -28,14 +31,22 @@ class SpendingsScreen extends React.Component {
                     <View>
                         <Text style={styles.headerTitle}>Consumption Status</Text>
                     </View>
-                    <View style={styles.headerText}>
-                        <Text>Get an overview of your consumption status</Text>
+                    <View style={{ paddingTop: 15 }}>
+                        <Text style={styles.headerText}>Get an overview of your consumption status</Text>
                     </View>
                 </View>
 
                 <View style={styles.container}>
                     <View style={{ backgroundColor: 'white', borderRadius: 10, padding: 10 }}>
-                        <Text style={{ fontWeight: 'bold' }}>Period: {this.state.value}</Text>
+                        <View style={{ flex: 3, flexDirection: 'row', justifyContent: "space-between" }}>
+                            <TouchableOpacity>
+                                <Image source={require('../Assets/back.png')} style={{ width: 20, height: 20 }} />
+                            </TouchableOpacity>
+                            <Text style={{}}>December</Text>
+                            <TouchableOpacity>
+                                <Image source={require('../Assets/next.png')} style={{ width: 20, height: 20 }} />
+                            </TouchableOpacity>
+                        </View>
                         <View style={{ flex: 3, flexDirection: 'row' }}>
                             <View style={{ padding: 20, width: 100, paddingHorizontal: 2 }}>
                                 <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Week</Text></TouchableOpacity>
@@ -47,20 +58,26 @@ class SpendingsScreen extends React.Component {
                                 <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Year</Text></TouchableOpacity>
                             </View>
                         </View>
+                        <View>
+                            <Text style={{ fontSize: 15, textAlign: 'center', fontWeight: 'bold' }}>My consumption status</Text>
+                        </View>
+                        <View style={{ width: '50%', alignSelf: 'center' }}>
+                            <Text style={{ textAlign: 'center', paddingTop: 10 }}>To date, you have used less water than last week</Text>
+                        </View>
+                        <View style={{ flex: 3, flexDirection: 'row' }}>
+                            <View style={{ padding: 20, width: 150, paddingHorizontal: 2 }}>
+                                <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>My previous period</Text></TouchableOpacity>
+                            </View>
+                            <View style={{ padding: 20, width: 150, paddingHorizontal: 2 }}>
+                                <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Total consumption</Text></TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
-                </View>
-
-                <View style={styles.container}>
-                    <View style={{ flex: 3, flexDirection: 'row' }}>
-                        <View style={{ padding: 20, width: 150, paddingHorizontal: 2 }}>
-                            <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>My previous period</Text></TouchableOpacity>
-                        </View>
-                        <View style={{ padding: 20, width: 150, paddingHorizontal: 2 }}>
-                            <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Total consumption</Text></TouchableOpacity>
-                        </View>
-                    </View >
+                </View >
+                <View>
                 </View>
             </View >
+
 
         );
     }
@@ -85,7 +102,7 @@ const styles = StyleSheet.create({
     headerText: {
         borderRadius: 10,
         backgroundColor: '#64BCF0',
-        padding: 20,
+        padding: 25,
     },
     buttonStyle: {
         backgroundColor: 'rgba(0,0,0,0)',
