@@ -6,6 +6,7 @@ import HomeScreen from './src/Screens/HomeScreen';
 import SpendingsScreen from './src/Screens/SpendingsScreen';
 import TipsScreen from './src/Screens/TipsScreen';
 import ProfileScreen from './src/Screens/ProfileScreen';
+import AccountSettings from './src/Screens/AccountSettings';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -48,7 +49,7 @@ export default function App() {
         <Tab.Screen name="Competition" component={HomeScreen} />
         <Tab.Screen name="Spendings" component={SpendingsScreen} />
         <Tab.Screen name="Tips" component={TipsScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Profile" component={AccountSettings} />
       </Tab.Navigator>
     </NavigationContainer>
   );
