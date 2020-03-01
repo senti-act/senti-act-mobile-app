@@ -39,6 +39,30 @@ function tipsStack() {
   );
 }
 
+function profileStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName='Profile'
+      screenOptions={{
+        gestureEnabled: true,
+        headerStyle: {
+          backgroundColor: 'trasparent',
+          height:120
+          
+        },
+        headerTitleStyle: {
+          fontSize:24
+        },
+        headerTintColor: '#174a5a',
+        headerBackTitleVisible: false
+      }}
+      headerMode='float'>
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Account" component={AccountSettings} />
+    </Stack.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -76,7 +100,7 @@ export default function App() {
         <Tab.Screen name="Competition" component={HomeScreen} />
         <Tab.Screen name="Spendings" component={SpendingsScreen} />
         <Tab.Screen name="Tips" component={tipsStack} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Profile" component={profileStack} />
       </Tab.Navigator>
     </NavigationContainer>
   );

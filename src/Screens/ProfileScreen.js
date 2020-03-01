@@ -12,10 +12,19 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 class ProfileScreen extends React.Component {
+
+    constructor(props){
+        super();
+
+    }
+
+
   componentDidMount() {}
 
   render() {
-    return (
+      const {route, navigation} = this.props;
+    
+      return (
       <SafeAreaView style={{height: '100%', width:'100%'}}>
         <ScrollView
           style={{flex: 1}}
@@ -23,13 +32,7 @@ class ProfileScreen extends React.Component {
             alignItems: 'center',
             flexDirection: 'column',
           }}>
-              
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{fontSize: 24}}>Profile</Text>
-          </View>
-
-          <View style={{flex: 4, padding: 20}}>
+          <View style={{flex: 4, paddingHorizontal: 20, paddingBottom:20}}>
             <LinearGradient
               colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
               style={{
@@ -59,7 +62,7 @@ class ProfileScreen extends React.Component {
               flexDirection: 'column',
               flex:6
             }}>
-            <TouchableOpacity style={styles.touchable}>
+            <TouchableOpacity style={styles.touchable} onPress={()=>navigation.navigate("Account")}>
               <Text style={{width: '80%', marginLeft: 20, alignSelf: 'center'}}>
                 Account setting
               </Text>

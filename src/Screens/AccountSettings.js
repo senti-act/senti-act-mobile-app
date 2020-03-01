@@ -19,15 +19,6 @@ class AccountSettings extends React.Component {
 
   render() {
 
-    let data = [{
-        value: 'Banana',
-      }, {
-        value: 'Mango',
-      }, {
-        value: 'Pear',
-      }];
-
-
     return (
       <SafeAreaView style={{height: '100%', width: '100%'}}>
         <ScrollView
