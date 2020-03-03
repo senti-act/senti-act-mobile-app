@@ -12,27 +12,24 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 class ProfileScreen extends React.Component {
-
-    constructor(props){
-        super();
-
-    }
-
+  constructor(props) {
+    super();
+  }
 
   componentDidMount() {}
 
   render() {
-      const {route, navigation} = this.props;
-    
-      return (
-      <SafeAreaView style={{height: '100%', width:'100%'}}>
+    const {route, navigation} = this.props;
+
+    return (
+      <SafeAreaView style={{height: '100%', width: '100%'}}>
         <ScrollView
           style={{flex: 1}}
           contentContainerStyle={{
             alignItems: 'center',
             flexDirection: 'column',
           }}>
-          <View style={{flex: 4, paddingHorizontal: 20, paddingBottom:20}}>
+          <View style={{flex: 4, paddingHorizontal: 20, paddingBottom: 20}}>
             <LinearGradient
               colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
               style={{
@@ -60,9 +57,11 @@ class ProfileScreen extends React.Component {
               width: '90%',
               borderRadius: 10,
               flexDirection: 'column',
-              flex:6
+              flex: 6,
             }}>
-            <TouchableOpacity style={styles.touchable} onPress={()=>navigation.navigate("Account")}>
+            <TouchableOpacity
+              style={styles.touchable}
+              onPress={() => navigation.navigate('Account')}>
               <Text style={{width: '80%', marginLeft: 20, alignSelf: 'center'}}>
                 Account setting
               </Text>
@@ -73,7 +72,9 @@ class ProfileScreen extends React.Component {
                 color="black"
               />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.touchable}>
+            <TouchableOpacity
+              style={styles.touchable}
+              onPress={() => navigation.navigate('Notifications')}>
               <Text style={{width: '80%', marginLeft: 20, alignSelf: 'center'}}>
                 Notifications
               </Text>
@@ -139,7 +140,7 @@ class ProfileScreen extends React.Component {
                 marginTop: 20,
                 marginBottom: 20,
                 width: '90%',
-                flex:2
+                flex: 2,
               },
             ]}>
             <Text style={{width: '80%', paddingLeft: 20, alignSelf: 'center'}}>

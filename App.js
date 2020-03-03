@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {Text, View, SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from './src/Screens/HomeScreen';
 import SpendingsScreen from './src/Screens/SpendingsScreen';
 import TipsScreen from './src/Screens/TipsScreen';
@@ -10,30 +10,28 @@ import ProfileScreen from './src/Screens/ProfileScreen';
 import AccountSettings from './src/Screens/AccountSettings';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Notifications from './src/Screens/Notifications';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
-
 function tipsStack() {
   return (
     <Stack.Navigator
-      initialRouteName='Tips og råd'
+      initialRouteName="Tips og råd"
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
           backgroundColor: 'trasparent',
-          height:120
-          
+          height: 120,
         },
         headerTitleStyle: {
-          fontSize:24
+          fontSize: 24,
         },
         headerTintColor: '#174a5a',
-        headerBackTitleVisible: false
+        headerBackTitleVisible: false,
       }}
-      headerMode='float'>
+      headerMode="float">
       <Stack.Screen name="Tips og råd" component={TipsScreen} />
     </Stack.Navigator>
   );
@@ -42,23 +40,23 @@ function tipsStack() {
 function profileStack() {
   return (
     <Stack.Navigator
-      initialRouteName='Profile'
+      initialRouteName="Profile"
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
           backgroundColor: 'trasparent',
-          height:120
-          
+          height: 120,
         },
         headerTitleStyle: {
-          fontSize:24
+          fontSize: 24,
         },
         headerTintColor: '#174a5a',
-        headerBackTitleVisible: false
+        headerBackTitleVisible: false,
       }}
-      headerMode='float'>
+      headerMode="float">
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Account" component={AccountSettings} />
+      <Stack.Screen name="Notifications" component={Notifications} />
     </Stack.Navigator>
   );
 }
@@ -67,8 +65,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
             let iconName;
 
             if (route.name === 'Competition') {
@@ -94,9 +92,8 @@ export default function App() {
           inactiveTintColor: 'white',
           activeBackgroundColor: '#174A5A',
           inactiveBackgroundColor: '#174A5A',
-          style: { height: 104 }
-        }}
-      >
+          style: {height: 104},
+        }}>
         <Tab.Screen name="Competition" component={HomeScreen} />
         <Tab.Screen name="Spendings" component={SpendingsScreen} />
         <Tab.Screen name="Tips" component={tipsStack} />
@@ -105,6 +102,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-
-
