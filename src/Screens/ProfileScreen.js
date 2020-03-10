@@ -39,7 +39,13 @@ class ProfileScreen extends React.Component {
                 flexDirection: 'row',
               }}>
               <View style={{flex: 1, height: '100%', justifyContent: 'center'}}>
-                <Text style={{fontSize: 24, alignSelf: 'center'}}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    alignSelf: 'center',
+                    paddingLeft: 20,
+                    color: '#1a1352',
+                  }}>
                   Good morning, Christian!
                 </Text>
               </View>
@@ -62,72 +68,42 @@ class ProfileScreen extends React.Component {
             <TouchableOpacity
               style={styles.touchable}
               onPress={() => navigation.navigate('Account')}>
-              <Text style={{width: '80%', marginLeft: 20, alignSelf: 'center'}}>
-                Account setting
-              </Text>
-              <Ionicons
-                style={{alignSelf: 'center'}}
-                size={30}
-                name={'ios-arrow-forward'}
-                color="black"
-              />
+              <Text style={styles.text}>Account setting</Text>
+              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.touchable}
               onPress={() => navigation.navigate('Notifications')}>
-              <Text style={{width: '80%', marginLeft: 20, alignSelf: 'center'}}>
-                Notifications
-              </Text>
-              <Ionicons
-                style={{alignSelf: 'center'}}
-                size={30}
-                name={'ios-arrow-forward'}
-                color="black"
-              />
+              <Text style={styles.text}>Notifications</Text>
+              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.touchable}>
-              <Text style={{width: '80%', marginLeft: 20, alignSelf: 'center'}}>
+              <Text
+                style={styles.text}
+                onPress={() => navigation.navigate('Privacy policy')}>
                 Privacy Policy
               </Text>
-              <Ionicons
-                style={{alignSelf: 'center'}}
-                size={30}
-                name={'ios-arrow-forward'}
-                color="black"
-              />
+              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.touchable}>
-              <Text style={{width: '80%', marginLeft: 20, alignSelf: 'center'}}>
-                Support
+              <Text
+                style={styles.text}
+                onPress={() => navigation.navigate('FAQ')}>
+                FAQ
               </Text>
-              <Ionicons
-                style={{alignSelf: 'center'}}
-                size={30}
-                name={'ios-arrow-forward'}
-                color="black"
-              />
+              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.touchable}>
-              <Text style={{width: '80%', marginLeft: 20, alignSelf: 'center'}}>
+              <Text
+                style={styles.text}
+                onPress={() => navigation.navigate('About')}>
                 About Senti.act
               </Text>
-              <Ionicons
-                style={{alignSelf: 'center'}}
-                size={30}
-                name={'ios-arrow-forward'}
-                color="black"
-              />
+              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.touchable}>
-              <Text style={{width: '80%', marginLeft: 20, alignSelf: 'center'}}>
-                Create user in the household
-              </Text>
-              <Ionicons
-                style={{alignSelf: 'center'}}
-                size={30}
-                name={'ios-arrow-forward'}
-                color="black"
-              />
+              <Text style={styles.text}>Create user in the household</Text>
+              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
           </View>
 
@@ -143,15 +119,8 @@ class ProfileScreen extends React.Component {
                 flex: 2,
               },
             ]}>
-            <Text style={{width: '80%', paddingLeft: 20, alignSelf: 'center'}}>
-              Log out
-            </Text>
-            <AntDesign
-              style={{alignSelf: 'center', width: '20%', paddingLeft: 20}}
-              size={20}
-              name={'poweroff'}
-              color="black"
-            />
+            <Text style={styles.text}>Log out</Text>
+            <AntDesign size={20} name={'poweroff'} color="black" />
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
@@ -165,6 +134,14 @@ const styles = {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
+    alignItems: 'center',
+  },
+  text: {
+    width: '80%',
+    paddingLeft: 20,
+    alignSelf: 'center',
+    color: '#174A5A',
+    fontSize: 15,
   },
 };
 

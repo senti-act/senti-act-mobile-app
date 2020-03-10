@@ -11,6 +11,9 @@ import AccountSettings from './src/Screens/AccountSettings';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Notifications from './src/Screens/Notifications';
+import Privacy from './src/Screens/Privacy';
+import FAQ from './src/Screens/FAQ';
+import About from './src/Screens/About';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -45,7 +48,7 @@ function profileStack() {
         gestureEnabled: true,
         headerStyle: {
           backgroundColor: 'trasparent',
-          height: 120,
+          height: 100,
         },
         headerTitleStyle: {
           fontSize: 24,
@@ -57,6 +60,9 @@ function profileStack() {
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Account" component={AccountSettings} />
       <Stack.Screen name="Notifications" component={Notifications} />
+      <Stack.Screen name="Privacy policy" component={Privacy} />
+      <Stack.Screen name="FAQ" component={FAQ} />
+      <Stack.Screen name="About" component={About} />
     </Stack.Navigator>
   );
 }
