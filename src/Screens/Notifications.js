@@ -5,15 +5,37 @@ import {
   ScrollView,
   Image,
   SafeAreaView,
-  Switch,
   TouchableOpacity,
+  ListView,
+  SectionList,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Switches from 'react-native-switches';
 
+const List = [
+  {
+    title: 'Let Senti.act notify you of your water consumption',
+    data: ['Push notifications', 'Weekly report', 'Competition results'],
+  },
+];
+function Item({title}) {
+  return (
+    <View style={styles.box}>
+      <Text style={styles.text}>{title}</Text>
+      <Switches
+        colorSwitchOff={'#677180'}
+        colorSwitchOn={'#db750f'}
+        onChange={() => null}
+        shape={'pill'}
+        showText={false}
+        buttonSize={29}
+        sliderWidth={60}
+      />
+    </View>
+  );
+}
 class Notifications extends React.Component {
   componentDidMount() {}
-
   render() {
     return (
       <SafeAreaView style={{height: '100%', width: '100%'}}>
@@ -39,7 +61,6 @@ class Notifications extends React.Component {
               </View>
             </LinearGradient>
           </View>
-
           <View
             style={{
               backgroundColor: 'white',
@@ -47,50 +68,13 @@ class Notifications extends React.Component {
               borderRadius: 10,
               flexDirection: 'column',
             }}>
-            <View style={styles.box}>
-              <Text style={styles.boldText}>
-                Let Senti.act notify you of your water consumption
-              </Text>
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.text}>Push notifications</Text>
-
-              <Switches
-                colorSwitchOff={'#677180'}
-                colorSwitchOn={'#db750f'}
-                onChange={() => null}
-                shape={'pill'}
-                showText={false}
-                buttonSize={29}
-                sliderWidth={60}
-              />
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.text}> Weekly report </Text>
-
-              <Switches
-                colorSwitchOff={'#677180'}
-                colorSwitchOn={'#db750f'}
-                onChange={() => null}
-                shape={'pill'}
-                showText={false}
-                buttonSize={29}
-                sliderWidth={60}
-              />
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.text}> Competition results </Text>
-
-              <Switches
-                colorSwitchOff={'#677180'}
-                colorSwitchOn={'#db750f'}
-                onChange={() => null}
-                shape={'pill'}
-                showText={false}
-                buttonSize={29}
-                sliderWidth={60}
-              />
-            </View>
+            <SectionList
+              sections={List}
+              renderItem={({item}) => <Item title={item} />}
+              renderSectionHeader={({section: {title}}) => (
+                <Text style={styles.boldText}>{title}</Text>
+              )}
+            />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -115,9 +99,12 @@ const styles = {
     color: '#174A5A',
   },
   boldText: {
+    fontSize: 14,
     fontWeight: '700',
     paddingLeft: 30,
     color: '#174A5A',
+    paddingTop: 10,
+    paddingBottom: 10,
   },
 };
 
