@@ -9,21 +9,21 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Switches from 'react-native-switches';
+import Switches from 'react-native-switches'
 
 class Notifications extends React.Component {
-  componentDidMount() {}
+  componentDidMount() { }
 
   render() {
     return (
-      <SafeAreaView style={{height: '100%', width: '100%'}}>
+      <SafeAreaView style={{ height: '100%', width: '100%' }}>
         <ScrollView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           contentContainerStyle={{
             alignItems: 'center',
             flexDirection: 'column',
           }}>
-          <View style={{padding: 20}}>
+          <View style={{ padding: 20 }}>
             <LinearGradient
               colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
               style={{
@@ -32,9 +32,9 @@ class Notifications extends React.Component {
                 borderRadius: 10,
                 flexDirection: 'row',
               }}>
-              <View style={{flex: 1, height: '100%'}}>
+              <View style={{ flex: 1, height: '100%' }}>
                 <Image
-                  style={{resizeMode: 'contain', width: '160%', height: '100%'}}
+                  style={{ resizeMode: 'contain', width: '160%', height: '100%' }}
                   source={require('../Assets/notifications.png')}></Image>
               </View>
             </LinearGradient>

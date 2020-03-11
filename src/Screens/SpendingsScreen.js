@@ -11,14 +11,23 @@ import {
 
 } from 'react-native';
 
+const data1 = [5, 45, 28, 80, 99, 12, 44]
+const data2 = [20, 60, 45, 60, 40, 5, 100]
+
 const linedata = {
     labels: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
         {
-            data: [20, 45, 28, 80, 99, 43, 44],
-            strokeWidth: 2,
+            data: data1,
+            color: (opacity = 1) => ("blue"),
+        },
+        {
+            data: data2,
+            color: (opacity = 1) => `red`,
+
         },
     ],
+
 };
 
 
@@ -28,7 +37,7 @@ class SpendingsScreen extends React.Component {
 
     constructor(man) {
         super();
-        this.state = { value: 'Choose a periodd' };
+        this.state = { value: 'Choose a period' };
 
     }
 
@@ -78,17 +87,17 @@ class SpendingsScreen extends React.Component {
                                 </Text>
                                 <LineChart
                                     data={linedata}
-                                    width={Dimensions.get('window').width - 50} // from react-native
+                                    width={Dimensions.get('window').width - 50}
                                     height={220}
                                     yAxisLabel={'L '}
                                     chartConfig={{
-                                        backgroundColor: '#e26a00',
                                         backgroundGradientFrom: 'white',
                                         backgroundGradientTo: 'white',
-                                        decimalPlaces: 1, // optional, defaults to 2dp
-                                        color: (opacity = 1) => '#5F9EA0',
+                                        decimalPlaces: 1,
+                                        strokeWidth: 2,
+                                        color: (opacity = 1) => ('rgba(20, 10, 10, 1)'),
                                         style: {
-                                            borderRadius: 16
+                                            borderRadius: 16,
                                         }
                                     }}
                                     bezier
@@ -96,7 +105,8 @@ class SpendingsScreen extends React.Component {
                                         marginVertical: 8,
                                         borderRadius: 16
                                     }}
-                                />
+                                >
+                                </LineChart>
                             </View>
                             <View>
                                 <Text style={{ fontSize: 15, textAlign: 'center', fontWeight: 'bold' }}>My consumption status</Text>
