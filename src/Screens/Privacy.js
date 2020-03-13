@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Text, View, ScrollView, SafeAreaView} from 'react-native';
+import { Text, View, ScrollView, SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {AccordionList} from 'accordion-collapse-react-native';
+import { AccordionList } from 'accordion-collapse-react-native';
 
 class Privacy extends React.Component {
-  componentDidMount() {}
+  componentDidMount() { }
 
   _body(item) {
     return (
@@ -48,9 +48,9 @@ class Privacy extends React.Component {
       ],
     };
     return (
-      <SafeAreaView style={{height: '100%', width: '100%'}}>
+      <SafeAreaView style={{ height: '100%', width: '100%' }}>
         <ScrollView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           contentContainerStyle={{
             alignItems: 'center',
             flexDirection: 'column',
