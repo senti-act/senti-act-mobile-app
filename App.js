@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Text, View, SafeAreaView} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import { Text, View, SafeAreaView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/Screens/HomeScreen';
 import SpendingsScreen from './src/Screens/SpendingsScreen';
 import TipsScreen from './src/Screens/TipsScreen';
@@ -14,6 +14,7 @@ import Notifications from './src/Screens/Notifications';
 import Privacy from './src/Screens/Privacy';
 import FAQ from './src/Screens/FAQ';
 import About from './src/Screens/About';
+import ConsumptionScreen from './src/Screens/ConsumptionScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -67,12 +68,37 @@ function profileStack() {
   );
 }
 
+function spendingsStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="My water status"
+      screenOptions={{
+        gestureEnabled: true,
+        headerStyle: {
+          backgroundColor: '#BCC6CC',
+          height: 50,
+        },
+        headerTitleStyle: {
+          fontSize: 17,
+          textAlign: "center",
+          fontWeight: "bold",
+        },
+        //   headerTintColor: '#174a5a',
+        //   headerBackTitleVisible: false,
+      }}
+      headerMode="float">
+      <Stack.Screen name="My water consumption" component={SpendingsScreen} />
+      <Stack.Screen name="ConsumptionScreen" component={ConsumptionScreen} />
+    </Stack.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
             let iconName;
 
             if (route.name === 'Competition') {
@@ -98,10 +124,10 @@ export default function App() {
           inactiveTintColor: 'white',
           activeBackgroundColor: '#174A5A',
           inactiveBackgroundColor: '#174A5A',
-          style: {height: 104},
+          style: { height: 104 },
         }}>
         <Tab.Screen name="Competition" component={HomeScreen} />
-        <Tab.Screen name="Spendings" component={SpendingsScreen} />
+        <Tab.Screen name="Spendings" component={spendingsStack} />
         <Tab.Screen name="Tips" component={tipsStack} />
         <Tab.Screen name="Profile" component={profileStack} />
       </Tab.Navigator>

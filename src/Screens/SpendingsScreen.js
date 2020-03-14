@@ -19,17 +19,15 @@ const linedata = {
     datasets: [
         {
             data: data1,
-            color: (opacity = 1) => ("blue"),
+            color: (opacity = 1) => '#174A5A',
         },
         {
             data: data2,
-            color: (opacity = 1) => `red`,
-
+            color: (opacity = 1) => '#9FD9D4',
         },
         {
             data: data3,
-            color: (opacity = 1) => `orange`,
-
+            color: (opacity = 1) => '#F88621',
         },
     ],
 
@@ -37,7 +35,6 @@ const linedata = {
 
 
 class SpendingsScreen extends React.Component {
-
 
 
     constructor(props) {
@@ -55,14 +52,10 @@ class SpendingsScreen extends React.Component {
             <ScrollView style={styles.scrollView}>
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <View>
-                            <Text style={styles.headerTitle}>Consumption Status</Text>
-                        </View>
-                        <View style={{ paddingTop: 15 }}>
-                            <Text style={styles.headerText}>Get an overview of your consumption status</Text>
+                        <View style={{}}>
+                            <Text style={styles.headerText}>Here you get an overview of your consumption</Text>
                         </View>
                     </View>
-
                     <View style={styles.container}>
                         <View style={{ backgroundColor: 'white', borderRadius: 10, padding: 10, marginBottom: 5 }}>
                             <View style={{ flex: .8, flexDirection: 'row', justifyContent: "space-between" }}>
@@ -96,12 +89,12 @@ class SpendingsScreen extends React.Component {
                                 </View>
                             </View>
                             <View>
-                                <Text>
-                                </Text>
                                 <LineChart
                                     data={linedata}
                                     width={Dimensions.get('window').width - 50}
                                     height={220}
+                                    withDots={false}
+                                    withInnerLines={false}
                                     yAxisLabel={'L '}
                                     chartConfig={{
                                         backgroundGradientFrom: 'white',
@@ -120,38 +113,25 @@ class SpendingsScreen extends React.Component {
                                     }}
                                 >
                                 </LineChart>
+                                <Text>------Legend------</Text>
                             </View>
                         </View>
-                        {/* <View>
-                                <Text style={styles.boldText}>My consumption status</Text>
-                            </View>
-                            <View style={{ width: '50%', alignSelf: 'center' }}>
-                                <Text style={{ textAlign: 'center', paddingTop: 10 }}>To date, you have used less water than last week</Text>
-                            </View>
-                            <View style={{ flex: 2, flexDirection: 'row', width: '92%', justifyContent: 'center' }}>
-                                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
-                                    <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>My previous period</Text></TouchableOpacity>
-                                </View>
-                                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
-                                    <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Total consumption</Text></TouchableOpacity>
-                                </View>
-                            </View> */}
-                    </View >
+                    </View>
                     <View style={{ flex: 2, flexDirection: 'row', alignItems: 'center', borderRadius: 10, padding: 10 }}>
                         <TouchableOpacity style={styles.consumptionCard}
                             onPress={() => navigation.navigate('ConsumptionScreen')}>
                             <View style={{}}>
-                                <Text style={styles.boldText}>My consumption status</Text>
-                                <Text>You've spent less water than last week</Text>
+                                <Text style={styles.boldText}>Do you consume more than others?</Text>
+                                <Text>Here you can find how much water you've consumed compared to other users</Text>
                             </View>
                         </TouchableOpacity>
                         <View style={styles.consumptionCard}>
-                            <Text>In total, all consumers in the Northern Jutland region have reduced water consumption by:</Text>
-                            <Text style={{ fontWeight: "bold", alignSelf: "center", fontSize: 20 }}>25 %</Text>
+                            <Text>The amount of litres you've saved this month:</Text>
+                            <Text style={{ fontWeight: "bold", alignSelf: "center", fontSize: 40 }}>25 L</Text>
                         </View>
                     </View>
-                    <View style={{ borderRadius: 10, padding: 10, backgroundColor: 'white', width: "92%", marginBottom: 10 }}>
-                        <Text>40 DKK on water and 75 DKK on wastewater. This gives a total saving of 115 DKK </Text>
+                    <View style={styles.bottomConsumptionCard}>
+                        <Text>You've saved 40 DKK on water and 75 DKK on wastewater. This gives a total saving of 115 DKK. </Text>
                     </View>
                 </View >
             </ScrollView>
@@ -162,14 +142,22 @@ class SpendingsScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#BCC6CC',
+        backgroundColor: '#EEF3F7',
         alignItems: 'center',
         justifyContent: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+
+        elevation: 2,
     },
     header: {
         padding: 10,
-        margin: 20,
-        width: '98%'
+        width: '98%',
     },
     headerTitle: {
         fontWeight: 'bold',
@@ -177,8 +165,9 @@ const styles = StyleSheet.create({
     },
     headerText: {
         borderRadius: 10,
-        backgroundColor: '#64BCF0',
+        backgroundColor: '#AACCE5',
         padding: 25,
+        fontSize: 16,
     },
     buttonStyle: {
         backgroundColor: 'rgba(0,0,0,0)',
@@ -204,7 +193,32 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         borderRadius: 5,
         padding: 5,
-        minHeight: 130
+        minHeight: 130,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+    bottomConsumptionCard: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+        borderRadius: 10,
+        padding: 10,
+        backgroundColor:
+            'white',
+        width: "92%",
+        marginBottom: 10,
+        shadowOpacity: 5
     },
 });
 
