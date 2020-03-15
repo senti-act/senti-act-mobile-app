@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, ScrollView, SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import { AccordionList } from 'accordion-collapse-react-native';
+import { AccordionList } from 'accordion-collapse-react-native';
 
 class FAQ extends React.Component {
   componentDidMount() { }

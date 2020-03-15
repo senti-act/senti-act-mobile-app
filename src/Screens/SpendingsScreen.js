@@ -12,11 +12,10 @@ import {
 } from 'react-native';
 
 const data1 = [5, 45, 28, 80, 99, 12, 44]
-const data2 = [20, 60, 45, 60, 40, 5, 100]
-const data3 = [50, 50, 50, 50, 50, 50, 50, 50, 50]
-
+const data2 = [20, 60, 45, 60, 40, 5,]
+const data3 = [50, 50, 50, 50, 50, 50, 50]
 const linedata = {
-    labels: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['Jan', 'Mar', 'May', 'July', 'Aug', 'Oct', 'Dec'],
     datasets: [
         {
             data: data1,
@@ -31,21 +30,20 @@ const linedata = {
             color: (opacity = 1) => '#F88621',
         },
     ],
-
 };
-
 
 class SpendingsScreen extends React.Component {
 
-
     constructor(props) {
         super();
+        this.state = {
+            date: "1.7.2020 - 7.7.2020"
+        }
     }
 
-
-    changeValue = (g) => {
-        this.setState({ value: g });
-    }
+    clickHandler = (g) => {
+        this.setState({ date: g });
+    };
 
     render() {
         const { route, navigation } = this.props;
@@ -53,7 +51,7 @@ class SpendingsScreen extends React.Component {
             <ScrollView style={styles.scrollView}>
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <View style={{}}>
+                        <View>
                             <Text style={styles.headerText}>Here you get an overview of your consumption</Text>
                         </View>
                     </View>
@@ -63,20 +61,20 @@ class SpendingsScreen extends React.Component {
                                 <TouchableOpacity>
                                     <Image source={require('../Assets/back.png')} style={{ width: 20, height: 20 }} />
                                 </TouchableOpacity>
-                                <Text style={{}}>December</Text>
+                                <Text>{this.state.date}</Text>
                                 <TouchableOpacity>
                                     <Image source={require('../Assets/next.png')} style={{ width: 20, height: 20 }} />
                                 </TouchableOpacity>
                             </View>
                             <View style={{ flex: 3, flexDirection: 'row', width: '92%' }}>
                                 <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
-                                    <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Week</Text></TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.clickHandler('8.7.2020 - 15.7.2020')} style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Week</Text></TouchableOpacity>
                                 </View>
                                 <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
-                                    <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Month</Text></TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.clickHandler('July')} style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Month</Text></TouchableOpacity>
                                 </View>
                                 <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
-                                    <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Year</Text></TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.clickHandler('2020')} style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Year</Text></TouchableOpacity>
                                 </View>
                             </View>
                             <View style={{ flex: 2, flexDirection: 'row', width: '92%', alignItems: 'center' }}>
@@ -89,81 +87,81 @@ class SpendingsScreen extends React.Component {
                                     <Text style={{ fontWeight: "bold", alignSelf: "center", fontSize: 20 }}>10%</Text>
                                 </View>
                             </View>
-                            <View>
-                                <LineChart
-                                    data={linedata}
-                                    width={Dimensions.get('window').width - 50}
-                                    height={220}
-                                    withDots={false}
-                                    withInnerLines={false}
-                                    yAxisLabel={'L '}
-                                    chartConfig={{
-                                        backgroundGradientFrom: 'white',
-                                        backgroundGradientTo: 'white',
-                                        decimalPlaces: 1,
-                                        strokeWidth: 2,
-                                        color: (opacity = 1) => ('rgba(20, 10, 10, 1)'),
-                                        style: {
-                                            borderRadius: 16,
-                                        }
-                                    }}
-                                    bezier
-                                    style={{
-                                        marginVertical: 8,
-                                        borderRadius: 16
-                                    }}
-                                >
-                                </LineChart>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <View style={{ flexDirection: 'row', margin: 5 }}>
-                                        <TouchableHighlight
-                                            style={styles.circleCurrent}
-                                            underlayColor='#ccc'>
-                                            <Text></Text>
-                                        </TouchableHighlight>
-                                        <Text style={styles.smallText}> Current period</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', margin: 5 }}>
-                                        <TouchableHighlight
-                                            style={styles.circlePrevious}
-                                            underlayColor='#ccc'>
-                                            <Text></Text>
-                                        </TouchableHighlight>
-                                        <Text style={styles.smallText}> Previous period</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', margin: 5 }}>
-                                        <TouchableHighlight
-                                            style={styles.circleRecommended}
-                                            underlayColor='#ccc'>
-                                            <Text></Text>
-                                        </TouchableHighlight>
-                                        <Text style={styles.smallText}> Recommended</Text>
-                                    </View>
+                            <LineChart
+                                data={linedata}
+                                width={Dimensions.get('window').width - 50}
+                                height={220}
+                                withDots={false}
+                                withInnerLines={false}
+                                yAxisLabel={'L '}
+                                chartConfig={{
+                                    backgroundGradientFrom: 'white',
+                                    backgroundGradientTo: 'white',
+                                    decimalPlaces: 1,
+                                    strokeWidth: 2,
+                                    color: (opacity = 1) => ('rgba(20, 10, 10, 1)'),
+                                    style: {
+                                        borderRadius: 16,
+                                    }
+                                }}
+                                bezier
+                                style={{
+                                    borderRadius: 16
+                                }}
+                            >
+                            </LineChart>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ flexDirection: 'row', margin: 5 }}>
+                                    <TouchableHighlight
+                                        style={styles.circleCurrent}
+                                        underlayColor='#ccc'>
+                                        <Text></Text>
+                                    </TouchableHighlight>
+                                    <Text style={styles.smallText}> Current period</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', margin: 5 }}>
+                                    <TouchableHighlight
+                                        style={styles.circlePrevious}
+                                        underlayColor='#ccc'>
+                                        <Text></Text>
+                                    </TouchableHighlight>
+                                    <Text style={styles.smallText}> Previous period</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', margin: 5 }}>
+                                    <TouchableHighlight
+                                        style={styles.circleRecommended}
+                                        underlayColor='#ccc'>
+                                        <Text></Text>
+                                    </TouchableHighlight>
+                                    <Text style={styles.smallText}> Recommended</Text>
                                 </View>
                             </View>
                         </View>
                     </View>
+
                     <View style={{ flex: 2, flexDirection: 'row', alignItems: 'center', borderRadius: 10, padding: 10 }}>
                         <TouchableOpacity style={styles.consumptionCard}
                             onPress={() => navigation.navigate('ConsumptionScreen')}>
                             <View style={{}}>
                                 <Text style={styles.boldText}>Do you consume more than others?</Text>
-                                <Text>Here you can find how much water you've consumed compared to other users</Text>
+                                <Text style={{ fontSize: 13 }}>Click here to see how much you've spent compared to the others</Text>
                             </View>
                         </TouchableOpacity>
                         <View style={styles.consumptionCard}>
-                            <Text>The amount of litres you've saved this month:</Text>
-                            <Text style={{ fontWeight: "bold", alignSelf: "center", fontSize: 40 }}>25 L</Text>
+                            <Text style={{ fontSize: 13 }}>The amount of litres you've saved this month:</Text>
+                            <Text style={{ fontWeight: "bold", alignSelf: "center", fontSize: 19 }}>25 L</Text>
                         </View>
                     </View>
                     <View style={styles.bottomConsumptionCard}>
-                        <Text>You've saved 40 DKK on water and 75 DKK on wastewater. This gives a total saving of 115 DKK. </Text>
+                        <Text style={{ fontSize: 13 }}>You've saved 40 DKK on water and 75 DKK on wastewater. This gives a total saving of 115 DKK. </Text>
                     </View>
-                </View >
-            </ScrollView>
+                </View>
+
+            </ScrollView >
         );
     }
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -178,7 +176,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.20,
         shadowRadius: 1.41,
-
         elevation: 2,
     },
     header: {
@@ -209,17 +206,17 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     boldText: {
-        fontSize: 14,
-        textAlign: 'center',
+        fontSize: 15,
         fontWeight: 'bold',
+        marginBottom: 5,
     },
     consumptionCard: {
         flex: 1,
         backgroundColor: 'white',
         marginHorizontal: 5,
         borderRadius: 5,
-        padding: 5,
-        minHeight: 130,
+        padding: 15,
+        minHeight: 160,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -253,7 +250,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 5,
-
     },
     circlePrevious: {
         borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,

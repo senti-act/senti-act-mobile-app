@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Text, View, ScrollView, SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import { AccordionList } from 'accordion-collapse-react-native';
-// import { Separator } from 'native-base';
+import { AccordionList } from 'accordion-collapse-react-native';
+import { Separator } from 'native-base';
 
 class About extends React.Component {
   componentDidMount() { }

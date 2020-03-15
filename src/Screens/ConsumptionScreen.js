@@ -8,11 +8,12 @@ import {
     Image,
     ScrollView,
     Dimensions,
+    TouchableHighlight,
 } from 'react-native';
 
 
 const data = {
-    data: [0.7, 0.8],
+    data: [0.7, 0.8]
 }
 
 
@@ -80,20 +81,35 @@ class ConsumptionScreen extends React.Component {
                                         backgroundGradientFrom: 'white',
                                         backgroundGradientTo: 'white',
                                         decimalPlaces: 3,
-
-                                        color: (opacity = 1) => `rgba(23, 74, 90, ${opacity})`,
+                                        color: (opacity = 1) => `rgba(23, 74, 92, ${opacity})`,
                                         style: {
                                             borderRadius: 16,
-
                                         },
                                     }}
                                     style={{
-
                                         borderRadius: 16,
                                         fontSize: 25,
                                         marginLeft: 45,
                                     }}
                                 />
+                            </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ flexDirection: 'row', flex: 1, alignSelf: "center", justifyContent: 'center' }}>
+                                    <TouchableHighlight
+                                        style={styles.circleMyConsumption}
+                                        underlayColor='#ccc'>
+                                        <Text></Text>
+                                    </TouchableHighlight>
+                                    <Text style={styles.smallText}> My consumption</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', margin: 5, flex: 1, alignSelf: "center", justifyContent: 'center' }}>
+                                    <TouchableHighlight
+                                        style={styles.circleAvgConsumption}
+                                        underlayColor='#ccc'>
+                                        <Text></Text>
+                                    </TouchableHighlight>
+                                    <Text style={styles.smallText}> Avg. user consumption</Text>
+                                </View>
                             </View>
                             <View>
                                 <Text style={styles.boldText}>My consumption status</Text>
@@ -195,11 +211,28 @@ const styles = StyleSheet.create({
         elevation: 2,
         borderRadius: 10,
         padding: 10,
-        backgroundColor:
-            'white',
+        backgroundColor: 'white',
         width: "92%",
         marginBottom: 10,
-        shadowOpacity: 5
+        shadowOpacity: 5,
+    },
+    circleMyConsumption: {
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+        width: Dimensions.get('window').width * 0.04,
+        height: Dimensions.get('window').width * 0.04,
+        backgroundColor: '#446E7B',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 5,
+    },
+    circleAvgConsumption: {
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+        width: Dimensions.get('window').width * 0.04,
+        height: Dimensions.get('window').width * 0.04,
+        backgroundColor: '#73929C',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 5,
     },
 });
 
