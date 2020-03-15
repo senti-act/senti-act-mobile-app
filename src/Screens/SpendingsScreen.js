@@ -8,6 +8,7 @@ import {
     Image,
     ScrollView,
     Dimensions,
+    TouchableHighlight,
 } from 'react-native';
 
 const data1 = [5, 45, 28, 80, 99, 12, 44]
@@ -113,7 +114,32 @@ class SpendingsScreen extends React.Component {
                                     }}
                                 >
                                 </LineChart>
-                                <Text>------Legend------</Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{ flexDirection: 'row', margin: 5 }}>
+                                        <TouchableHighlight
+                                            style={styles.circleCurrent}
+                                            underlayColor='#ccc'>
+                                            <Text></Text>
+                                        </TouchableHighlight>
+                                        <Text style={styles.smallText}> Current period</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', margin: 5 }}>
+                                        <TouchableHighlight
+                                            style={styles.circlePrevious}
+                                            underlayColor='#ccc'>
+                                            <Text></Text>
+                                        </TouchableHighlight>
+                                        <Text style={styles.smallText}> Previous period</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', margin: 5 }}>
+                                        <TouchableHighlight
+                                            style={styles.circleRecommended}
+                                            underlayColor='#ccc'>
+                                            <Text></Text>
+                                        </TouchableHighlight>
+                                        <Text style={styles.smallText}> Recommended</Text>
+                                    </View>
+                                </View>
                             </View>
                         </View>
                     </View>
@@ -214,15 +240,40 @@ const styles = StyleSheet.create({
         elevation: 2,
         borderRadius: 10,
         padding: 10,
-        backgroundColor:
-            'white',
+        backgroundColor: 'white',
         width: "92%",
         marginBottom: 10,
         shadowOpacity: 5
     },
+    circleCurrent: {
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+        width: Dimensions.get('window').width * 0.04,
+        height: Dimensions.get('window').width * 0.04,
+        backgroundColor: '#174A5A',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 5,
+
+    },
+    circlePrevious: {
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+        width: Dimensions.get('window').width * 0.04,
+        height: Dimensions.get('window').width * 0.04,
+        backgroundColor: '#9FD9D4',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 5,
+    },
+    circleRecommended: {
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+        width: Dimensions.get('window').width * 0.04,
+        height: Dimensions.get('window').width * 0.04,
+        backgroundColor: '#F88621',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 5,
+    },
 });
-
-
 
 
 export default SpendingsScreen;
