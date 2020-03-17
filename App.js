@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {Text, View, SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from './src/Screens/HomeScreen';
 import SpendingsScreen from './src/Screens/SpendingsScreen';
 import TipsScreen from './src/Screens/TipsScreen';
+import LaundryScreen from './src/Screens/LaundryScreen';
 import ProfileScreen from './src/Screens/ProfileScreen';
 import AccountSettings from './src/Screens/AccountSettings';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Notifications from './src/Screens/Notifications';
 import Privacy from './src/Screens/Privacy';
 import FAQ from './src/Screens/FAQ';
 import About from './src/Screens/About';
 import ConsumptionScreen from './src/Screens/ConsumptionScreen';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -22,12 +23,12 @@ const Stack = createStackNavigator();
 function tipsStack() {
   return (
     <Stack.Navigator
-      initialRouteName="Tips og råd"
+      initialRouteName="Tips and tricks"
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
           backgroundColor: 'trasparent',
-          height: 120,
+          height: 100,
         },
         headerTitleStyle: {
           fontSize: 24,
@@ -36,7 +37,13 @@ function tipsStack() {
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="Tips og råd" component={TipsScreen} />
+      <Stack.Screen name="Tips and tricks" component={TipsScreen} />
+      <Stack.Screen name="Laundry tips" component={LaundryScreen} />
+      {/* <Stack.Screen name="Bathing tips" component={BathingScreen}/>
+      <Stack.Screen name="Faucet tips" component={FaucetScreen}/>
+      <Stack.Screen name="Toilet tips" component={ToiletScreen}/>
+      <Stack.Screen name="Dish cleaning tips" component={DishesScreen}/>
+      <Stack.Screen name="Water waste tips" component={WaterWasteScreen}/> */}
     </Stack.Navigator>
   );
 }
@@ -48,12 +55,13 @@ function profileStack() {
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
-          backgroundColor: 'trasparent',
+          backgroundColor: 'transparent',
           height: 100,
         },
         headerTitleStyle: {
           fontSize: 24,
         },
+
         headerTintColor: '#174a5a',
         headerBackTitleVisible: false,
       }}
@@ -80,8 +88,8 @@ function spendingsStack() {
         },
         headerTitleStyle: {
           fontSize: 17,
-          textAlign: "center",
-          fontWeight: "bold",
+          textAlign: 'center',
+          fontWeight: 'bold',
         },
         //   headerTintColor: '#174a5a',
         //   headerBackTitleVisible: false,
@@ -97,8 +105,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
             let iconName;
 
             if (route.name === 'Competition') {
@@ -124,7 +132,7 @@ export default function App() {
           inactiveTintColor: 'white',
           activeBackgroundColor: '#174A5A',
           inactiveBackgroundColor: '#174A5A',
-          style: { height: 104 },
+          style: {height: 104},
         }}>
         <Tab.Screen name="Competition" component={HomeScreen} />
         <Tab.Screen name="Spendings" component={spendingsStack} />

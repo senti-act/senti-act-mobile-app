@@ -11,14 +11,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ModalDropdown from 'react-native-modal-dropdown';
 
-
 class AccountSettings extends React.Component {
   componentDidMount() {}
 
-  
-
   render() {
-
     return (
       <SafeAreaView style={{height: '100%', width: '100%'}}>
         <ScrollView
@@ -56,7 +52,6 @@ class AccountSettings extends React.Component {
               borderRadius: 10,
               flexDirection: 'column',
             }}>
-
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Email</Text>
               <View style={{justifyContent: 'center'}}>
@@ -94,52 +89,64 @@ class AccountSettings extends React.Component {
               </View>
             </View>
             <View style={styles.box}>
-              <Text style={styles.firstRowText}>Number of adults in the household</Text>
+              <Text style={styles.firstRowText}>
+                Number of adults in the household
+              </Text>
               <View style={{justifyContent: 'center'}}>
                 <Text style={styles.secondRowText}>2</Text>
               </View>
             </View>
             <View style={styles.box}>
-              <Text style={styles.firstRowText}>Number of children in the household</Text>
+              <Text style={styles.firstRowText}>
+                Number of children in the household
+              </Text>
               <View style={{justifyContent: 'center'}}>
                 <Text style={styles.secondRowText}>0</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Show my data in: </Text>
-              <View style={{height:'60%', paddingLeft:30}}>
-              <ModalDropdown options={['Liters', 'm3']} textStyle={{color:"#174A5A"}} dropdownTextStyle={{fontSize:18, color:"#174A5A"}} dropdownTextHighlightStyle={{fontSize:20, color:"#174A5A"}}>
-                </ModalDropdown>
-
+              <View style={{height: '60%', paddingLeft: 30}}>
+                <ModalDropdown
+                  options={['Liters', 'm3']}
+                  textStyle={{color: '#174A5A'}}
+                  dropdownTextStyle={{fontSize: 18, color: '#174A5A'}}
+                  dropdownTextHighlightStyle={{
+                    fontSize: 20,
+                    color: '#174A5A',
+                  }}></ModalDropdown>
               </View>
             </View>
-         
           </View>
 
           <View
             style={{
-                backgroundColor: 'white',
-                borderRadius: 10,
-                marginTop: 20,
-                marginBottom: 20,
-                width: '90%',
-                flex: 2,
-                height:70,
-                flexDirection: 'row'}}>
-            <Text style={{width: '80%', paddingLeft: 20, alignSelf: 'center', color:'#174A5A'}}>
+              backgroundColor: 'white',
+              borderRadius: 10,
+              marginTop: 20,
+              marginBottom: 20,
+              width: '90%',
+              flex: 2,
+              height: 70,
+              flexDirection: 'row',
+            }}>
+            <Text
+              style={{
+                width: '80%',
+                paddingLeft: 20,
+                alignSelf: 'center',
+                color: '#174A5A',
+              }}>
               Delete data and profile
             </Text>
-            
-            <TouchableOpacity>
-                
-            </TouchableOpacity>
+
+            <TouchableOpacity></TouchableOpacity>
             <EvilIcons
               style={{alignSelf: 'center', width: '20%', paddingLeft: 20}}
               size={36}
               name={'trash'}
               color="#174A5A"
             />
-
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -160,13 +167,13 @@ const styles = {
     height: '40%',
     paddingLeft: 30,
     paddingTop: 10,
-    color:'#174A5A'
+    color: '#174A5A',
   },
   secondRowText: {
     width: '100%',
     height: '60%',
     paddingLeft: 30,
-    color:'#174A5A'
+    color: '#174A5A',
   },
 };
 

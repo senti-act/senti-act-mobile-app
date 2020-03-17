@@ -3,7 +3,7 @@ import {Text, View, ScrollView, SafeAreaView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AccordionList} from 'accordion-collapse-react-native';
 
-class FAQ extends React.Component {
+class LaundryScreen extends React.Component {
   componentDidMount() {}
 
   _body(item) {
@@ -25,28 +25,34 @@ class FAQ extends React.Component {
     this.state = {
       list: [
         {
-          title: 'Membership terms',
-          body: 'Terms for the membership',
+          title: 'Fill the washing machine',
+          body: "Fill it 'till you can no more",
         },
         {
-          title: 'Is it safe to give my address?',
-          body: 'Yes, but actually no',
+          title: 'Only wash dirty clothes',
+          body:
+            'Kinda self explanatory, why would you ever wash something clean',
         },
         {
-          title: 'Where do you store my data?',
-          body: 'In our secret bunker',
+          title: 'Dose correctly',
+          body: 'Do not dose incorrectly',
         },
         {
-          title: 'Can I use my app anywhere?',
-          body: 'You can certainly try',
+          title: 'Avoid washing at high temperatures',
+          body: 'Your clothes will catch on fire if you do',
         },
         {
-          title: 'How long is my data stored?',
-          body: 'Approximately 3',
+          title: 'Wash the stain with your hand',
+          body: "Do the machine's work yourself",
         },
         {
-          title: 'Contact us',
-          body: 'Leave a message after the tone. Booop.',
+          title: 'Air purify the laundry outside and drop the laundry',
+          body: 'I think this means just leave your stuff outside?',
+        },
+        {
+          title: 'Use shorter washing mashine programs',
+          body:
+            "While you're at it, sign your machine up in a speed washing competition",
         },
       ],
     };
@@ -105,4 +111,4 @@ const styles = {
     paddingLeft: 30,
   },
 };
-export default FAQ;
+export default LaundryScreen;

@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Text, View, ScrollView, SafeAreaView } from 'react-native';
+import {Text, View, ScrollView, SafeAreaView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { AccordionList } from 'accordion-collapse-react-native';
-import { Separator } from 'native-base';
+import {AccordionList} from 'accordion-collapse-react-native';
 
 class About extends React.Component {
-  componentDidMount() { }
+  componentDidMount() {}
 
   _body(item) {
     return (
@@ -54,9 +53,9 @@ class About extends React.Component {
       ],
     };
     return (
-      <SafeAreaView style={{ height: '100%', width: '100%' }}>
+      <SafeAreaView style={{height: '100%', width: '100%'}}>
         <ScrollView
-          style={{ flex: 1 }}
+          style={{flex: 1, marginTop: 10}}
           contentContainerStyle={{
             alignItems: 'center',
             flexDirection: 'column',

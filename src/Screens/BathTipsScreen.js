@@ -3,7 +3,7 @@ import {Text, View, ScrollView, SafeAreaView} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AccordionList} from 'accordion-collapse-react-native';
 
-class FAQ extends React.Component {
+class BathTipsScreen extends React.Component {
   componentDidMount() {}
 
   _body(item) {
@@ -25,28 +25,32 @@ class FAQ extends React.Component {
     this.state = {
       list: [
         {
-          title: 'Membership terms',
-          body: 'Terms for the membership',
+          title: 'I',
+          body: '',
         },
         {
-          title: 'Is it safe to give my address?',
-          body: 'Yes, but actually no',
+          title: "Don't ",
+          body: '',
         },
         {
-          title: 'Where do you store my data?',
-          body: 'In our secret bunker',
+          title: 'Know',
+          body: '',
         },
         {
-          title: 'Can I use my app anywhere?',
-          body: 'You can certainly try',
+          title: 'What',
+          body: '',
         },
         {
-          title: 'How long is my data stored?',
-          body: 'Approximately 3',
+          title: 'To',
+          body: '',
         },
         {
-          title: 'Contact us',
-          body: 'Leave a message after the tone. Booop.',
+          title: 'Write',
+          body: '',
+        },
+        {
+          title: 'Ran out of ideas',
+          body: "There's really not that much potential for this section",
         },
       ],
     };
@@ -105,4 +109,4 @@ const styles = {
     paddingLeft: 30,
   },
 };
-export default FAQ;
+export default BathTipsScreen;

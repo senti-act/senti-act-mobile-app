@@ -24,7 +24,7 @@ class ProfileScreen extends React.Component {
     return (
       <SafeAreaView style={{height: '100%', width: '100%'}}>
         <ScrollView
-          style={{flex: 1}}
+          style={{flex: 1, marginTop: 10}}
           contentContainerStyle={{
             alignItems: 'center',
             flexDirection: 'column',
@@ -49,9 +49,9 @@ class ProfileScreen extends React.Component {
                   Good morning, Christian!
                 </Text>
               </View>
-              <View style={{flex: 1, height: '100%'}}>
+              <View style={{flex: 1, height: '110%'}}>
                 <Image
-                  style={{resizeMode: 'cover', width: '100%', height: '102%'}}
+                  style={{width: '90%', height: '115%'}}
                   source={require('../Assets/easy.png')}></Image>
               </View>
             </LinearGradient>
