@@ -7,6 +7,11 @@ import HomeScreen from './src/Screens/HomeScreen';
 import SpendingsScreen from './src/Screens/SpendingsScreen';
 import TipsScreen from './src/Screens/TipsScreen';
 import LaundryScreen from './src/Screens/LaundryScreen';
+import FaucetScreen from './src/Screens/FaucetTipsScreen';
+import BathingScreen from './src/Screens/BathTipsScreen';
+import ToiletScreen from './src/Screens/ToiletTipsScreen';
+import DishesScreen from './src/Screens/DishesTipsScreen';
+import WaterWasteScreen from './src/Screens/WaterWasteTipsScreen';
 import ProfileScreen from './src/Screens/ProfileScreen';
 import AccountSettings from './src/Screens/AccountSettings';
 import Notifications from './src/Screens/Notifications';
@@ -39,11 +44,11 @@ function tipsStack() {
       headerMode="float">
       <Stack.Screen name="Tips and tricks" component={TipsScreen} />
       <Stack.Screen name="Laundry tips" component={LaundryScreen} />
-      {/* <Stack.Screen name="Bathing tips" component={BathingScreen}/>
-      <Stack.Screen name="Faucet tips" component={FaucetScreen}/>
-      <Stack.Screen name="Toilet tips" component={ToiletScreen}/>
-      <Stack.Screen name="Dish cleaning tips" component={DishesScreen}/>
-      <Stack.Screen name="Water waste tips" component={WaterWasteScreen}/> */}
+      <Stack.Screen name="Bathing tips" component={BathingScreen} />
+      <Stack.Screen name="Faucet tips" component={FaucetScreen} />
+      <Stack.Screen name="Toilet tips" component={ToiletScreen} />
+      <Stack.Screen name="Dish cleaning tips" component={DishesScreen} />
+      <Stack.Screen name="Water waste tips" component={WaterWasteScreen} />
     </Stack.Navigator>
   );
 }
