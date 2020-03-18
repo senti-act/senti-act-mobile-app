@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Text, View, SafeAreaView} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import { Text, View, SafeAreaView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/Screens/HomeScreen';
 import SpendingsScreen from './src/Screens/SpendingsScreen';
 import TipsScreen from './src/Screens/TipsScreen';
@@ -109,41 +109,44 @@ function spendingsStack() {
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
+      <SafeAreaView style={{ flex: 0, backgroundColor: '#F2F2F2', }} />
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#174A5A' }}>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
 
-            if (route.name === 'Competition') {
-              iconName = focused ? 'trophy' : 'trophy';
-              size = focused ? 32 : 24;
-            } else if (route.name === 'Spendings') {
-              iconName = focused ? 'tint' : 'tint';
-              size = focused ? 32 : 24;
-            } else if (route.name === 'Tips') {
-              iconName = focused ? 'info' : 'info';
-              size = focused ? 32 : 24;
-            } else if (route.name === 'Profile') {
-              iconName = focused ? 'user' : 'user';
-              size = focused ? 32 : 24;
-            }
+              if (route.name === 'Competition') {
+                iconName = focused ? 'trophy' : 'trophy';
+                size = focused ? 32 : 24;
+              } else if (route.name === 'Spendings') {
+                iconName = focused ? 'tint' : 'tint';
+                size = focused ? 32 : 24;
+              } else if (route.name === 'Tips') {
+                iconName = focused ? 'info' : 'info';
+                size = focused ? 32 : 24;
+              } else if (route.name === 'Profile') {
+                iconName = focused ? 'user' : 'user';
+                size = focused ? 32 : 24;
+              }
 
-            return <FontAwesome name={iconName} size={size} color={color} />;
-            // return <Ionicons name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: 'white',
-          inactiveTintColor: 'white',
-          activeBackgroundColor: '#174A5A',
-          inactiveBackgroundColor: '#174A5A',
-          style: {height: 104},
-        }}>
-        <Tab.Screen name="Competition" component={HomeScreen} />
-        <Tab.Screen name="Spendings" component={spendingsStack} />
-        <Tab.Screen name="Tips" component={tipsStack} />
-        <Tab.Screen name="Profile" component={profileStack} />
-      </Tab.Navigator>
+              return <FontAwesome name={iconName} size={size} color={color} />;
+              // return <Ionicons name={iconName} size={size} color={color} />;
+            },
+          })}
+          tabBarOptions={{
+            activeTintColor: 'white',
+            inactiveTintColor: 'white',
+            activeBackgroundColor: '#174A5A',
+            inactiveBackgroundColor: '#174A5A',
+            style: { height: 80 },
+          }}>
+          <Tab.Screen name="Competition" component={HomeScreen} />
+          <Tab.Screen name="Spendings" component={spendingsStack} />
+          <Tab.Screen name="Tips" component={tipsStack} />
+          <Tab.Screen name="Profile" component={profileStack} />
+        </Tab.Navigator>
+      </SafeAreaView>
     </NavigationContainer>
   );
 }
