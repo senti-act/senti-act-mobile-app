@@ -53,6 +53,29 @@ function tipsStack() {
   );
 }
 
+function competitionStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="Competition"
+      screenOptions={{
+        gestureEnabled: true,
+        headerStyle: {
+          backgroundColor: 'trasparent',
+          height: 80,
+        },
+        headerTitleStyle: {
+          fontSize: 24,
+        },
+        headerTintColor: '#174a5a',
+        headerBackTitleVisible: false,
+      }}
+      headerMode="float">
+      <Stack.Screen name="Competition" component={HomeScreen} />
+    </Stack.Navigator>
+  );
+}
+
+
 function profileStack() {
   return (
     <Stack.Navigator
@@ -141,7 +164,7 @@ export default function App() {
             inactiveBackgroundColor: '#174A5A',
             style: { height: 80 },
           }}>
-          <Tab.Screen name="Competition" component={HomeScreen} />
+          <Tab.Screen name="Competition" component={competitionStack} />
           <Tab.Screen name="Spendings" component={spendingsStack} />
           <Tab.Screen name="Tips" component={tipsStack} />
           <Tab.Screen name="Profile" component={profileStack} />
