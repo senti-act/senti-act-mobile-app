@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   Text,
   View,
-  Button,
   StyleSheet,
   ScrollView,
   Image,
@@ -11,6 +10,53 @@ import {
 } from 'react-native';
 const {height, width} = Dimensions.get('window');
 import jebani from '../Assets/competition.png';
+import * as Progress from 'react-native-progress';
+
+const BagdeBox = props => {
+  return (
+    <View
+    style={styles.bagdeBoxContainer}>
+    <View style={{flex: 1, marginLeft:10}}>
+      <View style={{backgroundColor: 'black', width:50, height: 50, borderRadius: 999999}}></View>
+    </View>
+    <View style ={{flex:6, flexDirection:'column', paddingTop:10}}>
+    <Text
+      style={styles.bagdeBoxTitle}>
+      {props.title}
+    </Text>
+    <Text
+      style={styles.bagdeBoxDescription}>
+      {props.description}
+    </Text>
+    </View>
+  </View>
+  );
+};
+
+const BagdeBoxProgress = props => {
+  return (
+    <View
+    style={styles.bagdeBoxContainer}>
+    <View style={{flex: 1, marginLeft:10}}>
+      <View style={{backgroundColor: 'black', width:50, height: 50, borderRadius: 999999}}></View>
+    </View>
+    <View style ={{flex:6, flexDirection:'column', paddingTop:10}}>
+    <Text
+      style={styles.bagdeBoxProgressTitle}>
+      {props.title}
+    </Text>
+    <View style={{paddingLeft:10, flexDirection:'row'}}>
+    <Progress.Bar progress={props.progress} width={240} height={8} color={'#FA821B'} style={{height:10, alignSelf:'center'}}/>    
+    <Text style={{fontSize:13, paddingLeft:4, color: '#174A5A', fontWeight:'500'}}>{props.progress *100}%</Text>
+    </View>
+    <Text
+      style={styles.bagdeBoxDescription}>
+      {props.description}
+    </Text>
+    </View>
+  </View>
+  );
+};
 
 class HomeScreen extends React.Component {
   constructor() {
@@ -36,54 +82,27 @@ class HomeScreen extends React.Component {
       case 'badges': {
         //PUT BREAK HERE LATER !!!! --> karcsi !!
         return (
-          <View
-            style={{
-              height: 150,
-              flexDirection: 'row',
-              borderBottomWidth: 1,
-              borderBottomColor: 'lightgray',
-              alignItems: 'center',
-              flex: 1,
-              backgroundColor:'white',
-              borderRadius: 10,
-              marginTop:20
-            }}>
-            <View style={{flex: 2}}>
-              <View
-                style={{
-                  backgroundColor: 'black',
-                  width:90,
-                  height: 90,
-                  borderRadius: 999999,
-                }}></View>
+          <View style={{height:'100%', backgroundColor:'white', borderRadius: 10, marginTop:10}}> 
+          <View style={styles.userBoxContainer}>
+            <View style={{flex: 2,marginLeft:10}}>
+              <View style={{backgroundColor: 'black', width:90, height: 90, borderRadius: 999999}}></View>
             </View>
-
-            <Text
-              style={{
-                flex:1,
-                paddingLeft: 20,
-                alignSelf: 'center',
-                textAlign: 'center',
-                color: '#174A5A',
-                fontSize: 15,
-              }}>
+            <Text style={styles.userBoxPoints}>
               <Text style={{fontWeight: 'bold', fontSize:16}}>1500</Text> points
             </Text>
-
-            <Text
-              style={{
-                flex: 4,
-                paddingLeft: 20,
-                alignSelf: 'center',
-                color: '#174A5A',
-                fontSize: 15,
-              }}>
+            <Text style={styles.userBoxDescr}>
               Here you can see all your badges that you have won as you
               contribute to reducing your water usage. Unlock more badges on an
               ongoing basis.
             </Text>
-            {/* <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" /> */}
           </View>
+              <BagdeBox title='Expert' description='You have been an active player for 3 months and you have therefore earned the title as an expert.'></BagdeBox>
+              <BagdeBoxProgress title='Water Expert' description='You have been reduced you water consumption by 10%.' progress={0.8}></BagdeBoxProgress>
+              <BagdeBox title='Water Chuj' description='You have been reduced you water consumption by 10%.'></BagdeBox>
+              <BagdeBoxProgress title='Karol Badge' description='siema kurwa' progress={0.2}></BagdeBoxProgress>
+
+          </View>
+
         );
       }
       case 'leaderboard': {
@@ -198,6 +217,63 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
+  bagdeBoxContainer: {
+    height: 120,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
+    alignItems: 'center',
+    flex: 1,
+  },
+  bagdeBoxTitle: {
+    flex:1,
+    alignSelf: 'flex-start',
+    color: '#174A5A',
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingLeft:10,
+  },
+  bagdeBoxProgressTitle: {
+    flex:1,
+    alignSelf: 'flex-start',
+    color: '#174A5A',
+    fontSize: 16,
+    fontWeight: 'bold',
+    paddingLeft:10,
+    paddingBottom:10,
+  },
+  bagdeBoxDescription:{
+    flex: 4,
+    paddingLeft: 10,
+    paddingTop:10,
+    alignSelf: 'flex-start',
+    color: '#174A5A',
+    fontSize: 14,
+  },
+  userBoxContainer: {
+    height: 150,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
+    alignItems: 'center',
+    flex: 1,
+  },
+  userBoxPoints: {
+    flex:1,
+    paddingLeft: 20,
+    alignSelf: 'center',
+    textAlign: 'center',
+    color: '#174A5A',
+    fontSize: 12,
+  },
+  userBoxDescr: {
+    flex: 5,
+    paddingLeft: 20,
+    alignSelf: 'center',
+    color: '#174A5A',
+    fontSize: 14,
+  }
+
 });
 
 export default HomeScreen;

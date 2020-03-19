@@ -1,7 +1,7 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-source 'https://github.com/CocoaPods/Specs.git'
+#source 'https://github.com/CocoaPods/Specs.git'
 target 'SentiActMobile' do
   # Pods for SentiActMobile
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
