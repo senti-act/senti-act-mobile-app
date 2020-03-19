@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {Text, View, SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from './src/Screens/HomeScreen';
 import SpendingsScreen from './src/Screens/SpendingsScreen';
 import TipsScreen from './src/Screens/TipsScreen';
@@ -12,6 +12,7 @@ import BathingScreen from './src/Screens/BathTipsScreen';
 import ToiletScreen from './src/Screens/ToiletTipsScreen';
 import DishesScreen from './src/Screens/DishesTipsScreen';
 import WaterWasteScreen from './src/Screens/WaterWasteTipsScreen';
+//import SubmitTipScreen from './src/Screens/SubmitTipScreen';
 import ProfileScreen from './src/Screens/ProfileScreen';
 import AccountSettings from './src/Screens/AccountSettings';
 import Notifications from './src/Screens/Notifications';
@@ -19,8 +20,8 @@ import Privacy from './src/Screens/Privacy';
 import FAQ from './src/Screens/FAQ';
 import About from './src/Screens/About';
 import ConsumptionScreen from './src/Screens/ConsumptionScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -33,22 +34,48 @@ function tipsStack() {
         gestureEnabled: true,
         headerStyle: {
           backgroundColor: 'trasparent',
-          height: 100,
+          backgroundColor: '#f2f2f2',
+          height: 75,
         },
         headerTitleStyle: {
           fontSize: 24,
         },
+        headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="Tips and tricks" component={TipsScreen} />
+      <Stack.Screen
+        name="Tips and tricks"
+        component={TipsScreen}
+        options={({navigation}) => ({
+          headerRight: () => (
+            <View style={{paddingRight: 16}}>
+              <TouchableOpacity
+                onPress={() => alert('Submit screen coming up soon!')}
+                //onPress={() => navigation.navigate('Submit tip')}
+                color="#e62e00"
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 50,
+                  height: 50,
+                  backgroundColor: '#FF8000',
+                  borderRadius: 25,
+                }}>
+                <LineIcons name={'pencil'} size={25} color={'white'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
       <Stack.Screen name="Laundry tips" component={LaundryScreen} />
       <Stack.Screen name="Bathing tips" component={BathingScreen} />
       <Stack.Screen name="Faucet tips" component={FaucetScreen} />
       <Stack.Screen name="Toilet tips" component={ToiletScreen} />
       <Stack.Screen name="Dish cleaning tips" component={DishesScreen} />
       <Stack.Screen name="Water waste tips" component={WaterWasteScreen} />
+      {/* <Stack.Screen name="Submit tips" component={SubmitTipScreen} /> */}
     </Stack.Navigator>
   );
 }
@@ -61,11 +88,13 @@ function competitionStack() {
         gestureEnabled: true,
         headerStyle: {
           backgroundColor: 'trasparent',
-          height: 80,
+          backgroundColor: '#f2f2f2',
+          height: 75,
         },
         headerTitleStyle: {
           fontSize: 24,
         },
+        headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
         headerBackTitleVisible: false,
       }}
@@ -75,7 +104,6 @@ function competitionStack() {
   );
 }
 
-
 function profileStack() {
   return (
     <Stack.Navigator
@@ -84,12 +112,13 @@ function profileStack() {
         gestureEnabled: true,
         headerStyle: {
           backgroundColor: 'transparent',
-          height: 100,
+          backgroundColor: '#f2f2f2',
+          height: 75,
         },
         headerTitleStyle: {
           fontSize: 24,
         },
-
+        headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
         headerBackTitleVisible: false,
       }}
@@ -111,16 +140,15 @@ function spendingsStack() {
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
-          backgroundColor: '#BCC6CC',
-          height: 50,
+          backgroundColor: '#f2f2f2',
+          height: 75,
         },
         headerTitleStyle: {
-          fontSize: 17,
-          textAlign: 'center',
-          fontWeight: 'bold',
+          fontSize: 24,
         },
-        //   headerTintColor: '#174a5a',
-        //   headerBackTitleVisible: false,
+        headerTitleAlign: 'center',
+        headerTintColor: '#174a5a',
+        //headerBackTitleVisible: false,
       }}
       headerMode="float">
       <Stack.Screen name="My water consumption" component={SpendingsScreen} />
@@ -132,37 +160,36 @@ function spendingsStack() {
 export default function App() {
   return (
     <NavigationContainer>
-      <SafeAreaView style={{ flex: 0, backgroundColor: '#F2F2F2', }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#174A5A' }}>
+      <SafeAreaView style={{flex: 0, backgroundColor: '#F2F2F2'}} />
+      <SafeAreaView style={{flex: 1, backgroundColor: '#174A5A'}}>
         <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
               let iconName;
 
               if (route.name === 'Competition') {
                 iconName = focused ? 'trophy' : 'trophy';
-                size = focused ? 32 : 24;
+                size = focused ? 34 : 30;
               } else if (route.name === 'Spendings') {
-                iconName = focused ? 'tint' : 'tint';
-                size = focused ? 32 : 24;
+                iconName = focused ? 'drop' : 'drop';
+                size = focused ? 34 : 30;
               } else if (route.name === 'Tips') {
                 iconName = focused ? 'info' : 'info';
-                size = focused ? 32 : 24;
+                size = focused ? 34 : 30;
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'user' : 'user';
-                size = focused ? 32 : 24;
+                size = focused ? 34 : 30;
               }
-
-              return <FontAwesome name={iconName} size={size} color={color} />;
-              // return <Ionicons name={iconName} size={size} color={color} />;
+              return <LineIcons name={iconName} size={size} color={color} />;
             },
           })}
           tabBarOptions={{
             activeTintColor: 'white',
             inactiveTintColor: 'white',
-            activeBackgroundColor: '#174A5A',
+            activeBackgroundColor: '#1f657a',
             inactiveBackgroundColor: '#174A5A',
-            style: { height: 80 },
+            style: {height: 85},
+            labelStyle: {fontSize: 12, paddingBottom: 5},
           }}>
           <Tab.Screen name="Competition" component={competitionStack} />
           <Tab.Screen name="Spendings" component={spendingsStack} />

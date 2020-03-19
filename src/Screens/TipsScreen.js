@@ -35,6 +35,7 @@ class TipsScreen extends React.Component {
     };
   }
   componentDidMount() {}
+
   _onPress(item) {
     if (item.id == 1) {
       this.props.navigation.navigate('Laundry tips');
@@ -85,10 +86,7 @@ class TipsScreen extends React.Component {
                     alignItems: 'center',
                     justifyContent: 'flex-end',
                   }}>
-                  <Image
-                    style={{width: width / 2, height: width / 2}}
-                    source={jebani}
-                  />
+                  <Image style={{width: 200, height: 170}} source={jebani} />
                 </View>
               </View>
             </View>
@@ -98,22 +96,21 @@ class TipsScreen extends React.Component {
                 paddingHorizontal={10}
                 scrollEnabled={false}
                 renderItem={({item}) => (
-                  <TouchableOpacity onPress={() => this._onPress(item)}>
-                    <View
-                      style={{
-                        flex: 1,
-                        height: width / 2,
-                        flexDirection: 'column',
-                        padding: 5,
-                      }}>
-                      <View style={styles.imageThumbnail}>
-                        <Image
-                          style={{width: width / 3, height: width / 3}}
-                          resizeMode="contain"
-                          source={item.img}
-                        />
-                        <Text style={{color: '#174a5a'}}>{item.title}</Text>
-                      </View>
+                  <TouchableOpacity
+                    onPress={() => this._onPress(item)}
+                    style={{
+                      flex: 1,
+                      height: width / 2,
+                      flexDirection: 'column',
+                      padding: 5,
+                    }}>
+                    <View style={styles.imageThumbnail}>
+                      <Image
+                        style={{width: width / 3, height: width / 3}}
+                        resizeMode="contain"
+                        source={item.img}
+                      />
+                      <Text style={{color: '#174a5a'}}>{item.title}</Text>
                     </View>
                   </TouchableOpacity>
                 )}
