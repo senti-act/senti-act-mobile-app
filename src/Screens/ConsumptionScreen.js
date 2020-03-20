@@ -30,6 +30,7 @@ class ConsumptionScreen extends React.Component {
     }
 
     render() {
+        const { navigation } = this.props;
         return (
             <ScrollView style={styles.scrollView}>
                 <View style={styles.container}>
@@ -125,6 +126,13 @@ class ConsumptionScreen extends React.Component {
                                     <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Total consumption</Text></TouchableOpacity>
                                 </View>
                             </View> */}
+                            <TouchableOpacity style={styles.consumptionCard}
+                                onPress={() => navigation.navigate('WelcomeScreen')}>
+                                <View style={{}}>
+                                    <Text style={styles.boldText}>Do you consume more than others?</Text>
+                                    <Text style={{ fontSize: 13 }}>Click here to see how much you've spent compared to the others</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View >
                     <View style={styles.bottomConsumptionCard}>

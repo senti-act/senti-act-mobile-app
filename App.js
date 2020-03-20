@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Text, View, SafeAreaView} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import { Text, View, SafeAreaView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/Screens/HomeScreen';
 import SpendingsScreen from './src/Screens/SpendingsScreen';
 import TipsScreen from './src/Screens/TipsScreen';
@@ -20,8 +20,17 @@ import Privacy from './src/Screens/Privacy';
 import FAQ from './src/Screens/FAQ';
 import About from './src/Screens/About';
 import ConsumptionScreen from './src/Screens/ConsumptionScreen';
+import DataSyncScreen from './src/Screens/Start/DataSyncScreen';
+import GuideScreen from './src/Screens/Start/GuideScreen';
+import StartGuideScreen from './src/Screens/Start/StartGuideScreen';
+import InstructionsScreen from './src/Screens/Start/InstructionsScreen';
+import LoginScreen from './src/Screens/Start/LoginScreen';
+import RegistrationScreen from './src/Screens/Start/RegistrationScreen';
+import WelcomeScreen from './src/Screens/Start/WelcomeScreen';
+import StartLoginScreen from './src/Screens/Start/StartLoginScreen';
+import DataCheckScreen from './src/Screens/Start/DataCheckScreen';
 import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -48,9 +57,9 @@ function tipsStack() {
       <Stack.Screen
         name="Tips and tricks"
         component={TipsScreen}
-        options={({navigation}) => ({
+        options={({ navigation }) => ({
           headerRight: () => (
-            <View style={{paddingRight: 16}}>
+            <View style={{ paddingRight: 16 }}>
               <TouchableOpacity
                 //onPress={() => alert('Submit screen coming up soon!')}
                 onPress={() => navigation.navigate('Submit tips')}
@@ -77,7 +86,7 @@ function tipsStack() {
       <Stack.Screen
         name="Submit tips"
         component={SubmitTipScreen}
-        options={{headerTitle: 'Add your tips and tricks'}}
+        options={{ headerTitle: 'Add your tips and tricks' }}
       />
     </Stack.Navigator>
   );
@@ -156,18 +165,79 @@ function spendingsStack() {
       headerMode="float">
       <Stack.Screen name="My water consumption" component={SpendingsScreen} />
       <Stack.Screen name="ConsumptionScreen" component={ConsumptionScreen} />
+      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen name="InstructionsScreen" component={InstructionsScreen} />
+      <Stack.Screen name="DataSyncScreen" component={DataSyncScreen} />
+      <Stack.Screen name="DataCheckScreen" component={DataCheckScreen} />
+      <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
+      <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} />
+      <Stack.Screen name="GuideScreen" component={GuideScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
 }
+function loginStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName='Log in'
+      screenOptions={{
+        gestureEnabled: true,
+        headerStyle: {
+          backgroundColor: 'white',
+          height: 65,
+        },
+        headerTitleStyle: {
+          fontSize: 24,
+        },
+        headerTitleAlign: 'center',
+        headerTintColor: '#174a5a',
+        //headerBackTitleVisible: false,
+      }}
+      headerMode="float">
+      <Stack.Screen name="StartLoginScreen" component={StartLoginScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="CompetitionScreen" component={HomeScreen} />
+    </Stack.Navigator>
+  )
+}
+
+// function startStack() {
+//   return (
+//     <Stack.Navigator
+//       initialRouteName='Welcome'
+//       screenOptions={{
+//         gestureEnabled: true,
+//         headerStyle: {
+//           backgroundColor: 'white',
+//           height: 65,
+//         },
+//         headerTitleStyle: {
+//           fontSize: 24,
+//         },
+//         headerTitleAlign: 'center',
+//         headerTintColor: '#174a5a',
+//         //headerBackTitleVisible: false,
+//       }}
+//       headerMode="float">
+// <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+// <Stack.Screen name="InstructionsScreen" component={InstructionsScreen} />
+// <Stack.Screen name="DataSyncScreen" component={DataSyncScreen} />
+// <Stack.Screen name="DataCheckScreen" component={DataCheckScreen} />
+// <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
+// <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} />
+// <Stack.Screen name="GuideScreen" component={GuideScreen} />
+//     </Stack.Navigator>
+//   );
+// }
 
 export default function App() {
   return (
     <NavigationContainer>
-      <SafeAreaView style={{flex: 0, backgroundColor: '#F2F2F2'}} />
-      <SafeAreaView style={{flex: 1, backgroundColor: '#174A5A'}}>
+      <SafeAreaView style={{ flex: 0, backgroundColor: '#F2F2F2' }} />
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#174A5A' }}>
         <Tab.Navigator
-          screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
               let iconName;
 
               if (route.name === 'Competition') {
@@ -191,8 +261,8 @@ export default function App() {
             inactiveTintColor: 'white',
             activeBackgroundColor: '#1f657a',
             inactiveBackgroundColor: '#174A5A',
-            style: {height: 85},
-            labelStyle: {fontSize: 12, paddingBottom: 5},
+            style: { height: 85 },
+            labelStyle: { fontSize: 12, paddingBottom: 5 },
           }}>
           <Tab.Screen name="Competition" component={competitionStack} />
           <Tab.Screen name="Spendings" component={spendingsStack} />
