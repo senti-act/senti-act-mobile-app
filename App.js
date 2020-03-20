@@ -12,7 +12,7 @@ import BathingScreen from './src/Screens/BathTipsScreen';
 import ToiletScreen from './src/Screens/ToiletTipsScreen';
 import DishesScreen from './src/Screens/DishesTipsScreen';
 import WaterWasteScreen from './src/Screens/WaterWasteTipsScreen';
-//import SubmitTipScreen from './src/Screens/SubmitTipScreen';
+import SubmitTipScreen from './src/Screens/SubmitTipScreen';
 import ProfileScreen from './src/Screens/ProfileScreen';
 import AccountSettings from './src/Screens/AccountSettings';
 import Notifications from './src/Screens/Notifications';
@@ -52,9 +52,8 @@ function tipsStack() {
           headerRight: () => (
             <View style={{paddingRight: 16}}>
               <TouchableOpacity
-                onPress={() => alert('Submit screen coming up soon!')}
-                //onPress={() => navigation.navigate('Submit tip')}
-                color="#e62e00"
+                //onPress={() => alert('Submit screen coming up soon!')}
+                onPress={() => navigation.navigate('Submit tips')}
                 style={{
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -75,7 +74,11 @@ function tipsStack() {
       <Stack.Screen name="Toilet tips" component={ToiletScreen} />
       <Stack.Screen name="Dish cleaning tips" component={DishesScreen} />
       <Stack.Screen name="Water waste tips" component={WaterWasteScreen} />
-      {/* <Stack.Screen name="Submit tips" component={SubmitTipScreen} /> */}
+      <Stack.Screen
+        name="Submit tips"
+        component={SubmitTipScreen}
+        options={{headerTitle: 'Add your tips and tricks'}}
+      />
     </Stack.Navigator>
   );
 }
