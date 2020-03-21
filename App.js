@@ -153,7 +153,7 @@ function spendingsStack() {
         gestureEnabled: true,
         headerStyle: {
           backgroundColor: '#f2f2f2',
-          height: 75,
+          height: 35,
         },
         headerTitleStyle: {
           fontSize: 24,
