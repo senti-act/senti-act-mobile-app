@@ -88,7 +88,6 @@ const styles = {
         borderRadius: 7,
         width: '100%',
         padding: 10,
-
     },
     buttonLeft: {
         backgroundColor: '#FA821B',
@@ -98,7 +97,6 @@ const styles = {
         justifyContent: 'center',
         alignSelf: "center",
         marginVertical: 10,
-
     },
     buttonRight: {
         backgroundColor: '#FA821B',
