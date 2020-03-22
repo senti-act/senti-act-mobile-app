@@ -1,35 +1,129 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Image, TextInput, ScrollView, CheckBox, FlatList } from 'react-native';
+
 
 class RegistrationScreen extends React.Component {
     componentDidMount() { }
 
-    constructor(props) {
-        super();
+    constructor(prop) {
+        super()
     }
-
     render() {
         const { navigation } = this.props;
         return (
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 10, padding: 30 }}>
-                <TouchableOpacity style={styles.buttonStyle}
-                    onPress={() => navigation.navigate('StartGuideScreen')}>
-                    <Text style={{ alignSelf: 'center', color: 'white' }}>Sign in</Text>
-                </TouchableOpacity>
-            </View>
-        )
+            <ScrollView>
+                <View style={{ padding: 20, height: '100%' }}>
+                    <View style={{ width: '100%', borderRadius: 10, height: '30%' }}>
+                        <View style={{ flexDirection: 'row', alignSelf: 'center' }}><Text style={styles.title}>Complete your user profile</Text></View>
+                        <View style={{ width: '100%', borderRadius: 10, backgroundColor: '#95D3E3', height: '64%', flexDirection: 'row' }}></View>
+                        <View style={{ width: '95%', position: "absolute", marginVertical: 18 }}>
+                            <Image source={require('../../Assets/start/family.png')} style={{ width: 120, height: 145, alignSelf: 'center' }}></Image>
+                        </View>
+                    </View>
+                    <View style={styles.contentContainer}>
+                        <View style={{ paddingVertical: 17 }}>
+                            <Text style={styles.contentFont}>You need to sign-in to complete your profile:</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TextInput style={styles.textInputLong}>
+                                Email
+                            </TextInput>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TextInput style={styles.textInputLong}>
+                                Password
+                            </TextInput>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TextInput style={styles.textInputLong}>
+                                Repeat Password
+                            </TextInput>
+                        </View>
+                        <View style={{ paddingVertical: 17 }}>
+                            <Text style={styles.contentFont}>
+                                To better analyze your data, we need to know how
+                                many children and adults are in the household.
+                            </Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <CheckBox style={{ width: '10%' }}></CheckBox>
+                            <View style={{ width: '88%', padding: 3 }}>
+                                <Text style={styles.termsText}>
+                                    Yes, I accept the terms and conditions for personal data policy
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignSelf: "center" }}>
+                            <View style={{ width: '100%' }}>
+                                <TouchableOpacity style={styles.buttonLeft}
+                                    onPress={() => navigation.navigate('StartGuideScreen')}>
+                                    <Text style={{ alignSelf: 'center', color: 'white' }}>Yes</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </View >
+            </ScrollView>
+
+
+        );
     }
 }
 
+
 const styles = {
-    buttonStyle: {
+    title: {
+        alignSelf: 'center',
+        color: '#2E5C6B',
+        fontSize: 17,
+        paddingBottom: 15,
+        fontWeight: 'bold',
+        padding: 0,
+    },
+    textInputLong: {
+        backgroundColor: 'white',
+        height: '80%',
+        borderColor: '#366270',
+        borderWidth: 1,
+        borderRadius: 7,
+        width: '100%',
+        padding: 10,
+
+    },
+    buttonLeft: {
         backgroundColor: '#FA821B',
-        marginRight: 5,
         borderRadius: 10,
         width: '33%',
         height: 35,
         justifyContent: 'center',
-        alignSelf: 'center',
+        alignSelf: "center",
+        marginVertical: 10,
+
+    },
+    buttonRight: {
+        backgroundColor: '#FA821B',
+        borderRadius: 10,
+        width: '50%',
+        height: 35,
+        justifyContent: 'center',
+        alignSelf: "flex-start",
+        marginVertical: 10,
+
+    },
+    contentContainer: {
+        backgroundColor: 'white',
+        paddingHorizontal: 15,
+        height: '100%',
+        borderRadius: 10,
+        marginBottom: 120
+    },
+    contentFont: {
+        color: '#2E5C6B',
+        fontSize: 14,
+    },
+    termsText: {
+        color: '#2E5C6B',
+        fontSize: 11,
     },
 };
 export default RegistrationScreen;
