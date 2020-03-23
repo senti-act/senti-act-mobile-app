@@ -1,25 +1,25 @@
 import * as React from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {Text, View, SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from './src/Screens/HomeScreen';
-import SpendingsScreen from './src/Screens/SpendingsScreen';
-import TipsScreen from './src/Screens/TipsScreen';
-import LaundryScreen from './src/Screens/LaundryScreen';
-import FaucetScreen from './src/Screens/FaucetTipsScreen';
-import BathingScreen from './src/Screens/BathTipsScreen';
-import ToiletScreen from './src/Screens/ToiletTipsScreen';
-import DishesScreen from './src/Screens/DishesTipsScreen';
-import WaterWasteScreen from './src/Screens/WaterWasteTipsScreen';
-import SubmitTipScreen from './src/Screens/SubmitTipScreen';
-import ProfileScreen from './src/Screens/ProfileScreen';
-import AccountSettings from './src/Screens/AccountSettings';
-import Notifications from './src/Screens/Notifications';
-import Privacy from './src/Screens/Privacy';
-import FAQ from './src/Screens/FAQ';
-import About from './src/Screens/About';
-import ConsumptionScreen from './src/Screens/ConsumptionScreen';
+import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
+import TipsScreen from './src/Screens/Tips/TipsScreen';
+import LaundryScreen from './src/Screens/Tips/LaundryScreen';
+import FaucetScreen from './src/Screens/Tips/FaucetTipsScreen';
+import BathingScreen from './src/Screens/Tips/BathTipsScreen';
+import ToiletScreen from './src/Screens/Tips/ToiletTipsScreen';
+import DishesScreen from './src/Screens/Tips/DishesTipsScreen';
+import WaterWasteScreen from './src/Screens/Tips/WaterWasteTipsScreen';
+import SubmitTipScreen from './src/Screens/Tips/SubmitTipScreen';
+import ProfileScreen from './src/Screens/Profile/ProfileScreen';
+import AccountSettings from './src/Screens/Profile/AccountSettings';
+import Notifications from './src/Screens/Profile/Notifications';
+import Privacy from './src/Screens/Profile/Privacy';
+import FAQ from './src/Screens/Profile/FAQ';
+import About from './src/Screens/Profile/About';
+import ConsumptionScreen from './src/Screens/Consumption/ConsumptionScreen';
 import DataSyncScreen from './src/Screens/Start/DataSyncScreen';
 import GuideScreen from './src/Screens/Start/GuideScreen';
 import StartGuideScreen from './src/Screens/Start/StartGuideScreen';
@@ -30,7 +30,7 @@ import WelcomeScreen from './src/Screens/Start/WelcomeScreen';
 import StartLoginScreen from './src/Screens/Start/StartLoginScreen';
 import DataCheckScreen from './src/Screens/Start/DataCheckScreen';
 import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -57,11 +57,10 @@ function tipsStack() {
       <Stack.Screen
         name="Tips and tricks"
         component={TipsScreen}
-        options={({ navigation }) => ({
+        options={({navigation}) => ({
           headerRight: () => (
-            <View style={{ paddingRight: 16 }}>
+            <View style={{paddingRight: 16}}>
               <TouchableOpacity
-                //onPress={() => alert('Submit screen coming up soon!')}
                 onPress={() => navigation.navigate('Submit tips')}
                 style={{
                   alignItems: 'center',
@@ -86,7 +85,7 @@ function tipsStack() {
       <Stack.Screen
         name="Submit tips"
         component={SubmitTipScreen}
-        options={{ headerTitle: 'Add your tips and tricks' }}
+        options={{headerTitle: 'Add your tips and tricks'}}
       />
     </Stack.Navigator>
   );
@@ -179,7 +178,7 @@ function spendingsStack() {
 function loginStack() {
   return (
     <Stack.Navigator
-      initialRouteName='Log in'
+      initialRouteName="Log in"
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
@@ -198,7 +197,7 @@ function loginStack() {
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="CompetitionScreen" component={HomeScreen} />
     </Stack.Navigator>
-  )
+  );
 }
 
 // function startStack() {
@@ -233,11 +232,11 @@ function loginStack() {
 export default function App() {
   return (
     <NavigationContainer>
-      <SafeAreaView style={{ flex: 0, backgroundColor: '#F2F2F2' }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#174A5A' }}>
+      <SafeAreaView style={{flex: 0, backgroundColor: '#F2F2F2'}} />
+      <SafeAreaView style={{flex: 1, backgroundColor: '#174A5A'}}>
         <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
               let iconName;
 
               if (route.name === 'Competition') {
@@ -261,8 +260,8 @@ export default function App() {
             inactiveTintColor: 'white',
             activeBackgroundColor: '#1f657a',
             inactiveBackgroundColor: '#174A5A',
-            style: { height: 85 },
-            labelStyle: { fontSize: 12, paddingBottom: 5 },
+            style: {height: 85},
+            labelStyle: {fontSize: 12, paddingBottom: 5},
           }}>
           <Tab.Screen name="Competition" component={competitionStack} />
           <Tab.Screen name="Spendings" component={spendingsStack} />

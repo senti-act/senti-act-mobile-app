@@ -40,7 +40,7 @@ class AccountSettings extends React.Component {
               <View style={{flex: 1, height: '100%'}}>
                 <Image
                   style={{resizeMode: 'contain', width: '100%', height: '60%'}}
-                  source={require('../Assets/settings.png')}></Image>
+                  source={require('../../Assets/settings.png')}></Image>
               </View>
             </LinearGradient>
           </View>

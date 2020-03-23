@@ -10,13 +10,13 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import badning from '../Assets/tips/badning.png';
-import opvask from '../Assets/tips/opvask.png';
-import splidevand from '../Assets/tips/splidevand.png';
-import toilet from '../Assets/tips/toilet.png';
-import tojvask from '../Assets/tips/tojvask.png';
-import vandhanen from '../Assets/tips/vandhanen.png';
-import jebani from '../Assets/tips/jebani.png';
+import badning from '../../Assets/tips/badning.png';
+import opvask from '../../Assets/tips/opvask.png';
+import splidevand from '../../Assets/tips/splidevand.png';
+import toilet from '../../Assets/tips/toilet.png';
+import tojvask from '../../Assets/tips/tojvask.png';
+import vandhanen from '../../Assets/tips/vandhanen.png';
+import jebani from '../../Assets/tips/jebani.png';
 
 const {height, width} = Dimensions.get('window');
 

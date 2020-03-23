@@ -5,7 +5,6 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import Switches from 'react-native-switches';
 import {TextInput} from 'react-native-gesture-handler';

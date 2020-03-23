@@ -5,12 +5,10 @@ import {
   ScrollView,
   Image,
   SafeAreaView,
-  TouchableOpacity,
-  ListView,
   SectionList,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Switches from 'react-native-switches'
+import Switches from 'react-native-switches';
 
 const List = [
   {
@@ -18,37 +16,45 @@ const List = [
     data: ['Push notifications', 'Weekly report', 'Competition results'],
   },
 ];
-function Item({ title }) {
+function Item({title}) {
   return (
     <View style={styles.box}>
       <Text style={styles.text}>{title}</Text>
       <Switches
+        onChange={() => null}
         colorSwitchOff={'#677180'}
         colorSwitchOn={'#db750f'}
-        onChange={() => null}
         shape={'pill'}
         showText={false}
         buttonSize={29}
         sliderWidth={60}
+        buttonOffsetRight={4}
       />
     </View>
   );
 }
 class Notifications extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pushNotif: false,
+      weeklyNotif: false,
+      competitionNotif: false,
+    };
+  }
 
-
-  componentDidMount() { }
+  componentDidMount() {}
 
   render() {
     return (
-      <SafeAreaView style={{ height: '100%', width: '100%' }}>
+      <SafeAreaView style={{height: '100%', width: '100%'}}>
         <ScrollView
-          style={{ flex: 1 }}
+          style={{flex: 1}}
           contentContainerStyle={{
             alignItems: 'center',
             flexDirection: 'column',
           }}>
-          <View style={{ padding: 20 }}>
+          <View style={{padding: 20}}>
             <LinearGradient
               colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
               style={{
@@ -57,10 +63,10 @@ class Notifications extends React.Component {
                 borderRadius: 10,
                 flexDirection: 'row',
               }}>
-              <View style={{ flex: 1, height: '100%' }}>
+              <View style={{flex: 1, height: '117%'}}>
                 <Image
-                  style={{ resizeMode: 'contain', width: '160%', height: '100%' }}
-                  source={require('../Assets/notifications.png')}></Image>
+                  style={{resizeMode: 'contain', width: '160%', height: '100%'}}
+                  source={require('../../Assets/notifications.png')}></Image>
               </View>
             </LinearGradient>
           </View>
@@ -73,8 +79,8 @@ class Notifications extends React.Component {
             }}>
             <SectionList
               sections={List}
-              renderItem={({ item }) => <Item title={item} />}
-              renderSectionHeader={({ section: { title } }) => (
+              renderItem={({item}) => <Item title={item} />}
+              renderSectionHeader={({section: {title}}) => (
                 <Text style={styles.boldText}>{title}</Text>
               )}
             />

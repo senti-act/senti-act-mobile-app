@@ -52,7 +52,7 @@ class ProfileScreen extends React.Component {
               <View style={{flex: 1, height: '110%'}}>
                 <Image
                   style={{width: '90%', height: '115%'}}
-                  source={require('../Assets/easy.png')}></Image>
+                  source={require('../../Assets/easy.png')}></Image>
               </View>
             </LinearGradient>
           </View>
