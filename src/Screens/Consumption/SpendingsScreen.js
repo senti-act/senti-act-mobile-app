@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {LineChart} from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 import {
   Text,
   View,
@@ -41,11 +41,11 @@ class SpendingsScreen extends React.Component {
   }
 
   clickHandler = g => {
-    this.setState({date: g});
+    this.setState({ date: g });
   };
 
   render() {
-    const {route, navigation} = this.props;
+    const { route, navigation } = this.props;
     return (
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
@@ -73,37 +73,37 @@ class SpendingsScreen extends React.Component {
                 <TouchableOpacity>
                   <Image
                     source={require('../../Assets/back.png')}
-                    style={{width: 20, height: 20}}
+                    style={{ width: 20, height: 20 }}
                   />
                 </TouchableOpacity>
                 <Text>{this.state.date}</Text>
                 <TouchableOpacity>
                   <Image
                     source={require('../../Assets/next.png')}
-                    style={{width: 20, height: 20}}
+                    style={{ width: 20, height: 20 }}
                   />
                 </TouchableOpacity>
               </View>
-              <View style={{flex: 3, flexDirection: 'row', width: '92%'}}>
-                <View style={{padding: 10, width: '33%', paddingHorizontal: 2}}>
+              <View style={{ flex: 3, flexDirection: 'row', width: '92%' }}>
+                <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity
                     onPress={() => this.clickHandler('8.7.2020 - 15.7.2020')}
                     style={styles.buttonStyle}>
-                    <Text style={{textAlign: 'center'}}>Week</Text>
+                    <Text style={{ textAlign: 'center' }}>Week</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={{padding: 10, width: '33%', paddingHorizontal: 2}}>
+                <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity
                     onPress={() => this.clickHandler('July')}
                     style={styles.buttonStyle}>
-                    <Text style={{textAlign: 'center'}}>Month</Text>
+                    <Text style={{ textAlign: 'center' }}>Month</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={{padding: 10, width: '33%', paddingHorizontal: 2}}>
+                <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity
                     onPress={() => this.clickHandler('2020')}
                     style={styles.buttonStyle}>
-                    <Text style={{textAlign: 'center'}}>Year</Text>
+                    <Text style={{ textAlign: 'center' }}>Year</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -114,7 +114,7 @@ class SpendingsScreen extends React.Component {
                   width: '92%',
                   alignItems: 'center',
                 }}>
-                <View style={{padding: 10, width: '50%', paddingHorizontal: 2}}>
+                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
                   <Text style={styles.boldText}>Daily Consumption</Text>
                   <Text
                     style={{
@@ -125,7 +125,7 @@ class SpendingsScreen extends React.Component {
                     470 L
                   </Text>
                 </View>
-                <View style={{padding: 10, width: '50%', paddingHorizontal: 2}}>
+                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
                   <Text style={styles.boldText}>Reduced Consumption</Text>
                   <Text
                     style={{
@@ -158,8 +158,8 @@ class SpendingsScreen extends React.Component {
                 style={{
                   borderRadius: 16,
                 }}></LineChart>
-              <View style={{flexDirection: 'row'}}>
-                <View style={{flexDirection: 'row', margin: 5}}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', margin: 5 }}>
                   <TouchableHighlight
                     style={styles.circleCurrent}
                     underlayColor="#ccc">
@@ -167,7 +167,7 @@ class SpendingsScreen extends React.Component {
                   </TouchableHighlight>
                   <Text style={styles.smallText}> Current period</Text>
                 </View>
-                <View style={{flexDirection: 'row', margin: 5}}>
+                <View style={{ flexDirection: 'row', margin: 5 }}>
                   <TouchableHighlight
                     style={styles.circlePrevious}
                     underlayColor="#ccc">
@@ -175,7 +175,7 @@ class SpendingsScreen extends React.Component {
                   </TouchableHighlight>
                   <Text style={styles.smallText}> Previous period</Text>
                 </View>
-                <View style={{flexDirection: 'row', margin: 5}}>
+                <View style={{ flexDirection: 'row', margin: 5 }}>
                   <TouchableHighlight
                     style={styles.circleRecommended}
                     underlayColor="#ccc">
@@ -197,28 +197,28 @@ class SpendingsScreen extends React.Component {
             }}>
             <TouchableOpacity
               style={styles.consumptionCard}
-              onPress={() => navigation.navigate('ConsumptionScreen')}>
+              onPress={() => navigation.navigate('StartLoginScreen')}>
               <View style={{}}>
                 <Text style={styles.boldText}>
                   Do you consume more than others?
                 </Text>
-                <Text style={{fontSize: 13}}>
+                <Text style={{ fontSize: 13 }}>
                   Click here to see how much you've spent compared to the others
                 </Text>
               </View>
             </TouchableOpacity>
             <View style={styles.consumptionCard}>
-              <Text style={{fontSize: 13}}>
+              <Text style={{ fontSize: 13 }}>
                 The amount of litres you've saved this month:
               </Text>
               <Text
-                style={{fontWeight: 'bold', alignSelf: 'center', fontSize: 19}}>
+                style={{ fontWeight: 'bold', alignSelf: 'center', fontSize: 19 }}>
                 25 L
               </Text>
             </View>
           </View>
           <View style={styles.bottomConsumptionCard}>
-            <Text style={{fontSize: 13}}>
+            <Text style={{ fontSize: 13 }}>
               You've saved 40 DKK on water and 75 DKK on wastewater. This gives
               a total saving of 115 DKK.{' '}
             </Text>
