@@ -3,23 +3,11 @@ import { Text, View, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
+
 import HomeScreen from './src/Screens/HomeScreen';
-import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
-import TipsScreen from './src/Screens/Tips/TipsScreen';
-import LaundryScreen from './src/Screens/Tips/LaundryScreen';
-import FaucetScreen from './src/Screens/Tips/FaucetTipsScreen';
-import BathingScreen from './src/Screens/Tips/BathTipsScreen';
-import ToiletScreen from './src/Screens/Tips/ToiletTipsScreen';
-import DishesScreen from './src/Screens/Tips/DishesTipsScreen';
-import WaterWasteScreen from './src/Screens/Tips/WaterWasteTipsScreen';
-import SubmitTipScreen from './src/Screens/Tips/SubmitTipScreen';
-import ProfileScreen from './src/Screens/Profile/ProfileScreen';
-import AccountSettings from './src/Screens/Profile/AccountSettings';
-import Notifications from './src/Screens/Profile/Notifications';
-import Privacy from './src/Screens/Profile/Privacy';
-import FAQ from './src/Screens/Profile/FAQ';
-import About from './src/Screens/Profile/About';
-import ConsumptionScreen from './src/Screens/Consumption/ConsumptionScreen';
+//Start screens
 import DataSyncScreen from './src/Screens/Start/DataSyncScreen';
 import GuideScreen from './src/Screens/Start/GuideScreen';
 import StartGuideScreen from './src/Screens/Start/StartGuideScreen';
@@ -30,9 +18,25 @@ import DataCheckScreen from './src/Screens/Start/DataCheckScreen';
 import ReportScreen from './src/Screens/Start/ReportScreen';
 import StartLoginScreen from './src/Screens/Start/StartLoginScreen';
 import LoginScreen from './src/Screens/Start/LoginScreen';
-import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
+//Profile screens
+import ProfileScreen from './src/Screens/Profile/ProfileScreen';
+import AccountSettings from './src/Screens/Profile/AccountSettings';
+import Notifications from './src/Screens/Profile/Notifications';
+import Privacy from './src/Screens/Profile/Privacy';
+import FAQ from './src/Screens/Profile/FAQ';
+import About from './src/Screens/Profile/About';
+//Tips screens
+import TipsScreen from './src/Screens/Tips/TipsScreen';
+import LaundryScreen from './src/Screens/Tips/LaundryScreen';
+import FaucetScreen from './src/Screens/Tips/FaucetTipsScreen';
+import BathingScreen from './src/Screens/Tips/BathTipsScreen';
+import ToiletScreen from './src/Screens/Tips/ToiletTipsScreen';
+import DishesScreen from './src/Screens/Tips/DishesTipsScreen';
+import WaterWasteScreen from './src/Screens/Tips/WaterWasteTipsScreen';
+import SubmitTipScreen from './src/Screens/Tips/SubmitTipScreen';
+//Consumption screens
+import ConsumptionScreen from './src/Screens/Consumption/ConsumptionScreen';
+import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -155,22 +159,21 @@ function spendingsStack() {
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
+          backgroundColor: 'transparent',
           backgroundColor: '#f2f2f2',
-          height: 35,
+          height: 75,
         },
         headerTitleStyle: {
           fontSize: 24,
         },
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
-        //headerBackTitleVisible: false,
+        headerBackTitleVisible: false,
       }}
       headerMode="float">
       <Stack.Screen name="My water consumption" component={SpendingsScreen} />
       <Stack.Screen name="ConsumptionScreen" component={ConsumptionScreen} />
     </Stack.Navigator>
-
-
   );
 }
 
@@ -186,7 +189,6 @@ function loginStack() {
         gestureEnabled: true,
         headerStyle: {
           height: '20%',
-
         },
         headerTitleStyle: {
           fontSize: 20,

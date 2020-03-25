@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 
 const styles = StyleSheet.create({
@@ -89,11 +89,9 @@ const slides = [
     }
 ];
 
-
 export default class GuideScreen extends React.Component {
-
     constructor(props) {
-        super()
+        super();
     }
     render() {
         const { navigation } = this.props;
@@ -106,8 +104,6 @@ export default class GuideScreen extends React.Component {
                 onSkip={() => navigation.navigate('StartLoginScreen')}
                 activeDotStyle={styles.dot}
                 buttonTextStyle={styles.text}
-
-
             />
         );
     }

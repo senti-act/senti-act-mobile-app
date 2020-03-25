@@ -1,96 +1,109 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image, Dimensions, TouchableHighlight } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-
+import { View, TouchableOpacity, Dimensions } from 'react-native';
+import Svg, {
+  Circle,
+  Line,
+  Image,
+  Defs,
+  LinearGradient,
+  Stop,
+  Text,
+  TSpan,
+  Ellipse,
+  Rect,
+} from 'react-native-svg';
 
 class InstructionsScreen extends React.Component {
-    componentDidMount() { }
-
-    constructor(props) {
-        super();
-    }
-
-    render() {
-        const { navigation } = this.props;
-        return (
-
-            <View style={{}}>
-                <View style={{ alignSelf: "center" }}>
-                    <TouchableOpacity style={styles.buttonStyle}
-                        onPress={() => navigation.navigate('DataSyncScreen')}>
-                        <Text style={{ alignSelf: 'center', color: 'white' }}>Create an Account</Text>
-                    </TouchableOpacity>
-                </View>
-                <Text style={{ fontSize: 16, color: '#174A5A', alignSelf: "center" }}> Why to play Senti.act?</Text>
-                <View style={{ flexWrap: 'wrap' }}>
-                    <View style={{ width: '40%', padding: 20, flexDirection: 'column' }}>
-                        <View style={{ alignSelf: 'flex-end' }}>
-                            <TouchableHighlight
-                                style={styles.circleRecommended}
-                                underlayColor='#ccc'>
-                                <Image source={require('../../Assets/start/drop.png')} style={{ width: 26, height: 37 }}></Image>
-                            </TouchableHighlight>
-                        </View>
-                        <View style={{ alignSelf: 'flex-end' }}>
-                            <TouchableHighlight
-                                style={styles.circleRecommended}
-                                underlayColor='#ccc'>
-                                <Image source={require('../../Assets/start/light.png')} style={{ width: 26, height: 37 }}></Image>
-                            </TouchableHighlight>
-                        </View>
-                        <View style={{ alignSelf: 'flex-end' }}>
-                            <TouchableHighlight
-                                style={styles.circleRecommended}
-                                underlayColor='#ccc'>
-                                <Image source={require('../../Assets/start/trophy.png')} style={{ width: 38, height: 38 }}></Image>
-                            </TouchableHighlight>
-
-                        </View>
-                    </View>
-                    <View style={{ width: '60%', marginTop: 15, flexDirection: 'column' }}>
-                        <Text style={styles.text}>You get an overview of {"\n"}your water consumption.</Text>
-                        <Text style={styles.text}>Find great tips and {"\n"}advice on how to save{"\n"}water in your home.</Text>
-                        <Text style={{ marginTop: 25 }}>Play against others and {"\n"}win prizes, points and{"\n"}badges.</Text>
-                    </View>
-
-                </View>
-            </View>
-
-
-
-
-
-
-
-
-
-        )
-    }
+  componentDidMount() { }
+  constructor(props) {
+    super();
+  }
+  render() {
+    const { navigation } = this.props;
+    return (
+      <View style={{ backgroundColor: 'white' }}>
+        <Svg height="100%" width="100%" viewBox="0 3 100 100">
+          <Text fill="#174a5a" fontSize="4">
+            <TSpan x="43" y="14">
+              You get an overview of
+            </TSpan>
+            <TSpan x="43" dy="5">
+              your water consumption
+            </TSpan>
+            <TSpan x="43" y="42">
+              Find great tips and advice
+            </TSpan>
+            <TSpan x="43" dy="5">
+              on how to save water
+            </TSpan>
+            <TSpan x="43" dy="5">
+              in your home
+            </TSpan>
+            <TSpan x="43" y="74">
+              Play against other and win
+            </TSpan>
+            <TSpan x="43" dy="5">
+              prizes, points and badges
+            </TSpan>
+          </Text>
+          <Line
+            x1="25"
+            y1="-2"
+            x2="25"
+            y2="92"
+            stroke="#174a5a"
+            strokeWidth="0.2"
+          />
+          <Circle cx="25" cy="-3" r="1.5" fill="#174a5a" />
+          <Circle cx="25" cy="93" r="1.5" fill="#174a5a" />
+          <Defs>
+            <LinearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+              <Stop offset="0" stopColor="#f2f2f2" stopOpacity="1" />
+              <Stop offset="1" stopColor="#A8D8E7" stopOpacity="1" />
+            </LinearGradient>
+          </Defs>
+          <Circle cx="25" cy="15" r="12" fill="url(#grad)" />
+          <Image
+            x="18.5%"
+            y="6%"
+            height="13%"
+            width="13%"
+            href={require('../../Assets/start/drop.png')}
+          />
+          <Circle cx="25" cy="45" r="12" fill="url(#grad)" />
+          <Image
+            x="18.5%"
+            y="31%"
+            height="13%"
+            width="13%"
+            href={require('../../Assets/start/light.png')}
+          />
+          <Circle cx="25" cy="75" r="12" fill="url(#grad)" />
+          <Image
+            x="18.5%"
+            y="56%"
+            height="13%"
+            width="13%"
+            href={require('../../Assets/start/trophy.png')}
+          />
+          <Rect
+            x="27"
+            y="99"
+            rx="4"
+            ry="4"
+            width="50"
+            height="13"
+            fill="#FA821B"
+            onPress={() => navigation.navigate('DataSyncScreen')}
+          />
+          <Text fill="white" fontSize="5" fontWeight="normal" x="30.7" y="107">
+            {' '}
+            Create an account
+          </Text>
+        </Svg>
+      </View>
+    );
+  }
 }
 
-const styles = {
-    buttonStyle: {
-        backgroundColor: '#FA821B',
-        borderRadius: 10,
-        width: '50%',
-        height: 35,
-        padding: 10,
-
-    },
-    circleRecommended: {
-        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-        width: Dimensions.get('window').width * 0.2,
-        height: Dimensions.get('window').width * 0.2,
-        backgroundColor: '#A8D8E7',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 15,
-    },
-    text: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 30,
-
-    }
-};
 export default InstructionsScreen;
