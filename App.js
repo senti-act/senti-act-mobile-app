@@ -101,29 +101,6 @@ function tipsStack() {
   );
 }
 
-function competitionStack() {
-  return (
-    <Stack.Navigator
-      initialRouteName="Competition"
-      screenOptions={{
-        gestureEnabled: true,
-        headerStyle: {
-          backgroundColor: 'trasparent',
-          backgroundColor: '#f2f2f2',
-          height: 75,
-        },
-        headerTitleStyle: {
-          fontSize: 24,
-        },
-        headerTitleAlign: 'center',
-        headerTintColor: '#174a5a',
-        headerBackTitleVisible: false,
-      }}
-      headerMode="float">
-      <Stack.Screen name="Competition" component={HomeScreen} />
-    </Stack.Navigator>
-  );
-}
 
 function profileStack() {
   return (
@@ -151,30 +128,31 @@ function profileStack() {
   );
 }
 
-function loginStack() {
+// HomeStack
+function competitionStack() {
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="Competition"
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
-          height: '15%',
+          backgroundColor: 'trasparent',
+          backgroundColor: '#f2f2f2',
+          height: 75,
         },
         headerTitleStyle: {
-          fontSize: 20,
-          paddingVertical: 10,
+          fontSize: 24,
         },
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in' }} />
-      <Stack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'What bothers you motherfucker?', headerShown: false }} />
-      <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Registration' }} />
+      <Stack.Screen name="Competition" component={HomeScreen} />
     </Stack.Navigator>
   );
 }
+
 
 function spendingsStack() {
   return (
@@ -200,38 +178,13 @@ function spendingsStack() {
   );
 }
 
-function startGuideSkipStack() {
-  return (
-    <Stack.Navigator
-      initialRouteName="startGuideSkipStack"
-      screenOptions={{
-        gestureEnabled: true,
-        headerStyle: {
-          height: '15%',
-        },
-        headerTitleStyle: {
-          fontSize: 20,
-          paddingVertical: 10,
-        },
-        headerTitleAlign: 'center',
-        headerTintColor: '#174a5a',
-        headerBackTitleVisible: false,
-      }}
-      headerMode="float">
-      <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="GuideScreen" component={GuideScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Login" component={loginStack} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  );
-}
 
-
-
+// First stack to be executed when app starts running
 function startStack() {
 
   return (
     <StartStack.Navigator
-      initialRouteName="DataSyncScreen"
+      initialRouteName="WelcomeScreen"
 
       screenOptions={{
         headerTransparent: true,
@@ -259,6 +212,60 @@ function startStack() {
     </StartStack.Navigator>
   );
 }
+
+// Part of the startStack
+function loginStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{
+        gestureEnabled: true,
+        headerStyle: {
+          height: '15%',
+        },
+        headerTitleStyle: {
+          fontSize: 20,
+          paddingVertical: 10,
+        },
+        headerTitleAlign: 'center',
+        headerTintColor: '#174a5a',
+        headerBackTitleVisible: false,
+      }}
+      headerMode="float">
+      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in' }} />
+      <Stack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'What bothers you motherfucker?', headerShown: false }} />
+      <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Registration' }} />
+    </Stack.Navigator>
+  );
+}
+
+// Part of the startStack
+function startGuideSkipStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="startGuideSkipStack"
+      screenOptions={{
+        gestureEnabled: true,
+        headerStyle: {
+          height: '15%',
+        },
+        headerTitleStyle: {
+          fontSize: 20,
+          paddingVertical: 10,
+        },
+        headerTitleAlign: 'center',
+        headerTintColor: '#174a5a',
+        headerBackTitleVisible: false,
+      }}
+      headerMode="float">
+      <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="GuideScreen" component={GuideScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Login" component={loginStack} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+}
+
+// Bottom tabbar navigation
 function tabNavigation() {
 
   return (
@@ -306,6 +313,7 @@ function tabNavigation() {
 
 export default function App() {
   return (
+    // MainStack
     <NavigationContainer >
       <RootStack.Navigator>
         <RootStack.Screen name="WelcomeScreen" component={startStack} options={{ headerShown: false }} />
