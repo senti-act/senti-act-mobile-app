@@ -44,11 +44,11 @@ class LoginScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity style={styles.buttonStyle}
-                        onPress={() => navigation.navigate('HomeScreen')}>
+                        onPress={() => navigation.navigate('navigation')}>
                         <Text style={{ alignSelf: 'center', color: 'white', fontSize: 12 }}>Login</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View >
 
         )
     }
@@ -89,8 +89,8 @@ const styles = {
         marginBottom: 15
     },
     picture: {
-        width: '50%',
-        height: '25%',
+        width: '76%',
+        height: '33%',
         alignSelf: "center",
     },
     textInputLong: {

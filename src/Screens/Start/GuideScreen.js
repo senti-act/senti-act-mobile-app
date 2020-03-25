@@ -12,42 +12,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     womanlaundry: {
-        width: '50%',
+        width: '60%',
         height: '50%',
-        position: 'absolute',
-        marginTop: 54,
-
     },
     girlphonebackground: {
-        width: '56%',
-        height: '50%',
-        position: 'absolute',
-        marginTop: 54,
-    },
-    girlplantbackground: {
         width: '65%',
         height: '45%',
-        position: 'absolute',
-        marginTop: 54,
+    },
+    girlplantbackground: {
+        width: '69%',
+        height: '37%',
     },
     completebackground: {
-        width: '45%',
+        width: '53%',
         height: '55%',
-        position: 'absolute',
-        marginTop: 34,
     },
     title: {
         color: '#174A5A',
         fontSize: 19,
         fontWeight: 'bold',
-        marginTop: 240,
-
-
     },
     text: {
         color: '#2C5B69',
-
-
+        justifyContent: 'center'
     },
     dot: {
         backgroundColor: '#19485A',
@@ -66,7 +53,6 @@ const slides = [
         titleStyle: (styles.title),
         backgroundColor: 'white',
         textStyle: (styles.text),
-
     },
     {
         key: 'secondslide',
@@ -78,8 +64,6 @@ const slides = [
         titleStyle: (styles.title),
         backgroundColor: 'white',
         textStyle: (styles.text),
-
-
     },
     {
         key: 'thirdslide',

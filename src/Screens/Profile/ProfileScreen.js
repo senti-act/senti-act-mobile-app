@@ -16,20 +16,20 @@ class ProfileScreen extends React.Component {
     super();
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   render() {
-    const {route, navigation} = this.props;
+    const { route, navigation } = this.props;
 
     return (
-      <SafeAreaView style={{height: '100%', width: '100%'}}>
+      <SafeAreaView style={{ height: '100%', width: '100%' }}>
         <ScrollView
-          style={{flex: 1, marginTop: 10}}
+          style={{ flex: 1, marginTop: 10 }}
           contentContainerStyle={{
             alignItems: 'center',
             flexDirection: 'column',
           }}>
-          <View style={{flex: 4, paddingHorizontal: 20, paddingBottom: 20}}>
+          <View style={{ flex: 4, paddingHorizontal: 20, paddingBottom: 20 }}>
             <LinearGradient
               colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
               style={{
@@ -38,7 +38,7 @@ class ProfileScreen extends React.Component {
                 borderRadius: 10,
                 flexDirection: 'row',
               }}>
-              <View style={{flex: 1, height: '100%', justifyContent: 'center'}}>
+              <View style={{ flex: 1, height: '100%', justifyContent: 'center' }}>
                 <Text
                   style={{
                     fontSize: 20,
@@ -49,9 +49,9 @@ class ProfileScreen extends React.Component {
                   Good morning, Christian!
                 </Text>
               </View>
-              <View style={{flex: 1, height: '110%'}}>
+              <View style={{ flex: 1, height: '110%' }}>
                 <Image
-                  style={{width: '90%', height: '115%'}}
+                  style={{ width: '90%', height: '115%' }}
                   source={require('../../Assets/easy.png')}></Image>
               </View>
             </LinearGradient>
@@ -108,6 +108,7 @@ class ProfileScreen extends React.Component {
           </View>
 
           <TouchableOpacity
+            onPress={() => navigation.navigate('LoginScreen')}
             style={[
               styles.touchable,
               {

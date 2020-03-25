@@ -36,6 +36,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const StartStack = createStackNavigator();
+const RootStack = createStackNavigator();
+
 
 function tipsStack() {
   return (
@@ -124,7 +127,6 @@ function profileStack() {
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
-          backgroundColor: 'transparent',
           backgroundColor: '#f2f2f2',
           height: 75,
         },
@@ -132,8 +134,6 @@ function profileStack() {
           fontSize: 24,
         },
         headerTitleAlign: 'center',
-        headerTintColor: '#174a5a',
-        headerBackTitleVisible: false,
       }}
       headerMode="float">
       <Stack.Screen name="Profile" component={ProfileScreen} />
@@ -146,7 +146,9 @@ function profileStack() {
   );
 }
 
+
 function spendingsStack() {
+
   return (
     <Stack.Navigator
       initialRouteName="My water status"
@@ -166,112 +168,99 @@ function spendingsStack() {
       headerMode="float">
       <Stack.Screen name="My water consumption" component={SpendingsScreen} />
       <Stack.Screen name="ConsumptionScreen" component={ConsumptionScreen} />
-      <Stack.Screen name="WelcomeScreen" component={loginStack} options={{ headerShown: false }} />
     </Stack.Navigator>
+
+
   );
 }
+
+
 function loginStack() {
+
   return (
-    <Stack.Navigator
+    <StartStack.Navigator
       initialRouteName="WelcomeScreen"
+
       screenOptions={{
+        headerTransparent: true,
         gestureEnabled: true,
         headerStyle: {
-          backgroundColor: 'white',
-          height: 65,
+          height: '20%',
+
         },
         headerTitleStyle: {
-          fontSize: 24,
+          fontSize: 20,
         },
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
         //headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-      <Stack.Screen name="InstructionsScreen" component={InstructionsScreen} />
-      <Stack.Screen name="DataSyncScreen" component={DataSyncScreen} />
-      <Stack.Screen name="DataCheckScreen" component={DataCheckScreen} />
-      <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
-      <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} />
-      <Stack.Screen name="GuideScreen" component={GuideScreen} />
-      <Stack.Screen name='StartLoginScreen' component={StartLoginScreen} />
-      <Stack.Screen name='LoginScreen' component={LoginScreen} />
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
-    </Stack.Navigator>
+      <StartStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
+      <StartStack.Screen name="InstructionsScreen" component={InstructionsScreen} options={{ headerShown: false }} />
+      <StartStack.Screen name="DataSyncScreen" component={DataSyncScreen} options={{ headerShown: false }} />
+      <StartStack.Screen name="DataCheckScreen" component={DataCheckScreen} options={{ title: '' }} />
+      <StartStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: '' }} />
+      <StartStack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ title: '' }} />
+      <StartStack.Screen name="GuideScreen" component={GuideScreen} options={{ title: '' }} />
+      <StartStack.Screen name='StartLoginScreen' component={StartLoginScreen} options={{ title: '' }} />
+      <StartStack.Screen name='LoginScreen' component={LoginScreen} options={{ title: '' }} />
+    </StartStack.Navigator>
+  );
+}
+function tabNavigation() {
+
+  return (
+
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Competition') {
+            iconName = focused ? 'trophy' : 'trophy';
+            size = focused ? 34 : 30;
+          } else if (route.name === 'Spendings') {
+            iconName = focused ? 'drop' : 'drop';
+            size = focused ? 34 : 30;
+          } else if (route.name === 'Tips') {
+            iconName = focused ? 'info' : 'info';
+            size = focused ? 34 : 30;
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'user' : 'user';
+            size = focused ? 34 : 30;
+          }
+          return <LineIcons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'white',
+        inactiveTintColor: 'white',
+        activeBackgroundColor: '#1f657a',
+        inactiveBackgroundColor: '#174A5A',
+        style: { height: 85 },
+        labelStyle: { fontSize: 12, paddingBottom: 5 },
+
+      }}>
+      <Tab.Screen name="Competition" component={competitionStack} />
+      <Tab.Screen name="Spendings" component={spendingsStack} />
+      <Tab.Screen name="Tips" component={tipsStack} />
+      <Tab.Screen name="Profile" component={profileStack} />
+    </Tab.Navigator>
+
+
   );
 }
 
-// function startStack() {
-//   return (
-//     <Stack.Navigator
-//       initialRouteName='Welcome'
-//       screenOptions={{
-//         gestureEnabled: true,
-//         headerStyle: {
-//           backgroundColor: 'white',
-//           height: 65,
-//         },
-//         headerTitleStyle: {
-//           fontSize: 24,
-//         },
-//         headerTitleAlign: 'center',
-//         headerTintColor: '#174a5a',
-//         //headerBackTitleVisible: false,
-//       }}
-//       headerMode="float">
-// <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-// <Stack.Screen name="InstructionsScreen" component={InstructionsScreen} />
-// <Stack.Screen name="DataSyncScreen" component={DataSyncScreen} />
-// <Stack.Screen name="DataCheckScreen" component={DataCheckScreen} />
-// <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
-// <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} />
-// <Stack.Screen name="GuideScreen" component={GuideScreen} />
-//     </Stack.Navigator>
-//   );
-// }
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <SafeAreaView style={{ flex: 0, backgroundColor: '#F2F2F2' }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#174A5A' }}>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-
-              if (route.name === 'Competition') {
-                iconName = focused ? 'trophy' : 'trophy';
-                size = focused ? 34 : 30;
-              } else if (route.name === 'Spendings') {
-                iconName = focused ? 'drop' : 'drop';
-                size = focused ? 34 : 30;
-              } else if (route.name === 'Tips') {
-                iconName = focused ? 'info' : 'info';
-                size = focused ? 34 : 30;
-              } else if (route.name === 'Profile') {
-                iconName = focused ? 'user' : 'user';
-                size = focused ? 34 : 30;
-              }
-              return <LineIcons name={iconName} size={size} color={color} />;
-            },
-          })}
-          tabBarOptions={{
-            activeTintColor: 'white',
-            inactiveTintColor: 'white',
-            activeBackgroundColor: '#1f657a',
-            inactiveBackgroundColor: '#174A5A',
-            style: { height: 85 },
-            labelStyle: { fontSize: 12, paddingBottom: 5 },
-          }}>
-
-          <Tab.Screen name="Competition" component={competitionStack} />
-          <Tab.Screen name="Spendings" component={spendingsStack} />
-          <Tab.Screen name="Tips" component={tipsStack} />
-          <Tab.Screen name="Profile" component={profileStack} />
-        </Tab.Navigator>
-      </SafeAreaView>
+    <NavigationContainer >
+      <RootStack.Navigator>
+        <RootStack.Screen name="WelcomeScreen" component={loginStack} options={{ headerShown: false }} />
+        <RootStack.Screen name="navigation" component={tabNavigation} options={{ headerShown: false }} />
+      </RootStack.Navigator>
     </NavigationContainer>
+
   );
 }

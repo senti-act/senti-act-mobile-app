@@ -10,7 +10,7 @@ class WelcomeScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: "center", justifyContent: 'center', marginVertical: 30 }}>
                 <Image source={require('../../Assets/start/groupWelcome.png')} style={styles.picture}></Image>
                 <Text style={styles.title}>Welcome to</Text>
                 <Image source={require('../../Assets/start/logo.png')} style={styles.logo}></Image>
