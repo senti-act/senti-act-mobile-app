@@ -13,48 +13,42 @@ class LoginScreen extends React.Component {
         const { navigation } = this.props;
         return (
             <View style={{ alignItems: "center", width: '100%', alignSelf: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: 'white', padding: 30 }}>
-
                 <Text style={styles.title}>Welcome to</Text>
                 <Image source={require('../../Assets/start/logo.png')} style={styles.logo}></Image>
                 <Image source={require('../../Assets/start/group.png')} style={styles.picture}></Image>
                 <View style={{ width: '70 %', alignSelf: 'center', justifyContent: 'center', padding: 10 }}>
-
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-
                     <TextInput style={styles.textInputLong}>
                         Email
-                            </TextInput>
+                    </TextInput>
                 </View>
                 <View style={{ width: '70 %', alignSelf: 'center', justifyContent: 'center' }}>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <TextInput style={styles.textInputLong}>
                         Password
-                        </TextInput>
+                    </TextInput>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10, width: '100%', flexWrap: 'wrap' }}>
                     <View style={{ width: '50%', alignSelf: 'flex-start' }}>
                         <TouchableOpacity style={styles.skipButton}
-                            onPress={() => navigation.navigate('HomeScreen')}>
+                            onPress={() => navigation.navigate('ReportScreen')}>
                             <Text style={{ alignSelf: 'flex-end', color: 'black', fontSize: 14 }}>Unable to login?</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ width: '50%', alignSelf: 'flex-end' }}>
                         <TouchableOpacity style={styles.skipButton}
-                            onPress={() => navigation.navigate('HomeScreen')}>
+                            onPress={() => navigation.navigate('RegisterScreen')}>
                             <Text style={{ alignSelf: 'flex-end', color: 'black', fontSize: 14, fontWeight: 'bold' }}>Sign up</Text>
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity style={styles.buttonStyle}
-                        onPress={() => navigation.navigate('GuideScreen')}>
+                        onPress={() => navigation.navigate('HomeScreen')}>
                         <Text style={{ alignSelf: 'center', color: 'white', fontSize: 12 }}>Login</Text>
                     </TouchableOpacity>
                 </View>
-
-
             </View>
-
 
         )
     }

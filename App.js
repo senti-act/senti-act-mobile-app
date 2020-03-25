@@ -165,24 +165,15 @@ function spendingsStack() {
       }}
       headerMode="float">
       <Stack.Screen name="My water consumption" component={SpendingsScreen} />
-      <Stack.Screen name='StartLoginScreen' component={StartLoginScreen} />
-      <Stack.Screen name='LoginScreen' component={LoginScreen} />
       <Stack.Screen name="ConsumptionScreen" component={ConsumptionScreen} />
-      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-      <Stack.Screen name="InstructionsScreen" component={InstructionsScreen} />
-      <Stack.Screen name="DataSyncScreen" component={DataSyncScreen} />
-      <Stack.Screen name="DataCheckScreen" component={DataCheckScreen} />
-      <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
-      <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} />
-      <Stack.Screen name="GuideScreen" component={GuideScreen} />
-      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="WelcomeScreen" component={loginStack} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
 function loginStack() {
   return (
     <Stack.Navigator
-      initialRouteName="Log in"
+      initialRouteName="WelcomeScreen"
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
@@ -197,9 +188,16 @@ function loginStack() {
         //headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="StartLoginScreen" component={StartLoginScreen} />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="CompetitionScreen" component={HomeScreen} />
+      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen name="InstructionsScreen" component={InstructionsScreen} />
+      <Stack.Screen name="DataSyncScreen" component={DataSyncScreen} />
+      <Stack.Screen name="DataCheckScreen" component={DataCheckScreen} />
+      <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
+      <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} />
+      <Stack.Screen name="GuideScreen" component={GuideScreen} />
+      <Stack.Screen name='StartLoginScreen' component={StartLoginScreen} />
+      <Stack.Screen name='LoginScreen' component={LoginScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
 }
@@ -267,6 +265,7 @@ export default function App() {
             style: { height: 85 },
             labelStyle: { fontSize: 12, paddingBottom: 5 },
           }}>
+
           <Tab.Screen name="Competition" component={competitionStack} />
           <Tab.Screen name="Spendings" component={spendingsStack} />
           <Tab.Screen name="Tips" component={tipsStack} />

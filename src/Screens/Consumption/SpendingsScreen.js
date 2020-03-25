@@ -197,7 +197,7 @@ class SpendingsScreen extends React.Component {
             }}>
             <TouchableOpacity
               style={styles.consumptionCard}
-              onPress={() => navigation.navigate('StartLoginScreen')}>
+              onPress={() => navigation.navigate('ConsumptionScreen')}>
               <View style={{}}>
                 <Text style={styles.boldText}>
                   Do you consume more than others?

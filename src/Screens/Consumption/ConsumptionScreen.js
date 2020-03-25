@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ProgressChart} from 'react-native-chart-kit';
+import { ProgressChart } from 'react-native-chart-kit';
 import {
   Text,
   View,
@@ -21,11 +21,11 @@ class ConsumptionScreen extends React.Component {
   }
 
   changeValue = g => {
-    this.setState({value: g});
+    this.setState({ value: g });
   };
 
   render() {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     return (
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
@@ -53,31 +53,31 @@ class ConsumptionScreen extends React.Component {
                 <TouchableOpacity>
                   <Image
                     source={require('../../Assets/back.png')}
-                    style={{width: 20, height: 20}}
+                    style={{ width: 20, height: 20 }}
                   />
                 </TouchableOpacity>
                 <Text style={{}}>December</Text>
                 <TouchableOpacity>
                   <Image
                     source={require('../../Assets/next.png')}
-                    style={{width: 20, height: 20}}
+                    style={{ width: 20, height: 20 }}
                   />
                 </TouchableOpacity>
               </View>
-              <View style={{flex: 3, flexDirection: 'row', width: '92%'}}>
-                <View style={{padding: 10, width: '33%', paddingHorizontal: 2}}>
+              <View style={{ flex: 3, flexDirection: 'row', width: '92%' }}>
+                <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity style={styles.buttonStyle}>
-                    <Text style={{textAlign: 'center'}}>Week</Text>
+                    <Text style={{ textAlign: 'center' }}>Week</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={{padding: 10, width: '33%', paddingHorizontal: 2}}>
+                <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity style={styles.buttonStyle}>
-                    <Text style={{textAlign: 'center'}}>Month</Text>
+                    <Text style={{ textAlign: 'center' }}>Month</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={{padding: 10, width: '33%', paddingHorizontal: 2}}>
+                <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity style={styles.buttonStyle}>
-                    <Text style={{textAlign: 'center'}}>Year</Text>
+                    <Text style={{ textAlign: 'center' }}>Year</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -88,7 +88,7 @@ class ConsumptionScreen extends React.Component {
                   width: '92%',
                   alignItems: 'center',
                 }}>
-                <View style={{padding: 10, width: '50%', paddingHorizontal: 2}}>
+                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
                   <Text style={styles.boldText}>My Daily Consumption</Text>
                   <Text
                     style={{
@@ -99,7 +99,7 @@ class ConsumptionScreen extends React.Component {
                     470 L
                   </Text>
                 </View>
-                <View style={{padding: 10, width: '50%', paddingHorizontal: 2}}>
+                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
                   <Text style={styles.boldText}>Avg. User Consumption</Text>
                   <Text
                     style={{
@@ -134,7 +134,7 @@ class ConsumptionScreen extends React.Component {
                   }}
                 />
               </View>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -168,8 +168,8 @@ class ConsumptionScreen extends React.Component {
               <View>
                 <Text style={styles.boldText}>My consumption status</Text>
               </View>
-              <View style={{width: '78%', alignSelf: 'center'}}>
-                <Text style={{textAlign: 'center', paddingTop: 10}}>
+              <View style={{ width: '78%', alignSelf: 'center' }}>
+                <Text style={{ textAlign: 'center', paddingTop: 10 }}>
                   Here you can see how much water you've consumed compared to
                   the average consumer
                 </Text>
@@ -189,7 +189,7 @@ class ConsumptionScreen extends React.Component {
                   <Text style={styles.boldText}>
                     Do you consume more than others?
                   </Text>
-                  <Text style={{fontSize: 13}}>
+                  <Text style={{ fontSize: 13 }}>
                     Click here to see how much you've spent compared to the
                     others
                   </Text>

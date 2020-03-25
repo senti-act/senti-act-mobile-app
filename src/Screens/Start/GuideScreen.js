@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         color: '#174A5A',
         fontSize: 19,
         fontWeight: 'bold',
-        marginTop: 270,
+        marginTop: 240,
 
 
     },
@@ -118,8 +118,8 @@ export default class GuideScreen extends React.Component {
                 slides={slides}
                 showSkipButton={true}
                 showNextButton={false}
-                onDone={() => navigation.navigate('HomeScreen')}
-                onSkip={() => navigation.navigate('HomeScreen')}
+                onDone={() => navigation.navigate('StartLoginScreen')}
+                onSkip={() => navigation.navigate('StartLoginScreen')}
                 activeDotStyle={styles.dot}
                 buttonTextStyle={styles.text}
 
