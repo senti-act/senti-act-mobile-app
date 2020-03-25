@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View, TouchableOpacity, Image, TextInput, ScrollView, CheckBox, FlatList } from 'react-native';
-
+import LinearGradient from 'react-native-linear-gradient';
 
 class RegistrationScreen extends React.Component {
     componentDidMount() { }
@@ -15,7 +15,13 @@ class RegistrationScreen extends React.Component {
                 <View style={{ padding: 20, height: '100%' }}>
                     <View style={{ width: '100%', borderRadius: 10, height: '30%' }}>
                         <View style={{ flexDirection: 'row', alignSelf: 'center' }}><Text style={styles.title}>Complete your user profile</Text></View>
-                        <View style={{ width: '100%', borderRadius: 10, backgroundColor: '#95D3E3', height: '64%', flexDirection: 'row' }}></View>
+                        <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
+                            style={{
+                                width: '100%',
+                                borderRadius: 10,
+                                height: '64%',
+                                flexDirection: 'row'
+                            }} />
                         <View style={{ width: '95%', position: "absolute", marginVertical: 18 }}>
                             <Image source={require('../../Assets/start/family.png')} style={{ width: 120, height: 145, alignSelf: 'center' }}></Image>
                         </View>
@@ -56,7 +62,7 @@ class RegistrationScreen extends React.Component {
                         <View style={{ flexDirection: 'row', alignSelf: "center" }}>
                             <View style={{ width: '100%' }}>
                                 <TouchableOpacity style={styles.buttonLeft}
-                                    onPress={() => navigation.navigate('StartGuideScreen')}>
+                                    onPress={() => navigation.navigate('startGuideSkipStack')}>
                                     <Text style={{ alignSelf: 'center', color: 'white' }}>Yes</Text>
                                 </TouchableOpacity>
                             </View>

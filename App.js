@@ -44,6 +44,7 @@ const StartStack = createStackNavigator();
 const RootStack = createStackNavigator();
 
 
+
 function tipsStack() {
   return (
     <Stack.Navigator
@@ -150,45 +151,93 @@ function profileStack() {
   );
 }
 
-
-function spendingsStack() {
-
+function loginStack() {
   return (
     <Stack.Navigator
-      initialRouteName="My water status"
+      initialRouteName="Login"
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
-          backgroundColor: 'transparent',
-          backgroundColor: '#f2f2f2',
-          height: 75,
+          height: '15%',
         },
         headerTitleStyle: {
-          fontSize: 24,
+          fontSize: 20,
+          paddingVertical: 10,
         },
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="My water consumption" component={SpendingsScreen} />
-      <Stack.Screen name="ConsumptionScreen" component={ConsumptionScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in' }} />
+      <Stack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'What bothers you motherfucker?', headerShown: false }} />
+      <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Registration' }} />
+    </Stack.Navigator>
+  );
+}
+
+function spendingsStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="My water status"
+      screenOptions={{
+        gestureEnabled: true,
+        headerStyle: {
+          height: '15%',
+        },
+        headerTitleStyle: {
+          fontSize: 20,
+          paddingVertical: 10,
+        },
+        headerTitleAlign: 'center',
+        headerTintColor: '#174a5a',
+        headerBackTitleVisible: false,
+      }}
+      headerMode="float">
+      <Stack.Screen name="My water consumption" component={SpendingsScreen} options={{ title: 'My water status' }} />
+      <Stack.Screen name="ConsumptionScreen" component={ConsumptionScreen} options={{ title: 'My water consumption' }} />
+    </Stack.Navigator>
+  );
+}
+
+function startGuideSkipStack() {
+  return (
+    <Stack.Navigator
+      initialRouteName="startGuideSkipStack"
+      screenOptions={{
+        gestureEnabled: true,
+        headerStyle: {
+          height: '15%',
+        },
+        headerTitleStyle: {
+          fontSize: 20,
+          paddingVertical: 10,
+        },
+        headerTitleAlign: 'center',
+        headerTintColor: '#174a5a',
+        headerBackTitleVisible: false,
+      }}
+      headerMode="float">
+      <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="GuideScreen" component={GuideScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Login" component={loginStack} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
 
 
-function loginStack() {
+
+function startStack() {
 
   return (
     <StartStack.Navigator
-      initialRouteName="WelcomeScreen"
+      initialRouteName="DataSyncScreen"
 
       screenOptions={{
         headerTransparent: true,
         gestureEnabled: true,
         headerStyle: {
-          height: '20%',
+          height: '40%',
         },
         headerTitleStyle: {
           fontSize: 20,
@@ -203,10 +252,10 @@ function loginStack() {
       <StartStack.Screen name="DataSyncScreen" component={DataSyncScreen} options={{ headerShown: false }} />
       <StartStack.Screen name="DataCheckScreen" component={DataCheckScreen} options={{ title: '' }} />
       <StartStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: '' }} />
-      <StartStack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ title: '' }} />
+      <StartStack.Screen name="startGuideSkipStack" component={startGuideSkipStack} options={{ title: '' }} />
       <StartStack.Screen name="GuideScreen" component={GuideScreen} options={{ title: '' }} />
       <StartStack.Screen name='StartLoginScreen' component={StartLoginScreen} options={{ title: '' }} />
-      <StartStack.Screen name='LoginScreen' component={LoginScreen} options={{ title: '' }} />
+      <StartStack.Screen name='Login' component={loginStack} options={{ title: '' }} />
     </StartStack.Navigator>
   );
 }
@@ -259,7 +308,7 @@ export default function App() {
   return (
     <NavigationContainer >
       <RootStack.Navigator>
-        <RootStack.Screen name="WelcomeScreen" component={loginStack} options={{ headerShown: false }} />
+        <RootStack.Screen name="WelcomeScreen" component={startStack} options={{ headerShown: false }} />
         <RootStack.Screen name="navigation" component={tabNavigation} options={{ headerShown: false }} />
       </RootStack.Navigator>
     </NavigationContainer>

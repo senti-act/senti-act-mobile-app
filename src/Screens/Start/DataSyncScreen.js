@@ -7,61 +7,69 @@ import {
   TextInput,
   CheckBox,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 class DataSyncScreen extends React.Component {
-  componentDidMount() {}
+  componentDidMount() { }
 
   constructor(prop) {
     super();
   }
   render() {
-    const {navigation} = this.props;
+    const { navigation } = this.props;
     return (
-      <View style={{padding: 20}}>
+      <View style={{ padding: 20 }}>
         <Text style={styles.title}>Connect to your data</Text>
         <View style={{}}>
-          <View style={{flexWrap: 'wrap'}}>
+          <View style={{ flexWrap: 'wrap' }}>
             <View
               style={{
                 width: '100%',
                 borderRadius: 10,
                 backgroundColor: '#95D3E3',
               }}>
-              <View style={{padding: 28, width: '60%'}}>
-                <Text style={styles.contentFont}>
-                  In order to set you up we should have you connected to your
-                  data
+              <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
+                style={{
+                  width: '100%',
+                  borderRadius: 10,
+                  flexDirection: 'row',
+                }}>
+                <View style={{ padding: 28, width: '60%' }}>
+                  <Text style={styles.contentFont}>
+                    In order to set you up we should have you connected to your
+                    data
                 </Text>
-              </View>
-              <View style={{width: '100%', position: 'absolute'}}>
-                <Image
-                  source={require('../../Assets/start/girlphone.png')}
-                  style={{
-                    width: 143,
-                    height: 110,
-                    alignSelf: 'flex-end',
-                  }}></Image>
-              </View>
+                </View>
+                <View style={{ width: '100%', position: 'absolute' }}>
+                  <Image
+                    source={require('../../Assets/start/girlphone.png')}
+                    style={{
+                      width: 143,
+                      height: 110,
+                      alignSelf: 'flex-end',
+                    }}></Image>
+                </View>
+              </LinearGradient>
             </View>
           </View>
         </View>
         <View style={styles.contentContainer}>
-          <View style={{paddingVertical: 15}}>
+          <View style={{ paddingVertical: 15 }}>
             <Text style={styles.contentFont}>
               Enter the following information to connect to your water usage
               data:
             </Text>
           </View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <TextInput style={styles.textInputLong}>Adress</TextInput>
           </View>
-          <View style={{flexDirection: 'row', width: '97%'}}>
+          <View style={{ flexDirection: 'row', width: '97%' }}>
             <TextInput style={styles.textInputLeft}>Post no.</TextInput>
             <TextInput style={styles.textInputRight}>City</TextInput>
           </View>
-          <View style={{flexDirection: 'row'}}>
-            <CheckBox style={{width: '10%'}}></CheckBox>
-            <View style={{width: '88%', padding: 3}}>
+          <View style={{ flexDirection: 'row' }}>
+            <CheckBox style={{ width: '10%' }}></CheckBox>
+            <View style={{ width: '88%', padding: 3 }}>
               <Text style={styles.termsText}>
                 Please note that we do not save your address, but use it to
                 store your location so that we can make a regional breakdown of
@@ -72,7 +80,7 @@ class DataSyncScreen extends React.Component {
           <TouchableOpacity
             style={styles.buttonStyle}
             onPress={() => navigation.navigate('DataCheckScreen')}>
-            <Text style={{alignSelf: 'center', color: 'white'}}>Connect</Text>
+            <Text style={{ alignSelf: 'center', color: 'white' }}>Connect</Text>
           </TouchableOpacity>
         </View>
       </View>

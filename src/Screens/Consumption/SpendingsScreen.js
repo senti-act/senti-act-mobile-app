@@ -10,6 +10,7 @@ import {
   Dimensions,
   TouchableHighlight,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const data1 = [5, 45, 28, 80, 99, 12, 44];
 const data2 = [20, 60, 45, 60, 40, 5];
@@ -50,12 +51,20 @@ class SpendingsScreen extends React.Component {
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
           <View style={styles.header}>
-            <View>
-              <Text style={styles.headerText}>
-                Here you get an overview of your consumption
+            <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
+              style={{
+                width: '100%',
+                borderRadius: 10,
+                flexDirection: 'row',
+              }}>
+              <View>
+                <Text style={styles.headerText}>
+                  Here you get an overview of your consumption
               </Text>
-            </View>
+              </View>
+            </LinearGradient>
           </View>
+
           <View style={styles.container}>
             <View
               style={{
@@ -254,7 +263,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     borderRadius: 10,
-    backgroundColor: '#AACCE5',
+
     padding: 25,
     fontSize: 16,
   },

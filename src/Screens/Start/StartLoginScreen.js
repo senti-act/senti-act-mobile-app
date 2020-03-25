@@ -17,7 +17,7 @@ class StartLoginScreen extends React.Component {
                 <Image source={require('../../Assets/start/logo.png')} style={styles.logo}></Image>
                 <View style={{ flex: 1, width: '100%' }}>
                     <TouchableOpacity style={styles.buttonStyle}
-                        onPress={() => navigation.navigate('LoginScreen')}>
+                        onPress={() => navigation.navigate('Login')}>
                         <Text style={{ alignSelf: 'center', color: 'white', fontSize: 12 }}>Login</Text>
                     </TouchableOpacity>
                 </View>

@@ -10,6 +10,7 @@ import {
   Dimensions,
   TouchableHighlight,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 const data = {
   data: [0.7, 0.8],
@@ -30,11 +31,18 @@ class ConsumptionScreen extends React.Component {
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
           <View style={styles.header}>
-            <View style={{}}>
-              <Text style={styles.headerText}>
-                Get an overview of your consumption status
+            <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
+              style={{
+                width: '100%',
+                borderRadius: 10,
+                flexDirection: 'row',
+              }}>
+              <View style={{}}>
+                <Text style={styles.headerText}>
+                  Get an overview of your consumption status
               </Text>
-            </View>
+              </View>
+            </LinearGradient>
           </View>
           <View style={styles.container}>
             <View
@@ -64,7 +72,7 @@ class ConsumptionScreen extends React.Component {
                   />
                 </TouchableOpacity>
               </View>
-              <View style={{ flex: 3, flexDirection: 'row', width: '92%' }}>
+              <View style={{ flexDirection: 'row', width: '100%', alignSelf: 'center' }}>
                 <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity style={styles.buttonStyle}>
                     <Text style={{ textAlign: 'center' }}>Week</Text>
@@ -83,12 +91,11 @@ class ConsumptionScreen extends React.Component {
               </View>
               <View
                 style={{
-                  flex: 2,
                   flexDirection: 'row',
-                  width: '92%',
+                  width: '100%',
                   alignItems: 'center',
                 }}>
-                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
+                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2, alignSelf: 'center' }}>
                   <Text style={styles.boldText}>My Daily Consumption</Text>
                   <Text
                     style={{
@@ -212,18 +219,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEF3F7',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 1.41,
+    // elevation: 2,
+    paddingHorizontal: 15,
   },
   header: {
-    padding: 10,
-    width: '98%',
+    marginVertical: 10,
+    width: '100%',
   },
   headerTitle: {
     fontWeight: 'bold',
@@ -231,7 +239,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     borderRadius: 10,
-    backgroundColor: '#AACCE5',
     padding: 25,
     fontSize: 16,
   },
@@ -260,29 +267,29 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     minHeight: 130,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 1.41,
+    // elevation: 2,
   },
   bottomConsumptionCard: {
     marginTop: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 1,
+    // },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 1.41,
+    // elevation: 2,
     borderRadius: 10,
     padding: 10,
     backgroundColor: 'white',
-    width: '92%',
+    width: '100%',
     marginBottom: 10,
     shadowOpacity: 5,
   },

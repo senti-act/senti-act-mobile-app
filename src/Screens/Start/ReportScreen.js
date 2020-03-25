@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 class ReportScreen extends React.Component {
@@ -18,7 +19,13 @@ class ReportScreen extends React.Component {
                     <View style={{ width: '100%', borderRadius: 10, height: '20%', marginVertical: 15 }}>
                         <View style={{ alignSelf: 'center' }}>
                         </View>
-                        <View style={{ width: '100%', borderRadius: 10, backgroundColor: '#EA8359', height: '95%' }}></View>
+
+                        <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
+                            style={{
+                                width: '100%',
+                                borderRadius: 10,
+                                height: '95%'
+                            }} />
                         <View style={{ width: '105%', position: "absolute" }}>
                             <Image source={require('../../Assets/start/womanquestionares.png')} style={{ width: '50%', height: 98, alignSelf: 'flex-end' }}></Image>
                         </View>

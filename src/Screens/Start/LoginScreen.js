@@ -39,7 +39,7 @@ class LoginScreen extends React.Component {
                     </View>
                     <View style={{ width: '50%', alignSelf: 'flex-end' }}>
                         <TouchableOpacity style={styles.skipButton}
-                            onPress={() => navigation.navigate('RegisterScreen')}>
+                            onPress={() => navigation.navigate('RegistrationScreen')}>
                             <Text style={{ alignSelf: 'flex-end', color: 'black', fontSize: 14, fontWeight: 'bold' }}>Sign up</Text>
                         </TouchableOpacity>
                     </View>

@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+
 
 class DataCheckScreen extends React.Component {
     componentDidMount() { }
@@ -16,7 +18,12 @@ class DataCheckScreen extends React.Component {
                         <View style={{ alignSelf: 'center' }}>
                             <Text style={styles.title}>Good luck, we found a match</Text>
                         </View>
-                        <View style={{ width: '100%', borderRadius: 10, backgroundColor: '#95D3E3', height: '64%' }}></View>
+                        <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
+                            style={{
+                                width: '100%',
+                                borderRadius: 10,
+                                height: '64%'
+                            }} />
                         <View style={{ width: '95%', position: "absolute", marginVertical: 25 }}>
                             <Image source={require('../../Assets/start/completed.png')} style={{ width: '30%', height: 125, alignSelf: 'flex-end' }}></Image>
                         </View>
