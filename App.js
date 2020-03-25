@@ -1,25 +1,13 @@
 import * as React from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {Text, View, SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
+
 import HomeScreen from './src/Screens/HomeScreen';
-import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
-import TipsScreen from './src/Screens/Tips/TipsScreen';
-import LaundryScreen from './src/Screens/Tips/LaundryScreen';
-import FaucetScreen from './src/Screens/Tips/FaucetTipsScreen';
-import BathingScreen from './src/Screens/Tips/BathTipsScreen';
-import ToiletScreen from './src/Screens/Tips/ToiletTipsScreen';
-import DishesScreen from './src/Screens/Tips/DishesTipsScreen';
-import WaterWasteScreen from './src/Screens/Tips/WaterWasteTipsScreen';
-import SubmitTipScreen from './src/Screens/Tips/SubmitTipScreen';
-import ProfileScreen from './src/Screens/Profile/ProfileScreen';
-import AccountSettings from './src/Screens/Profile/AccountSettings';
-import Notifications from './src/Screens/Profile/Notifications';
-import Privacy from './src/Screens/Profile/Privacy';
-import FAQ from './src/Screens/Profile/FAQ';
-import About from './src/Screens/Profile/About';
-import ConsumptionScreen from './src/Screens/Consumption/ConsumptionScreen';
+//Start screens
 import DataSyncScreen from './src/Screens/Start/DataSyncScreen';
 import GuideScreen from './src/Screens/Start/GuideScreen';
 import StartGuideScreen from './src/Screens/Start/StartGuideScreen';
@@ -30,9 +18,25 @@ import DataCheckScreen from './src/Screens/Start/DataCheckScreen';
 import ReportScreen from './src/Screens/Start/ReportScreen';
 import StartLoginScreen from './src/Screens/Start/StartLoginScreen';
 import LoginScreen from './src/Screens/Start/LoginScreen';
-import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
+//Profile screens
+import ProfileScreen from './src/Screens/Profile/ProfileScreen';
+import AccountSettings from './src/Screens/Profile/AccountSettings';
+import Notifications from './src/Screens/Profile/Notifications';
+import Privacy from './src/Screens/Profile/Privacy';
+import FAQ from './src/Screens/Profile/FAQ';
+import About from './src/Screens/Profile/About';
+//Tips screens
+import TipsScreen from './src/Screens/Tips/TipsScreen';
+import LaundryScreen from './src/Screens/Tips/LaundryScreen';
+import FaucetScreen from './src/Screens/Tips/FaucetTipsScreen';
+import BathingScreen from './src/Screens/Tips/BathTipsScreen';
+import ToiletScreen from './src/Screens/Tips/ToiletTipsScreen';
+import DishesScreen from './src/Screens/Tips/DishesTipsScreen';
+import WaterWasteScreen from './src/Screens/Tips/WaterWasteTipsScreen';
+import SubmitTipScreen from './src/Screens/Tips/SubmitTipScreen';
+//Consumption screens
+import ConsumptionScreen from './src/Screens/Consumption/ConsumptionScreen';
+import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -59,9 +63,9 @@ function tipsStack() {
       <Stack.Screen
         name="Tips and tricks"
         component={TipsScreen}
-        options={({ navigation }) => ({
+        options={({navigation}) => ({
           headerRight: () => (
-            <View style={{ paddingRight: 16 }}>
+            <View style={{paddingRight: 16}}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Submit tips')}
                 style={{
@@ -87,7 +91,7 @@ function tipsStack() {
       <Stack.Screen
         name="Submit tips"
         component={SubmitTipScreen}
-        options={{ headerTitle: 'Add your tips and tricks' }}
+        options={{headerTitle: 'Add your tips and tricks'}}
       />
     </Stack.Navigator>
   );
@@ -153,20 +157,25 @@ function spendingsStack() {
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
+          backgroundColor: 'transparent',
           backgroundColor: '#f2f2f2',
-          height: 35,
+          height: 75,
         },
         headerTitleStyle: {
           fontSize: 24,
         },
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
-        //headerBackTitleVisible: false,
+        headerBackTitleVisible: false,
       }}
       headerMode="float">
       <Stack.Screen name="My water consumption" component={SpendingsScreen} />
       <Stack.Screen name="ConsumptionScreen" component={ConsumptionScreen} />
-      <Stack.Screen name="WelcomeScreen" component={loginStack} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="WelcomeScreen"
+        component={loginStack}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 }
@@ -177,8 +186,9 @@ function loginStack() {
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
-          backgroundColor: 'white',
-          height: 65,
+          backgroundColor: 'transparent',
+          backgroundColor: '#f2f2f2',
+          height: 75,
         },
         headerTitleStyle: {
           fontSize: 24,
@@ -189,14 +199,18 @@ function loginStack() {
       }}
       headerMode="float">
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-      <Stack.Screen name="InstructionsScreen" component={InstructionsScreen} />
+      <Stack.Screen
+        name="InstructionsScreen"
+        component={InstructionsScreen}
+        options={{headerTitle: 'Why play Senti.act?'}}
+      />
       <Stack.Screen name="DataSyncScreen" component={DataSyncScreen} />
       <Stack.Screen name="DataCheckScreen" component={DataCheckScreen} />
       <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
       <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} />
       <Stack.Screen name="GuideScreen" component={GuideScreen} />
-      <Stack.Screen name='StartLoginScreen' component={StartLoginScreen} />
-      <Stack.Screen name='LoginScreen' component={LoginScreen} />
+      <Stack.Screen name="StartLoginScreen" component={StartLoginScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
@@ -234,11 +248,11 @@ function loginStack() {
 export default function App() {
   return (
     <NavigationContainer>
-      <SafeAreaView style={{ flex: 0, backgroundColor: '#F2F2F2' }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#174A5A' }}>
+      <SafeAreaView style={{flex: 0, backgroundColor: '#F2F2F2'}} />
+      <SafeAreaView style={{flex: 1, backgroundColor: '#174A5A'}}>
         <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
               let iconName;
 
               if (route.name === 'Competition') {
@@ -262,10 +276,9 @@ export default function App() {
             inactiveTintColor: 'white',
             activeBackgroundColor: '#1f657a',
             inactiveBackgroundColor: '#174A5A',
-            style: { height: 85 },
-            labelStyle: { fontSize: 12, paddingBottom: 5 },
+            style: {height: 85},
+            labelStyle: {fontSize: 12, paddingBottom: 5},
           }}>
-
           <Tab.Screen name="Competition" component={competitionStack} />
           <Tab.Screen name="Spendings" component={spendingsStack} />
           <Tab.Screen name="Tips" component={tipsStack} />

@@ -94,15 +94,15 @@ class SubmitTipScreen extends React.Component {
               <Switches
                 colorSwitchOff={'#8390A2'}
                 colorSwitchOn={'#FF8000'}
-                onChange={() =>
-                  this.setState({anonymous: !this.state.anonymous})
-                }
-                value={this.state.anonymous}
                 shape={'pill'}
                 showText={false}
                 buttonSize={29}
                 sliderWidth={60}
                 buttonOffsetRight={4}
+                onChange={() =>
+                  this.setState({anonymous: !this.state.anonymous})
+                }
+                value={this.state.anonymous}
               />
             </View>
             <View style={styles.box}>
