@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image, TextInput, ScrollView, CheckBox, FlatList } from 'react-native';
+import { Text, View, TouchableOpacity, Image, ScrollView, CheckBox } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { TextInput } from 'react-native-paper';
+
 
 class RegistrationScreen extends React.Component {
     componentDidMount() { }
@@ -13,16 +15,15 @@ class RegistrationScreen extends React.Component {
         return (
             <ScrollView>
                 <View style={{ padding: 20, height: '100%' }}>
-                    <View style={{ width: '100%', borderRadius: 10, height: '30%' }}>
-                        <View style={{ flexDirection: 'row', alignSelf: 'center' }}><Text style={styles.title}>Complete your user profile</Text></View>
+                    <View style={{ width: '100%', borderRadius: 10, height: '25%' }}>
                         <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
                             style={{
                                 width: '100%',
                                 borderRadius: 10,
-                                height: '64%',
+                                height: '85%',
                                 flexDirection: 'row'
                             }} />
-                        <View style={{ width: '95%', position: "absolute", marginVertical: 18 }}>
+                        <View style={{ width: '95%', position: "absolute", marginTop: -20 }}>
                             <Image source={require('../../Assets/start/family.png')} style={{ width: 120, height: 145, alignSelf: 'center' }}></Image>
                         </View>
                     </View>
@@ -31,19 +32,16 @@ class RegistrationScreen extends React.Component {
                             <Text style={styles.contentFont}>You need to sign-in to complete your profile:</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputLong}>
-                                Email
-                            </TextInput>
+                            <TextInput style={styles.textInputLong} mode='outlined' label='Email' underlineColor='#184B5B'
+                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputLong}>
-                                Password
-                            </TextInput>
+                            <TextInput style={styles.textInputLong} mode='outlined' label='Password' underlineColor='#184B5B'
+                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputLong}>
-                                Repeat Password
-                            </TextInput>
+                            <TextInput style={styles.textInputLong} mode='outlined' label='Repeat password' underlineColor='#184B5B'
+                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
                         </View>
                         <View style={{ paddingVertical: 17 }}>
                             <Text style={styles.contentFont}>
@@ -88,12 +86,10 @@ const styles = {
     },
     textInputLong: {
         backgroundColor: 'white',
-        height: '80%',
-        borderColor: '#366270',
-        borderWidth: 1,
-        borderRadius: 7,
+        padding: 5,
+        borderRadius: 20,
         width: '100%',
-        padding: 10,
+        height: 40,
     },
     buttonLeft: {
         backgroundColor: '#FA821B',

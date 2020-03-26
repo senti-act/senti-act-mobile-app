@@ -161,7 +161,7 @@ function spendingsStack() {
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
-          height: '15%',
+          height: '100%',
         },
         headerTitleStyle: {
           fontSize: 20,
@@ -187,13 +187,14 @@ function startStack() {
       initialRouteName="WelcomeScreen"
 
       screenOptions={{
-        headerTransparent: true,
+
         gestureEnabled: true,
         headerStyle: {
-          height: '40%',
+          height: '100%',
         },
         headerTitleStyle: {
           fontSize: 20,
+          paddingVertical: 10,
         },
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
@@ -202,13 +203,13 @@ function startStack() {
       headerMode="float">
       <StartStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
       <StartStack.Screen name="InstructionsScreen" component={InstructionsScreen} options={{ headerShown: false }} />
-      <StartStack.Screen name="DataSyncScreen" component={DataSyncScreen} options={{ headerShown: false }} />
-      <StartStack.Screen name="DataCheckScreen" component={DataCheckScreen} options={{ title: '' }} />
-      <StartStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: '' }} />
-      <StartStack.Screen name="startGuideSkipStack" component={startGuideSkipStack} options={{ title: '' }} />
+      <StartStack.Screen name="DataSyncScreen" component={DataSyncScreen} options={{ title: 'Connect to your data' }} />
+      <StartStack.Screen name="DataCheckScreen" component={DataCheckScreen} options={{ title: 'Good luck we found a match' }} />
+      <StartStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Complete your profile' }} />
+      <StartStack.Screen name="startGuideSkipStack" component={startGuideSkipStack} options={{ headerShown: false }} />
       <StartStack.Screen name="GuideScreen" component={GuideScreen} options={{ title: '' }} />
-      <StartStack.Screen name='StartLoginScreen' component={StartLoginScreen} options={{ title: '' }} />
-      <StartStack.Screen name='Login' component={loginStack} options={{ title: '' }} />
+      <StartStack.Screen name='StartLoginScreen' component={StartLoginScreen} options={{ title: '', headerTransparent: true }} />
+      <StartStack.Screen name='Login' component={loginStack} options={{ headerShown: false }} />
     </StartStack.Navigator>
   );
 }
@@ -219,9 +220,10 @@ function loginStack() {
     <Stack.Navigator
       initialRouteName="Login"
       screenOptions={{
+        headerTransparent: false,
         gestureEnabled: true,
         headerStyle: {
-          height: '15%',
+          height: '100%',
         },
         headerTitleStyle: {
           fontSize: 20,
@@ -232,8 +234,8 @@ function loginStack() {
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in' }} />
-      <Stack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'What bothers you motherfucker?', headerShown: false }} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in', headerShown: false, }} />
+      <Stack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'Do you have coronavirus? ' }} />
       <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Registration' }} />
     </Stack.Navigator>
   );

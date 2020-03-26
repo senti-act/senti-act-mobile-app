@@ -1,25 +1,22 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { TextInput } from 'react-native-paper';
 
 
-class ReportScreen extends React.Component {
+
+class DataSyncScreen extends React.Component {
     componentDidMount() { }
 
-    constructor(props) {
-        super();
+    constructor(prop) {
+        super()
     }
-
     render() {
         const { navigation } = this.props;
         return (
             <ScrollView>
-                <View style={{ alignItems: "center", height: '80%', padding: 20 }}>
-                    <View style={{ width: '100%', borderRadius: 10, height: '20%', marginVertical: 15 }}>
-                        <View style={{ alignSelf: 'center' }}>
-                        </View>
-
+                <View style={{ padding: 20, height: '100%' }}>
+                    <View style={{ width: '100%', borderRadius: 10, height: '20%', marginBottom: 15 }}>
                         <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
                             style={{
                                 width: '100%',
@@ -27,110 +24,84 @@ class ReportScreen extends React.Component {
                                 height: '95%'
                             }} />
                         <View style={{ width: '105%', position: "absolute" }}>
-                            <Image source={require('../../Assets/start/womanquestionares.png')} style={{ width: '50%', height: 98, alignSelf: 'flex-end' }}></Image>
+                            <Image source={require('../../Assets/start/womanquestionares.png')} style={{ width: '50%', height: 100, alignSelf: 'flex-end' }}></Image>
                         </View>
                     </View>
                     <View style={styles.contentContainer}>
-                        <Text style={styles.title3}>Don't worry, you can try again or submit a query so we can help you resolve the issue.</Text>
-                        <Text style={styles.title}>Fill in the fields below to create a query</Text>
-
+                        <View style={{ paddingVertical: 17 }}>
+                            <Text style={styles.contentFont}>We found a match between your address and the following data:</Text>
+                        </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputTop}>
-                                Email
-                            </TextInput>
+                            <TextInput style={styles.textInputLongTop} mode='outlined' label='Email' underlineColor='#184B5B'
+                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
                         </View>
-
-                        <View style={{ flexDirection: 'row', alignSelf: 'center', height: "40%" }}>
-                            <TextInput style={styles.textInputBottom}>
-                                Message
-                            </TextInput>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TextInput style={styles.textInputLongBottom} mode='outlined' label='Message' underlineColor='#184B5B'
+                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
                         </View>
-                        <View style={{ width: '95 %', alignSelf: 'center', justifyContent: 'center' }}>
-                            <Text style={styles.title2}>You will receive an email with the answer to your inquiry as soon as possible</Text>
+                        <View style={{ alignSelf: 'center' }}>
+                            <Text style={styles.contentFont}>You will receive an email with the answer to your inquiry as soon as possible</Text>
                         </View>
-                        <View style={{}}>
-                            <TouchableOpacity style={styles.buttonStyle}
-                                onPress={() => navigation.navigate('GuideScreen')}>
-                                <Text style={{ alignSelf: 'center', color: 'white', fontSize: 14 }}>Send</Text>
-                            </TouchableOpacity>
-                        </View >
+                        <View style={{ flexDirection: 'row', alignSelf: "center" }}>
+                            <View style={{ width: '100%', marginVertical: 8, alignSelf: 'center' }}>
+                                <TouchableOpacity style={styles.buttonRight}
+                                    onPress={() => navigation.navigate('RegistrationScreen')}>
+                                    <Text style={{ alignSelf: 'center', color: 'white' }}>Send</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
-                </View>
+                </View >
             </ScrollView>
 
-        )
+
+        );
     }
 }
 
+
 const styles = {
-    buttonStyle: {
+    title: {
+        alignSelf: 'center',
+        color: '#2E5C6B',
+        fontSize: 17,
+        paddingBottom: 15,
+        fontWeight: 'bold',
+        padding: 0,
+    },
+    textInputLongTop: {
+        backgroundColor: 'white',
+        padding: 5,
+        borderRadius: 20,
+        width: '100%',
+        height: 40,
+    },
+    textInputLongBottom: {
+        backgroundColor: 'white',
+        padding: 5,
+        borderRadius: 20,
+        width: '100%',
+        height: 130,
+    },
+    buttonRight: {
         backgroundColor: '#FA821B',
         borderRadius: 10,
-        padding: 10,
         width: '33%',
+        height: 35,
         justifyContent: 'center',
-        alignSelf: 'center',
-        marginVertical: 15,
-    },
-
-    title: {
-        fontSize: 15,
-        color: '#49717D',
-        justifyContent: 'center',
-        padding: 5,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 15,
-    },
-    title2: {
-        fontSize: 14,
-        color: '#49717D',
-        justifyContent: 'center',
-        textAlign: 'center',
-    },
-    title3: {
-        fontSize: 16,
-        color: '#49717D',
-        justifyContent: 'center',
-        textAlign: 'center',
-        paddingVertical: 15,
-    },
-    logo: {
-        width: 150,
-        height: 45,
         alignSelf: "center",
-        marginBottom: 15
-    },
-    picture: {
-        width: '65%',
-        height: '51%',
-        alignSelf: "center",
-    },
-    textInputTop: {
-        backgroundColor: 'white',
-        height: '80%',
-        borderColor: '#366270',
-        borderWidth: 1,
-        borderRadius: 7,
-        width: '100%',
-        padding: 10,
-    },
-    textInputBottom: {
-        backgroundColor: 'white',
-        marginVertical: 15,
-        borderColor: '#366270',
-        borderWidth: 1,
-        borderRadius: 7,
-        width: '100%',
-        padding: 10,
+        marginVertical: 10,
     },
     contentContainer: {
         backgroundColor: 'white',
-        paddingHorizontal: 20,
+        paddingHorizontal: 15,
         height: '100%',
         borderRadius: 10,
-        marginBottom: 250,
+        marginBottom: 120
+    },
+    contentFont: {
+        color: '#2E5C6B',
+        fontSize: 14,
     },
 };
-
-export default ReportScreen;
+export default DataSyncScreen;

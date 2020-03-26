@@ -181,27 +181,6 @@ class ConsumptionScreen extends React.Component {
                   the average consumer
                 </Text>
               </View>
-              {/* <View style={{ flex: 2, flexDirection: 'row', width: '92%', justifyContent: 'center' }}>
-                                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
-                                    <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>My previous period</Text></TouchableOpacity>
-                                </View>
-                                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
-                                    <TouchableOpacity style={styles.buttonStyle}><Text style={{ textAlign: 'center' }}>Total consumption</Text></TouchableOpacity>
-                                </View>
-                            </View> */}
-              <TouchableOpacity
-                style={styles.consumptionCard}
-                onPress={() => navigation.navigate('WelcomeScreen')}>
-                <View style={{}}>
-                  <Text style={styles.boldText}>
-                    Do you consume more than others?
-                  </Text>
-                  <Text style={{ fontSize: 13 }}>
-                    Click here to see how much you've spent compared to the
-                    others
-                  </Text>
-                </View>
-              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.bottomConsumptionCard}>

@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { TextInput } from 'react-native-paper';
 
 
-class DataCheckScreen extends React.Component {
+
+class DataSyncScreen extends React.Component {
     componentDidMount() { }
 
     constructor(prop) {
@@ -14,17 +16,14 @@ class DataCheckScreen extends React.Component {
         return (
             <ScrollView>
                 <View style={{ padding: 20, height: '100%' }}>
-                    <View style={{ width: '100%', borderRadius: 10, height: '30%' }}>
-                        <View style={{ alignSelf: 'center' }}>
-                            <Text style={styles.title}>Good luck, we found a match</Text>
-                        </View>
+                    <View style={{ width: '100%', borderRadius: 10, height: '26%' }}>
                         <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
                             style={{
                                 width: '100%',
                                 borderRadius: 10,
-                                height: '64%'
+                                height: '80%'
                             }} />
-                        <View style={{ width: '95%', position: "absolute", marginVertical: 25 }}>
+                        <View style={{ width: '95%', position: "absolute", marginVertical: -10 }}>
                             <Image source={require('../../Assets/start/completed.png')} style={{ width: '30%', height: 125, alignSelf: 'flex-end' }}></Image>
                         </View>
                     </View>
@@ -34,24 +33,20 @@ class DataCheckScreen extends React.Component {
                             <Text style={styles.contentFont}>We found a match between your address and the following data:</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputLong}>
-                                Water Supply
-                        </TextInput>
+                            <TextInput style={styles.textInputLong} mode='outlined' label='Water suplier' underlineColor='#184B5B'
+                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputLong}>
-                                Water number
-                            </TextInput>
+                            <TextInput style={styles.textInputLong} mode='outlined' label='Customer number' underlineColor='#184B5B'
+                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputLong}>
-                                Housing association
-                            </TextInput>
+                            <TextInput style={styles.textInputLong} mode='outlined' label='Housing association' underlineColor='#184B5B'
+                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputLong}>
-                                Registered user
-                            </TextInput>
+                            <TextInput style={styles.textInputLong} mode='outlined' label='Registered user' underlineColor='#184B5B'
+                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
                         </View>
                         <View style={{ alignSelf: 'center' }}>
                             <Text style={styles.contentFont}>Is this information correct?</Text>
@@ -91,12 +86,10 @@ const styles = {
     },
     textInputLong: {
         backgroundColor: 'white',
-        height: '80%',
-        borderColor: '#366270',
-        borderWidth: 1,
-        borderRadius: 7,
+        padding: 5,
+        borderRadius: 20,
         width: '100%',
-        padding: 10,
+        height: 40,
     },
     buttonLeft: {
         backgroundColor: '#FA821B',
@@ -129,4 +122,4 @@ const styles = {
         fontSize: 14,
     },
 };
-export default DataCheckScreen;
+export default DataSyncScreen;
