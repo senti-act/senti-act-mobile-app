@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, Dimensions } from 'react-native';
+import {View, TouchableOpacity, Dimensions} from 'react-native';
 import Svg, {
   Circle,
   Line,
@@ -9,38 +9,40 @@ import Svg, {
   Stop,
   Text,
   TSpan,
-  Ellipse,
   Rect,
 } from 'react-native-svg';
 
 class InstructionsScreen extends React.Component {
-  componentDidMount() { }
+  componentDidMount() {}
   constructor(props) {
     super();
   }
   render() {
-    const { navigation } = this.props;
+    const {navigation} = this.props;
     return (
-      <View style={{ backgroundColor: 'white' }}>
-        <Svg height="100%" width="100%" viewBox="0 3 100 100">
+      <View style={{backgroundColor: 'white'}}>
+        <Svg height="100%" width="100%" viewBox="00 0 100 100">
+          <Text fill="#174a5a" fontSize="8" x="16" y="-10">
+            Why play Senti.act?
+          </Text>
           <Text fill="#174a5a" fontSize="4">
-            <TSpan x="43" y="14">
+            <TSpan x="43" y="19">
               You get an overview of
             </TSpan>
             <TSpan x="43" dy="5">
               your water consumption
             </TSpan>
-            <TSpan x="43" y="42">
-              Find great tips and advice
+            <TSpan x="43" y="47">
+              Find great tips and
             </TSpan>
             <TSpan x="43" dy="5">
-              on how to save water
+              advice on how to save
             </TSpan>
             <TSpan x="43" dy="5">
-              in your home
+              water in your home
             </TSpan>
-            <TSpan x="43" y="74">
-              Play against other and win
+            <TSpan x="43" y="79">
+              Play against others and win
             </TSpan>
             <TSpan x="43" dy="5">
               prizes, points and badges
@@ -48,47 +50,47 @@ class InstructionsScreen extends React.Component {
           </Text>
           <Line
             x1="25"
-            y1="-2"
+            y1="3"
             x2="25"
-            y2="92"
+            y2="97"
             stroke="#174a5a"
             strokeWidth="0.2"
           />
-          <Circle cx="25" cy="-3" r="1.5" fill="#174a5a" />
-          <Circle cx="25" cy="93" r="1.5" fill="#174a5a" />
+          <Circle cx="25" cy="2" r="1.5" fill="#174a5a" />
+          <Circle cx="25" cy="97" r="1.5" fill="#174a5a" />
           <Defs>
             <LinearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
               <Stop offset="0" stopColor="#f2f2f2" stopOpacity="1" />
               <Stop offset="1" stopColor="#A8D8E7" stopOpacity="1" />
             </LinearGradient>
           </Defs>
-          <Circle cx="25" cy="15" r="12" fill="url(#grad)" />
+          <Circle cx="25" cy="20" r="12" fill="url(#grad)" />
           <Image
-            x="18.5%"
-            y="6%"
-            height="13%"
-            width="13%"
+            x="19.8"
+            y="12"
+            height="10%"
+            width="10%"
             href={require('../../Assets/start/drop.png')}
           />
-          <Circle cx="25" cy="45" r="12" fill="url(#grad)" />
+          <Circle cx="25" cy="50" r="12" fill="url(#grad)" />
           <Image
-            x="18.5%"
-            y="31%"
-            height="13%"
-            width="13%"
+            x="19.8"
+            y="43"
+            height="10%"
+            width="10%"
             href={require('../../Assets/start/light.png')}
           />
-          <Circle cx="25" cy="75" r="12" fill="url(#grad)" />
+          <Circle cx="25" cy="80" r="12" fill="url(#grad)" />
           <Image
-            x="18.5%"
-            y="56%"
-            height="13%"
-            width="13%"
+            x="18.8"
+            y="71"
+            height="12%"
+            width="12%"
             href={require('../../Assets/start/trophy.png')}
           />
           <Rect
-            x="27"
-            y="99"
+            x="26"
+            y="110"
             rx="4"
             ry="4"
             width="50"
@@ -96,7 +98,12 @@ class InstructionsScreen extends React.Component {
             fill="#FA821B"
             onPress={() => navigation.navigate('DataSyncScreen')}
           />
-          <Text fill="white" fontSize="5" fontWeight="normal" x="30.7" y="107">
+          <Text
+            fill="white"
+            fontSize="5"
+            fontWeight="normal"
+            x="29.7"
+            y="118.5">
             {' '}
             Create an account
           </Text>
