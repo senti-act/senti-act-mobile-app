@@ -3,7 +3,6 @@ import { Text, View, TouchableOpacity, Image, ScrollView, CheckBox } from 'react
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
@@ -14,6 +13,7 @@ class RegistrationScreen extends React.Component {
     constructor(prop) {
         super()
     }
+
 
 
     render() {
@@ -226,7 +226,6 @@ const styles = {
         color: '#2E5C6B',
         fontSize: 11,
     },
-
 };
 
 

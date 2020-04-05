@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
-
+import ApiTestClass from './src/Screens/ApiTestClass';
 import HomeScreen from './src/Screens/HomeScreen';
 //Start screens
 import DataSyncScreen from './src/Screens/Start/DataSyncScreen';
@@ -202,6 +202,7 @@ function startStack() {
       }}
       headerMode="float">
       <StartStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
+      <StartStack.Screen name="ApiTestClass" component={ApiTestClass} />
       <StartStack.Screen name="InstructionsScreen" component={InstructionsScreen} options={{ headerShown: false }} />
       <StartStack.Screen name="DataSyncScreen" component={DataSyncScreen} options={{ title: 'Connect to your data' }} />
       <StartStack.Screen name="DataCheckScreen" component={DataCheckScreen} options={{ title: 'Good luck we found a match' }} />

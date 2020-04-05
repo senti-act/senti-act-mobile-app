@@ -6,24 +6,28 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ModalDropdown from 'react-native-modal-dropdown';
 
+
 class AccountSettings extends React.Component {
-  componentDidMount() {}
+
+  componentDidMount() {
+  }
 
   render() {
     return (
-      <SafeAreaView style={{height: '100%', width: '100%'}}>
+      <SafeAreaView style={{ height: '100%', width: '100%' }}>
         <ScrollView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           contentContainerStyle={{
             alignItems: 'center',
             flexDirection: 'column',
           }}>
-          <View style={{padding: 20}}>
+          <View style={{ padding: 20 }}>
             <LinearGradient
               colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
               style={{
@@ -32,14 +36,14 @@ class AccountSettings extends React.Component {
                 borderRadius: 10,
                 flexDirection: 'row',
               }}>
-              <View style={{flex: 1, height: '100%', justifyContent: 'center'}}>
-                <Text style={{fontSize: 24, alignSelf: 'center'}}>
+              <View style={{ flex: 1, height: '100%', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 24, alignSelf: 'center' }}>
                   picture here
                 </Text>
               </View>
-              <View style={{flex: 1, height: '100%'}}>
+              <View style={{ flex: 1, height: '100%' }}>
                 <Image
-                  style={{resizeMode: 'contain', width: '100%', height: '60%'}}
+                  style={{ resizeMode: 'contain', width: '100%', height: '60%' }}
                   source={require('../../Assets/settings.png')}></Image>
               </View>
             </LinearGradient>
@@ -54,37 +58,37 @@ class AccountSettings extends React.Component {
             }}>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Email</Text>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{ justifyContent: 'center' }}>
                 <Text style={styles.secondRowText}>cb@webhouse.dk</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Password</Text>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{ justifyContent: 'center' }}>
                 <Text style={styles.secondRowText}>senti123</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Name</Text>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{ justifyContent: 'center' }}>
                 <Text style={styles.secondRowText}>Christian</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Address</Text>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{ justifyContent: 'center' }}>
                 <Text style={styles.secondRowText}>Korsgade 40</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Post number</Text>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{ justifyContent: 'center' }}>
                 <Text style={styles.secondRowText}>9000</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>City</Text>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{ justifyContent: 'center' }}>
                 <Text style={styles.secondRowText}>Aalborg</Text>
               </View>
             </View>
@@ -92,7 +96,7 @@ class AccountSettings extends React.Component {
               <Text style={styles.firstRowText}>
                 Number of adults in the household
               </Text>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{ justifyContent: 'center' }}>
                 <Text style={styles.secondRowText}>2</Text>
               </View>
             </View>
@@ -100,17 +104,17 @@ class AccountSettings extends React.Component {
               <Text style={styles.firstRowText}>
                 Number of children in the household
               </Text>
-              <View style={{justifyContent: 'center'}}>
+              <View style={{ justifyContent: 'center' }}>
                 <Text style={styles.secondRowText}>0</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Show my data in: </Text>
-              <View style={{height: '60%', paddingLeft: 30}}>
+              <View style={{ height: '60%', paddingLeft: 30 }}>
                 <ModalDropdown
                   options={['Liters', 'm3']}
-                  textStyle={{color: '#174A5A'}}
-                  dropdownTextStyle={{fontSize: 18, color: '#174A5A'}}
+                  textStyle={{ color: '#174A5A' }}
+                  dropdownTextStyle={{ fontSize: 18, color: '#174A5A' }}
                   dropdownTextHighlightStyle={{
                     fontSize: 20,
                     color: '#174A5A',
@@ -118,7 +122,6 @@ class AccountSettings extends React.Component {
               </View>
             </View>
           </View>
-
           <View
             style={{
               backgroundColor: 'white',
@@ -142,7 +145,7 @@ class AccountSettings extends React.Component {
 
             <TouchableOpacity></TouchableOpacity>
             <EvilIcons
-              style={{alignSelf: 'center', width: '20%', paddingLeft: 20}}
+              style={{ alignSelf: 'center', width: '20%', paddingLeft: 20 }}
               size={36}
               name={'trash'}
               color="#174A5A"
@@ -153,6 +156,8 @@ class AccountSettings extends React.Component {
     );
   }
 }
+
+
 
 const styles = {
   box: {
