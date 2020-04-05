@@ -108,7 +108,6 @@ const styles = {
         justifyContent: 'center',
         alignSelf: "flex-start",
         marginVertical: 10,
-
     },
     contentContainer: {
         backgroundColor: 'white',
