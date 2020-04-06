@@ -19,6 +19,10 @@ class WelcomeScreen extends React.Component {
                         onPress={() => navigation.navigate('InstructionsScreen')}>
                         <Text style={{ alignSelf: 'center', color: 'white', fontSize: 12 }}>Get Started</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonStyle}
+                        onPress={() => navigation.navigate('Login')}>
+                        <Text style={{ alignSelf: 'center', color: 'white', fontSize: 12 }}>Login</Text>
+                    </TouchableOpacity>
                 </View>
             </View >
         )
@@ -30,7 +34,7 @@ const styles = {
         backgroundColor: '#FA821B',
         borderRadius: 7,
         width: '33%',
-        height: '55%',
+        height: 40,
         justifyContent: 'center',
         alignSelf: 'center',
         marginTop: 20,

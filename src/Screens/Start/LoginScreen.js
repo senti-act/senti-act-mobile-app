@@ -12,7 +12,7 @@ class LoginScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <View style={{ alignItems: "center", width: '100%', alignSelf: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: 'white', padding: 30, paddingVertical: 50 }}>
+            <View style={{ alignItems: "center", width: '100%', justifyContent: 'center', backgroundColor: 'white', padding: 30, paddingVertical: 50, height:'100%' }}>
                 <Text style={styles.title}>Welcome to</Text>
                 <Image source={require('../../Assets/start/logo.png')} style={styles.logo}></Image>
                 <Image source={require('../../Assets/start/group.png')} style={styles.picture}></Image>
