@@ -10,14 +10,24 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import UserService from '../../Networking/UserService'
 
 class ProfileScreen extends React.Component {
   constructor(props) {
     super();
   }
 
-  componentDidMount() { }
+  componentDidMount(){
+    this.getAllUsers()
+  }
 
+  getAllUsers(){
+    UserService.getAllUsers().then(x => {
+      alert(JSON.stringify(x))
+    }).catch(err =>{
+      alert(err)
+    })
+  }
   render() {
     const { route, navigation } = this.props;
 
