@@ -1,18 +1,51 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import UserService from '../../Networking/UserService';
+
+
 
 class LoginScreen extends React.Component {
-    componentDidMount() { }
-
+    
     constructor(props) {
-        super();
+        super(props);
+        this.state = {
+            nickname: '',
+            users: [],
+        };
+    }
+
+    componentDidMount(){
+        this.getAllUsers()
+      }
+    
+      getAllUsers(){
+        UserService.getAllUsers().then(x => {
+          this.setState({
+              users:x
+          })
+        }).catch(err =>{
+          alert(err)
+        })
+      }
+
+    loginUser=()=> {
+            if (this.state.users.length > 0){
+                if(this.state.users.find(users => users.nickname === this.state.nickname)){
+                this.props.navigation.navigate('navigation')
+                } else {
+                    alert("User doesn't exists");
+                }
+            } else {
+                alert("User doesn't exists. Show error message");
+            }
     }
 
     render() {
+
         const { navigation } = this.props;
         return (
-            <View style={{ alignItems: "center", width: '100%', justifyContent: 'center', backgroundColor: 'white', padding: 30, paddingVertical: 50, height:'100%' }}>
+            <View style={{ alignItems: "center", width: '100%', justifyContent: 'center', backgroundColor: 'white', padding: 30, paddingVertical: 50, height: '100%' }}>
                 <Text style={styles.title}>Welcome to</Text>
                 <Image source={require('../../Assets/start/logo.png')} style={styles.logo}></Image>
                 <Image source={require('../../Assets/start/group.png')} style={styles.picture}></Image>
@@ -20,7 +53,8 @@ class LoginScreen extends React.Component {
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <TextInput style={styles.textInputLong} mode='outlined' label='Email' underlineColor='#184B5B'
-                        theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
+                        theme={{ colors: { primary: '#2C5A69', background: '#003489' } }}
+                        onChangeText={text => this.setState({ nickname: text })} />
                 </View>
                 <View style={{ width: '70 %', alignSelf: 'center', justifyContent: 'center' }}>
                 </View>
@@ -42,7 +76,7 @@ class LoginScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity style={styles.buttonStyle}
-                        onPress={() => navigation.navigate('navigation')}>
+                        onPress={()=>this.loginUser()}>
                         <Text style={{ alignSelf: 'center', color: 'white', fontSize: 12 }}>Login</Text>
                     </TouchableOpacity>
                 </View>

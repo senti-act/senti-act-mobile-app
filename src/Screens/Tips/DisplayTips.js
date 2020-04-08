@@ -5,6 +5,7 @@ import {AccordionList} from 'accordion-collapse-react-native';
 import TipsService from '../../Networking/TipsService';
 
 class LaundryScreen extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +14,7 @@ class LaundryScreen extends React.Component {
   }
   
   getTips() {
-      TipsService.GetTipsByCategoryId(1).then(x=>{
+      TipsService.GetTipsByCategoryId(this.props.item.id).then(x=>{
         this.setState({ tips : x})
       }).catch(err => {
         alert(JSON.stringify(err));
@@ -21,7 +22,8 @@ class LaundryScreen extends React.Component {
   }
   
   componentDidMount() {
-    this.getTips()
+    alert(this.props.navigation.state.params)
+    //this.getTips()
   }
 
   _body(item) {
@@ -40,6 +42,7 @@ class LaundryScreen extends React.Component {
     );
   }
   render() {
+    const { navigation } = this.props;
     return (
       <SafeAreaView style={{height: '100%', width: '100%'}}>
         <ScrollView

@@ -7,6 +7,13 @@ function getAllUsers() {
   });
 }
 
+function GetUserByNickname(nickname) {
+  return request({
+    url: `/api/users/${nickname}`,
+    method: 'GET',
+  });
+}
+
 function registerUser(nickname,numOfAdults,numOfKids) {
  return request({
     url: `/api/users`,

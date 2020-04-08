@@ -38,7 +38,7 @@ class TipsScreen extends React.Component {
 
   _onPress(item) {
     if (item.id == 1) {
-      this.props.navigation.navigate('Laundry tips');
+      this.props.navigation.navigate('Display',{key:1});
     } else if (item.id == 2) {
       this.props.navigation.navigate('Bathing tips');
     } else if (item.id == 3) {

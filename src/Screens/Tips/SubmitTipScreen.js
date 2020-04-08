@@ -9,27 +9,39 @@ import {
 import Switches from 'react-native-switches';
 import {TextInput} from 'react-native-gesture-handler';
 import ModalDropdown from 'react-native-modal-dropdown';
+import TipsService from '../../Networking/TipsService';
 
 class SubmitTipScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
       anonymous: false,
       category: '',
-      advice: '',
+      title: '',
+      description: '',
+      user_id: '1574ec1a-7443-11ea-9eaf-08606e6ce1c1'
     };
   }
-  submission = (email, anonymous, category, advice) => {
+
+  submitTip() {
+    TipsService.SubmitTip(this.state.category + 1, this.state.title, this.state.description, this.state.user_id,this.state.anonymous) 
+      .then(() => {
+        alert('succesfully submitted the tip');
+      })
+      .catch(err => {
+        alert(JSON.stringify(err));
+      });
+  }
+
+  submission = (anonymous, category, description, title) => {
     alert(
-      'Email: ' +
-        email +
-        ', Anonymous: ' +
+        'Anonymous: ' +
         anonymous +
         ', Category: ' +
         category +
         ', Advice: ' +
-        advice,
+        description +
+        'Title: ' + title,
     );
   };
 
@@ -78,17 +90,6 @@ class SubmitTipScreen extends React.Component {
               }}>
               <Text style={styles.boldTitle}> Fill out the form</Text>
             </View>
-
-            <View style={styles.box}>
-              <Text style={styles.text}>Email</Text>
-              <View>
-                <TextInput
-                  placeholder="senti@ucn.dk"
-                  onChangeText={email => this.setState({email})}
-                  value={this.state.email}
-                />
-              </View>
-            </View>
             <View style={styles.box}>
               <Text style={styles.text}> Anonymous lookup</Text>
               <Switches
@@ -106,7 +107,7 @@ class SubmitTipScreen extends React.Component {
               />
             </View>
             <View style={styles.box}>
-              <Text style={styles.text}> Category</Text>
+              <Text style={styles.text}> Category </Text>
               <View
                 style={{
                   height: 35,
@@ -145,6 +146,24 @@ class SubmitTipScreen extends React.Component {
                 flexDirection: 'column',
                 margin: 10,
               }}>
+                <Text style={styles.boldText}> Title of your advice</Text>
+              <View
+                style={{
+                  margin: 10,
+                  borderWidth: 1,
+                  borderColor: '#BBD7E9',
+                  borderRadius: 17,
+                  backgroundColor: '#f8f8ff',
+                }}>
+                <TextInput
+                  onChangeText={title => this.setState({title})}
+                  value={this.state.title}
+                  numberOfLines={2}
+                  multiline={true}
+                  maxLength={150}
+                  style={styles.text}
+                />
+              </View>
               <Text style={styles.boldText}> Enter your advice!</Text>
               <View
                 style={{
@@ -155,8 +174,8 @@ class SubmitTipScreen extends React.Component {
                   backgroundColor: '#f8f8ff',
                 }}>
                 <TextInput
-                  onChangeText={advice => this.setState({advice})}
-                  value={this.state.advice}
+                  onChangeText={description => this.setState({description})}
+                  value={this.state.description}
                   numberOfLines={5}
                   multiline={true}
                   maxLength={600}
@@ -172,25 +191,27 @@ class SubmitTipScreen extends React.Component {
             <View>
               <TouchableOpacity
                 onPress={() =>
-                  this.submission(
-                    this.state.email,
-                    this.state.anonymous,
-                    this.state.category,
-                    this.state.advice,
-                  )
+                  // this.submission(
+                  //   this.state.anonymous,
+                  //   this.state.category,
+                  //   this.state.description,
+                  //   this.state.title,
+                  // )
+                  this.submitTip()
                 }
                 style={{
                   alignSelf: 'center',
                   width: 125,
-                  height: 50,
+                  height: 40,
                   backgroundColor: '#FF8000',
                   borderRadius: 20,
+                  justifyContent:'center',
+
                 }}>
                 <Text
                   style={{
                     color: 'white',
                     alignSelf: 'center',
-                    paddingTop: 10,
                     fontSize: 20,
                   }}>
                   Submit
@@ -225,7 +246,6 @@ const styles = {
     fontWeight: 'bold',
     paddingLeft: 10,
     color: '#174A5A',
-    paddingTop: 10,
   },
   boldTitle: {
     fontSize: 16,
