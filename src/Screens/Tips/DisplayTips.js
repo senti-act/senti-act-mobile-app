@@ -4,26 +4,33 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AccordionList} from 'accordion-collapse-react-native';
 import TipsService from '../../Networking/TipsService';
 
-class LaundryScreen extends React.Component {
-
+class LaundryScreen extends React.Component  {
   constructor(props) {
     super(props);
     this.state = {
-      tips:[]
+      tips:[],
+      id:-1,
+      data:''
     };
   }
   
-  getTips() {
-      TipsService.GetTipsByCategoryId(this.props.item.id).then(x=>{
-        this.setState({ tips : x})
-      }).catch(err => {
-        alert(JSON.stringify(err));
-      });
+  getTips = async()=> {
+
+    var id = await this.props.navigation.getParam('chuj', null)
+    alert(id)
+
+    await TipsService.GetTipsByCategoryId(id).then(x=>{
+    this.setState({ tips : x})
+        }).catch(err => {
+    alert(JSON.stringify(err));
+        });
   }
   
-  componentDidMount() {
-    alert(this.props.navigation.state.params)
-    //this.getTips()
+  async componentDidMount() {
+    // var id = await this.props.navigation.getParam('chuj', null)
+    // alert(id)
+    this.getTips()
+    //this.setState({ data: this.props.navigation.getParam('key', {}) })
   }
 
   _body(item) {
@@ -42,7 +49,6 @@ class LaundryScreen extends React.Component {
     );
   }
   render() {
-    const { navigation } = this.props;
     return (
       <SafeAreaView style={{height: '100%', width: '100%'}}>
         <ScrollView

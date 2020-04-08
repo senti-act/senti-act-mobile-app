@@ -15,19 +15,27 @@ import UserService from '../../Networking/UserService'
 class ProfileScreen extends React.Component {
   constructor(props) {
     super();
+    this.state={
+      id:'1574ec1a-7443-11ea-9eaf-08606e6ce1c1',
+      user:{}
+    }
   }
 
   componentDidMount(){
-    this.getAllUsers()
+    this.getUserById()
   }
 
-  getAllUsers(){
-    UserService.getAllUsers().then(x => {
-      alert(JSON.stringify(x))
+  getUserById(){
+    var id = this.state.id
+    UserService.getById(id).then(x => {
+      this.setState({
+        user:x
+      })
     }).catch(err =>{
       alert(err)
     })
   }
+
   render() {
     const { route, navigation } = this.props;
 
@@ -77,7 +85,7 @@ class ProfileScreen extends React.Component {
             }}>
             <TouchableOpacity
               style={styles.touchable}
-              onPress={() => navigation.navigate('Account')}>
+              onPress={() => navigation.navigate('Account', {user: this.state.user})}>
               <Text style={styles.text}>Account setting</Text>
               <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>

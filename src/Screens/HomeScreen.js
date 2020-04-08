@@ -11,6 +11,7 @@ import {
 const {height, width} = Dimensions.get('window');
 import jebani from '../Assets/competition.png';
 import * as Progress from 'react-native-progress';
+import AchievementService from '../Networking/AchievementService'
 
 const BagdeBox = props => {
   return (
@@ -65,17 +66,22 @@ class HomeScreen extends React.Component {
       value: 0,
       status: 'badges',
       text: 'Reduce your water consumption and earn badges',
+      userId:'1574ec1a-7443-11ea-9eaf-08606e6ce1c1',
+      achievements:[]
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.getAchievements()
+  }
 
-//   static navigationOptions = ({ navigation }) => {
-//     const {state} = navigation;
-//     return {
-//       title: `chuju`,
-//     };
-//   };
+  getAchievements=()=>{
+    AchievementService.getForUser(this.state.userId).then(x=>{
+      this.setState({achievements:x})
+    }).catch(err=>{
+      alert(err)
+    })
+  }
 
   decide = () => {
     switch (this.state.status) {
@@ -96,10 +102,15 @@ class HomeScreen extends React.Component {
               ongoing basis.
             </Text>
           </View>
-              <BagdeBox title='Expert' description='You have been an active player for 3 months and you have therefore earned the title as an expert.'></BagdeBox>
+          {this.state.achievements.length > 0
+            ? this.state.achievements.map(x => {
+              return <BagdeBox title={x.name} description={x.description}></BagdeBox>
+            })
+            : <Text>Cannot load achievements</Text>}
+              {/* <BagdeBox title='Expert' description='You have been an active player for 3 months and you have therefore earned the title as an expert.'></BagdeBox>
               <BagdeBoxProgress title='Water Expert' description='You have been reduced you water consumption by 10%.' progress={0.8}></BagdeBoxProgress>
               <BagdeBox title='Water Chuj' description='You have been reduced you water consumption by 10%.'></BagdeBox>
-              <BagdeBoxProgress title='Karol Badge' description='siema kurwa' progress={0.2}></BagdeBoxProgress>
+              <BagdeBoxProgress title='Karol Badge' description='siema kurwa' progress={0.2}></BagdeBoxProgress> */}
 
           </View>
 

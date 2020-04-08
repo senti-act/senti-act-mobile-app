@@ -7,9 +7,9 @@ function getAllUsers() {
   });
 }
 
-function GetUserByNickname(nickname) {
+function getById(id) {
   return request({
-    url: `/api/users/${nickname}`,
+    url: `/api/users/${id}`,
     method: 'GET',
   });
 }
@@ -30,7 +30,8 @@ function registerUser(nickname,numOfAdults,numOfKids) {
 
 const UserService = {
     getAllUsers,
-    registerUser
+    registerUser,
+    getById
 };
 
 export default UserService;
