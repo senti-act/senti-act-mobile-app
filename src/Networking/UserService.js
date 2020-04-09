@@ -9,6 +9,13 @@ function getAllUsers() {
   });
 }
 
+function getById(id) {
+  return request({
+    url: `/api/users/${id}`,
+    method: 'GET',
+  });
+}
+
 function registerUser(nickname, numOfAdults, numOfKids) {
   return request({
     url: `/api/users`,
@@ -26,7 +33,8 @@ function registerUser(nickname, numOfAdults, numOfKids) {
 
 const UserService = {
   getAllUsers,
-  registerUser
+  registerUser,
+  getById
 };
 
 export default UserService;

@@ -34,6 +34,7 @@ import ToiletScreen from './src/Screens/Tips/ToiletTipsScreen';
 import DishesScreen from './src/Screens/Tips/DishesTipsScreen';
 import WaterWasteScreen from './src/Screens/Tips/WaterWasteTipsScreen';
 import SubmitTipScreen from './src/Screens/Tips/SubmitTipScreen';
+import DisplayTips from './src/Screens/Tips/DisplayTips';
 //Consumption screens
 import ConsumptionScreen from './src/Screens/Consumption/ConsumptionScreen';
 import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
@@ -87,6 +88,7 @@ function tipsStack() {
         })}
       />
       <Stack.Screen name="Laundry tips" component={LaundryScreen} />
+      <Stack.Screen name="Display" component={DisplayTips} />
       <Stack.Screen name="Bathing tips" component={BathingScreen} />
       <Stack.Screen name="Faucet tips" component={FaucetScreen} />
       <Stack.Screen name="Toilet tips" component={ToiletScreen} />

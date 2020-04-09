@@ -6,6 +6,7 @@ import UserService from '../../Networking/UserService';
 
 
 class LoginScreen extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -28,16 +29,7 @@ class LoginScreen extends React.Component {
         })
     }
 
-    // getNickname() {
-    //     UserService.GetUserByNickname(this.nickname).then(x=>{
-    //       this.setState({ users : x})
-    //     }).catch(err => {
-    //       alert(JSON.stringify(err));
-    //     });
-    // }
-
-
-    loginUser() {
+    loginUser = () => {
         if (this.state.users.length > 0) {
             if (this.state.users.find(users => users.nickname === this.state.nickname)) {
                 this.props.navigation.navigate('navigation')

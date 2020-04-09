@@ -236,8 +236,8 @@ class RegistrationScreen extends React.Component {
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() =>
-                      navigation.navigate('startGuideSkipStack')
-                      //this.registerUser()
+                      //navigation.navigate('startGuideSkipStack')
+                      this.registerUser()
                     //alert(this.state.adults)
                   }>
                   <Text style={{alignSelf: 'center', color: 'white'}}>Yes</Text>

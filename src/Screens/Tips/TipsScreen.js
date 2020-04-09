@@ -37,8 +37,10 @@ class TipsScreen extends React.Component {
   componentDidMount() {}
 
   _onPress(item) {
+
     if (item.id == 1) {
-      this.props.navigation.navigate('Laundry tips');
+      this.props.navigation.navigate('Display');
+      this.props.navigation.setParams({ key: 1 })
     } else if (item.id == 2) {
       this.props.navigation.navigate('Bathing tips');
     } else if (item.id == 3) {
@@ -97,7 +99,10 @@ class TipsScreen extends React.Component {
                 scrollEnabled={false}
                 renderItem={({item}) => (
                   <TouchableOpacity
-                    onPress={() => this._onPress(item)}
+                    onPress={() => 
+                      this.props.navigation.navigate('Display',{params:{chuj: item.id}})
+                      //this._onPress(item)
+                    }
                     style={{
                       flex: 1,
                       height: width / 2,
