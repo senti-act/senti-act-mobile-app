@@ -14,8 +14,18 @@ import ModalDropdown from 'react-native-modal-dropdown';
 
 
 class AccountSettings extends React.Component {
+  constructor(props) {
+    super();
+    this.state={
+      user:{}
+    }
+  }
 
   componentDidMount() {
+    var user = this.props.route.params.user[0]
+    this.setState({
+      user:user
+    })
   }
 
   render() {
@@ -59,7 +69,7 @@ class AccountSettings extends React.Component {
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Email</Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>cb@webhouse.dk</Text>
+                <Text style={styles.secondRowText}>{this.state.user.nickname}</Text>
               </View>
             </View>
             <View style={styles.box}>
@@ -97,7 +107,7 @@ class AccountSettings extends React.Component {
                 Number of adults in the household
               </Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>2</Text>
+                <Text style={styles.secondRowText}>{this.state.user.numOfAdults}</Text>
               </View>
             </View>
             <View style={styles.box}>
@@ -105,7 +115,7 @@ class AccountSettings extends React.Component {
                 Number of children in the household
               </Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>0</Text>
+                <Text style={styles.secondRowText}>{this.state.user.numOfKids}</Text>
               </View>
             </View>
             <View style={styles.box}>

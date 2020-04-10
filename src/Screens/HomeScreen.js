@@ -369,7 +369,6 @@ class HomeScreen extends React.Component {
             </View>
             <View
               style={{
-                flex: 1,
                 marginTop: 20,
                 height: 50,
                 flexDirection: 'row',
