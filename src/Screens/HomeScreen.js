@@ -14,65 +14,28 @@ import jebani from '../Assets/competition.png';
 import * as Progress from 'react-native-progress';
 import AchievementService from '../Networking/AchievementService';
 import LinearGradient from 'react-native-linear-gradient';
-
-const DATA = [
-  {
-    id: '1',
-    place: '1',
-    nickname: 'testuser2',
-    score: '200',
-    image: 'imagehash',
-  },
-  {
-    id: '2',
-    place: '2',
-    nickname: 'testuser1',
-    score: '190',
-    image: 'imagehash',
-  },
-  {
-    id: '3'
-    , place: '3',
-    nickname: 'testuser3',
-    score: '180',
-    image: 'imagehash',
-  }
-]
-const DATA2 = [
-  {
-    id: '4',
-    place: '55',
-    nickname: 'testuser4',
-    score: '4',
-    image: 'imagehash',
-  },
-  {
-    id: '5',
-    place: '56',
-    nickname: 'testuser5',
-    score: '3',
-    image: 'imagehash',
-  },
-  {
-    id: '6'
-    , place: '57',
-    nickname: 'testuser6',
-    score: '2',
-    image: 'imagehash',
-  }
-]
+import UserService from '../Networking/UserService';
 
 
-function Item({ place, nickname, score, image, }) {
+
+function Item({ index, nickname, score }) {
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-      <Text style={{ width: '25%' }}>{place}</Text>
-      <Text style={{ width: '25%' }}>{nickname}</Text>
-      <Text style={{ width: '25%' }}>{score}</Text>
-      <Text style={{ width: '25%' }}>{image}</Text>
-    </View>
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: 'white', borderBottomWidth: 1, padding: 15, borderBottomColor: '#A2B7BD', borderRadius: 5 }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "50%", justifyContent: 'center' }}>
+        <Text style={{ width: '30%' }}>{index}</Text>
+        <Text style={{ width: '70%', fontWeight: 'bold', color: '#2F5D6C' }}>{nickname}</Text>
+      </View>
+      <View style={{ width: '50%', flexDirection: 'row', flexWrap: 'wrap' }}>
+        <Text style={{ width: '70%', fontWeight: 'bold', color: '#2F5D6C', fontSize: 17, textAlign: 'right' }}>{score}</Text>
+        <View style={{ width: "30%" }}>
+          <Image style={{ width: 18, height: 26, alignSelf: "flex-end" }} source={require('../Assets/drop.png')} />
+        </View>
+      </View>
+    </View >
   );
 }
+
+
 
 const BagdeBox = props => {
   return (
@@ -164,6 +127,8 @@ const BagdeBoxProgress = props => {
   );
 };
 
+
+
 class HomeScreen extends React.Component {
   constructor() {
     super();
@@ -173,11 +138,16 @@ class HomeScreen extends React.Component {
       text: 'Reduce your water consumption and earn badges',
       userId: '1574ec1a-7443-11ea-9eaf-08606e6ce1c1',
       achievements: [],
+      users: [],
+      sortedUsers: [],
+
     };
   }
 
+
   componentDidMount() {
     this.getAchievements();
+    this.getAllUsers();
   }
 
   getAchievements = () => {
@@ -188,6 +158,16 @@ class HomeScreen extends React.Component {
       .catch(err => {
         alert(err);
       });
+  };
+
+  getAllUsers = () => {
+    UserService.getAllUsers()
+      .then(x => {
+        this.setState({ users: x })
+      })
+      .catch(err => {
+        alert(err);
+      })
   };
 
   decide = () => {
@@ -238,19 +218,37 @@ class HomeScreen extends React.Component {
         );
       }
       case 'leaderboard': {
+        const list = this.state.users.sort((a, b) => { return b.xp - a.xp; })
         return (
           <View>
             <View>
-              <Text>The following days are left of the competition</Text>
-              <Progress.Bar progress={0.5} width={240} height={8} color={'#FA821B'} style={{ height: 10, alignSelf: 'center' }} />
-              <Text>The best players</Text>
-              <FlatList data={DATA}
-                renderItem={({ item }) => <Item place={item.place} nickname={item.nickname} score={item.score} image={item.image} />}
-              ></FlatList>
-              <Text>Other players</Text>
-              <FlatList data={DATA2}
-                renderItem={({ item }) => <Item place={item.place} nickname={item.nickname} score={item.score} image={item.image} />}
-              ></FlatList>
+              <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 10 }}> The following days are left of the competition</Text>
+              <View style={{ flexDirection: 'row', flexWrap: "wrap" }}>
+                <Progress.Bar progress={0.5} width={240} height={10} color={'#184858'} style={{ height: 10, alignSelf: 'center', marginBottom: 10, width: '70%' }} />
+                <Text style={{ color: '#2F5D6C', fontWeight: 'bold', alignSelf: 'flex-end', width: '30%', paddingHorizontal: 10 }}>15 days left</Text>
+              </View>
+              <View>
+                <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15 }}>The best players</Text>
+                <FlatList
+                  maxToRenderPerBatch={1}
+                  windowSize={1}
+                  initialNumToRender={3}
+                  data={list}
+                  renderItem={({ item, index }) => <Item index={index + 1} nickname={item.nickname} score={item.xp} image={item.image}
+                  />}
+                ></FlatList>
+              </View>
+              <View>
+                <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15 }}>Other players</Text>
+                <FlatList
+                  maxToRenderPerBatch={1}
+                  windowSize={1}
+                  initialNumToRender={4}
+                  data={list}
+                  renderItem={({ item, index }) => <Item index={index + 1} nickname={item.nickname} score={item.xp} image={item.image}
+                  />}
+                ></FlatList>
+              </View>
             </View>
             <View style={{ height: '100%', backgroundColor: 'white', borderRadius: 10, marginTop: 10 }}>
             </View>
