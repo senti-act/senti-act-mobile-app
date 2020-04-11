@@ -3,10 +3,12 @@ import { Text, View, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createAppContainer } from 'react-navigation';
+import { createSwitchNavigator } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import ApiTestClass from './src/Screens/ApiTestClass';
 import HomeScreen from './src/Screens/HomeScreen';
+import Header from './src/Components/Header'
 //Start screens
 import DataSyncScreen from './src/Screens/Start/DataSyncScreen';
 import GuideScreen from './src/Screens/Start/GuideScreen';
@@ -27,12 +29,6 @@ import FAQ from './src/Screens/Profile/FAQ';
 import About from './src/Screens/Profile/About';
 //Tips screens
 import TipsScreen from './src/Screens/Tips/TipsScreen';
-import LaundryScreen from './src/Screens/Tips/LaundryScreen';
-import FaucetScreen from './src/Screens/Tips/FaucetTipsScreen';
-import BathingScreen from './src/Screens/Tips/BathTipsScreen';
-import ToiletScreen from './src/Screens/Tips/ToiletTipsScreen';
-import DishesScreen from './src/Screens/Tips/DishesTipsScreen';
-import WaterWasteScreen from './src/Screens/Tips/WaterWasteTipsScreen';
 import SubmitTipScreen from './src/Screens/Tips/SubmitTipScreen';
 import DisplayTips from './src/Screens/Tips/DisplayTips';
 //Consumption screens
@@ -40,15 +36,19 @@ import ConsumptionScreen from './src/Screens/Consumption/ConsumptionScreen';
 import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const TipsStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
+const CompetitionStack = createStackNavigator();
+const SpendingsStack = createStackNavigator();
 const StartStack = createStackNavigator();
+const LoginStack = createStackNavigator();
+const GuideStack = createStackNavigator();
+const Main = createStackNavigator();
 const RootStack = createStackNavigator();
-
-
 
 function tipsStack() {
   return (
-    <Stack.Navigator
+    <TipsStack.Navigator
       initialRouteName="Tips and tricks"
       screenOptions={{
         gestureEnabled: true,
@@ -63,50 +63,30 @@ function tipsStack() {
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
         headerBackTitleVisible: false,
+        
+
       }}
       headerMode="float">
-      <Stack.Screen
+      <TipsStack.Screen
         name="Tips and tricks"
         component={TipsScreen}
-        options={({ navigation }) => ({
-          headerRight: () => (
-            <View style={{ paddingRight: 16 }}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Submit tips')}
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: 50,
-                  height: 50,
-                  backgroundColor: '#FF8000',
-                  borderRadius: 25,
-                }}>
-                <LineIcons name={'pencil'} size={25} color={'white'} />
-              </TouchableOpacity>
-            </View>
-          ),
-        })}
+        // options={({ navigation }) => ({
+        //   header: () => <Header title="Shifts" />,
+        // })}
       />
-      <Stack.Screen name="Laundry tips" component={LaundryScreen} />
-      <Stack.Screen name="Display" component={DisplayTips} />
-      <Stack.Screen name="Bathing tips" component={BathingScreen} />
-      <Stack.Screen name="Faucet tips" component={FaucetScreen} />
-      <Stack.Screen name="Toilet tips" component={ToiletScreen} />
-      <Stack.Screen name="Dish cleaning tips" component={DishesScreen} />
-      <Stack.Screen name="Water waste tips" component={WaterWasteScreen} />
-      <Stack.Screen
+      <TipsStack.Screen name="Display" component={DisplayTips} />
+      <TipsStack.Screen
         name="Submit tips"
         component={SubmitTipScreen}
         options={{ headerTitle: 'Add your tips and tricks' }}
       />
-    </Stack.Navigator>
+    </TipsStack.Navigator>
   );
 }
 
-
 function profileStack() {
   return (
-    <Stack.Navigator
+    <ProfileStack.Navigator
       initialRouteName="Profile"
       screenOptions={{
         gestureEnabled: true,
@@ -120,66 +100,49 @@ function profileStack() {
         headerTitleAlign: 'center',
       }}
       headerMode="float">
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="Account" component={AccountSettings} />
-      <Stack.Screen name="Notifications" component={Notifications} />
-      <Stack.Screen name="Privacy policy" component={Privacy} />
-      <Stack.Screen name="FAQ" component={FAQ} />
-      <Stack.Screen name="About" component={About} />
-    </Stack.Navigator>
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+      <ProfileStack.Screen name="Account" component={AccountSettings} />
+      <ProfileStack.Screen name="Notifications" component={Notifications} />
+      <ProfileStack.Screen name="Privacy policy" component={Privacy} />
+      <ProfileStack.Screen name="FAQ" component={FAQ} />
+      <ProfileStack.Screen name="About" component={About} />
+    </ProfileStack.Navigator>
   );
 }
 
 // HomeStack
 function competitionStack() {
   return (
-    <Stack.Navigator
+    <CompetitionStack.Navigator
       initialRouteName="Competition"
       screenOptions={{
+        header: () => <Header title="Competition" />,
         gestureEnabled: true,
-        headerStyle: {
-          backgroundColor: 'trasparent',
-          backgroundColor: '#f2f2f2',
-          height: 75,
-        },
-        headerTitleStyle: {
-          fontSize: 24,
-        },
-        headerTitleAlign: 'center',
-        headerTintColor: '#174a5a',
-        headerBackTitleVisible: false,
       }}
-      headerMode="float">
-      <Stack.Screen name="Competition" component={HomeScreen} />
-    </Stack.Navigator>
+      headerMode="float"
+      >
+      <CompetitionStack.Screen name="Competition" component={HomeScreen} />
+    </CompetitionStack.Navigator>
   );
 }
-
 
 function spendingsStack() {
   return (
-    <Stack.Navigator
+    <SpendingsStack.Navigator
       initialRouteName="My water status"
       screenOptions={{
+        header: () => <Header title="My water status" />,
         gestureEnabled: true,
-        headerStyle: {
-          height: '100%',
-        },
-        headerTitleStyle: {
-          fontSize: 20,
-          paddingVertical: 10,
-        },
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="My water consumption" component={SpendingsScreen} options={{ title: 'My water status' }} />
-      <Stack.Screen name="ConsumptionScreen" component={ConsumptionScreen} options={{ title: 'My water consumption' }} />
-    </Stack.Navigator>
+      <SpendingsStack.Screen name="My water consumption" component={SpendingsScreen} options={{ title: 'My water status' }} />
+      <SpendingsStack.Screen name="ConsumptionScreen" component={ConsumptionScreen} options={{ title: 'My water consumption' }} />
+    </SpendingsStack.Navigator>
   );
 }
-
 
 // First stack to be executed when app starts running
 function startStack() {
@@ -204,7 +167,6 @@ function startStack() {
       }}
       headerMode="float">
       <StartStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
-      <StartStack.Screen name="ApiTestClass" component={ApiTestClass} />
       <StartStack.Screen name="InstructionsScreen" component={InstructionsScreen} options={{ headerShown: false }} />
       <StartStack.Screen name="DataSyncScreen" component={DataSyncScreen} options={{ title: 'Connect to your data' }} />
       <StartStack.Screen name="DataCheckScreen" component={DataCheckScreen} options={{ title: 'Good luck we found a match' }} />
@@ -220,7 +182,7 @@ function startStack() {
 // Part of the startStack
 function loginStack() {
   return (
-    <Stack.Navigator
+    <LoginStack.Navigator
       initialRouteName="Login"
       screenOptions={{
         headerTransparent: false,
@@ -237,17 +199,17 @@ function loginStack() {
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in', headerShown: false, }} />
-      <Stack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'Do you have coronavirus? ' }} />
-      <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Registration' }} />
-    </Stack.Navigator>
+      <LoginStack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in', headerShown: false, }} />
+      <LoginStack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'Do you have coronavirus? ' }} />
+      <LoginStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Registration' }} />
+    </LoginStack.Navigator>
   );
 }
 
 // Part of the startStack
 function startGuideSkipStack() {
   return (
-    <Stack.Navigator
+    <GuideStack.Navigator
       initialRouteName="startGuideSkipStack"
       screenOptions={{
         gestureEnabled: true,
@@ -263,18 +225,16 @@ function startGuideSkipStack() {
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <Stack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="GuideScreen" component={GuideScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Login" component={loginStack} options={{ headerShown: false }} />
-    </Stack.Navigator>
+      <GuideStack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ headerShown: false }} />
+      <GuideStack.Screen name="GuideScreen" component={GuideScreen} options={{ headerShown: false }} />
+      <GuideStack.Screen name="Login" component={loginStack} options={{ headerShown: false }} />
+    </GuideStack.Navigator>
   );
 }
 
 // Bottom tabbar navigation
 function tabNavigation() {
-
   return (
-
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -282,16 +242,16 @@ function tabNavigation() {
 
           if (route.name === 'Competition') {
             iconName = focused ? 'trophy' : 'trophy';
-            size = focused ? 34 : 30;
+            size = focused ? 30 : 28;
           } else if (route.name === 'Spendings') {
             iconName = focused ? 'drop' : 'drop';
-            size = focused ? 34 : 30;
+            size = focused ? 30 : 28;
           } else if (route.name === 'Tips') {
             iconName = focused ? 'info' : 'info';
-            size = focused ? 34 : 30;
+            size = focused ? 30 : 28;
           } else if (route.name === 'Profile') {
             iconName = focused ? 'user' : 'user';
-            size = focused ? 34 : 30;
+            size = focused ? 30 : 28;
           }
           return <LineIcons name={iconName} size={size} color={color} />;
         },
@@ -301,7 +261,8 @@ function tabNavigation() {
         inactiveTintColor: 'white',
         activeBackgroundColor: '#1f657a',
         inactiveBackgroundColor: '#174A5A',
-        style: { height: 85 },
+        style: { height: 90,
+        backgroundColor:'#174A5A' },
         labelStyle: { fontSize: 12, paddingBottom: 5 },
 
       }}>
@@ -310,21 +271,16 @@ function tabNavigation() {
       <Tab.Screen name="Tips" component={tipsStack} />
       <Tab.Screen name="Profile" component={profileStack} />
     </Tab.Navigator>
-
-
   );
 }
 
-
 export default function App() {
   return (
-    // MainStack
     <NavigationContainer >
-      <RootStack.Navigator>
-        <RootStack.Screen name="WelcomeScreen" component={startStack} options={{ headerShown: false }} />
-        <RootStack.Screen name="navigation" component={tabNavigation} options={{ headerShown: false }} />
-      </RootStack.Navigator>
-    </NavigationContainer>
-
+    <RootStack.Navigator>
+      <RootStack.Screen name="WelcomeScreen" component={startStack} options={{ headerShown: false }} />
+      <RootStack.Screen name="navigation" component={tabNavigation} options={{ headerShown: false }} />
+    </RootStack.Navigator>
+  </NavigationContainer>
   );
 }

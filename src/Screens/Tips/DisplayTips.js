@@ -9,38 +9,31 @@ class LaundryScreen extends React.Component  {
     super(props);
     this.state = {
       tips:[],
-      id:-1,
-      data:''
     };
   }
   
-  getTips = async()=> {
-
-    var id = await this.props.navigation.getParam('chuj', null)
-    alert(id)
-
-    await TipsService.GetTipsByCategoryId(id).then(x=>{
+  getTips =()=> {
+    var id = this.props.route.params.key
+    TipsService.GetTipsByCategoryId(id).then(x=>{
     this.setState({ tips : x})
         }).catch(err => {
     alert(JSON.stringify(err));
         });
   }
   
-  async componentDidMount() {
-    // var id = await this.props.navigation.getParam('chuj', null)
-    // alert(id)
+  componentDidMount() {
     this.getTips()
-    //this.setState({ data: this.props.navigation.getParam('key', {}) })
   }
 
-  _body(item) {
+  body(item) {
     return (
       <View>
         <Text style={styles.text}>{item.description}</Text>
       </View>
     );
   }
-  _head(item) {
+
+  head(item) {
     return (
       <View style={styles.box}>
         <Text style={styles.header}>{item.title}</Text>
@@ -48,6 +41,7 @@ class LaundryScreen extends React.Component  {
       </View>
     );
   }
+
   render() {
     return (
       <SafeAreaView style={{height: '100%', width: '100%'}}>
@@ -66,8 +60,8 @@ class LaundryScreen extends React.Component  {
             }}>
             <AccordionList
               list={this.state.tips}
-              header={this._head}
-              body={this._body}
+              header={this.head}
+              body={this.body}
             />
           </View>
         </ScrollView>
@@ -95,6 +89,7 @@ const styles = {
     paddingLeft: 30,
     lineHeight: 24,
     paddingTop: 10,
+    paddingBottom: 10,
   },
   header: {
     fontSize: 16,

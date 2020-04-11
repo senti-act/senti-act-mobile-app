@@ -34,25 +34,9 @@ class TipsScreen extends React.Component {
       ],
     };
   }
+
   componentDidMount() {}
 
-  _onPress(item) {
-
-    if (item.id == 1) {
-      this.props.navigation.navigate('Display');
-      this.props.navigation.setParams({ key: 1 })
-    } else if (item.id == 2) {
-      this.props.navigation.navigate('Bathing tips');
-    } else if (item.id == 3) {
-      this.props.navigation.navigate('Toilet tips');
-    } else if (item.id == 4) {
-      this.props.navigation.navigate('Dish cleaning tips');
-    } else if (item.id == 5) {
-      this.props.navigation.navigate('Faucet tips');
-    } else if (item.id == 6) {
-      this.props.navigation.navigate('Water waste tips');
-    }
-  }
   render() {
     return (
       <>
@@ -100,8 +84,7 @@ class TipsScreen extends React.Component {
                 renderItem={({item}) => (
                   <TouchableOpacity
                     onPress={() => 
-                      this.props.navigation.navigate('Display',{params:{chuj: item.id}})
-                      //this._onPress(item)
+                      this.props.navigation.navigate('Display', {key:item.id})
                     }
                     style={{
                       flex: 1,
