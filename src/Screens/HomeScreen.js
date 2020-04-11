@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
+  Button,
 } from 'react-native';
 const { height, width } = Dimensions.get('window');
 import jebani from '../Assets/competition.png';
@@ -15,25 +16,10 @@ import * as Progress from 'react-native-progress';
 import AchievementService from '../Networking/AchievementService';
 import LinearGradient from 'react-native-linear-gradient';
 import UserService from '../Networking/UserService';
+import { Line } from 'react-native-svg';
+import { abs } from 'react-native-reanimated';
 
 
-
-function Item({ index, nickname, score }) {
-  return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: 'white', borderBottomWidth: 1, padding: 15, borderBottomColor: '#A2B7BD', borderRadius: 5 }}>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "50%", justifyContent: 'center' }}>
-        <Text style={{ width: '30%' }}>{index}</Text>
-        <Text style={{ width: '70%', fontWeight: 'bold', color: '#2F5D6C' }}>{nickname}</Text>
-      </View>
-      <View style={{ width: '50%', flexDirection: 'row', flexWrap: 'wrap' }}>
-        <Text style={{ width: '70%', fontWeight: 'bold', color: '#2F5D6C', fontSize: 17, textAlign: 'right' }}>{score}</Text>
-        <View style={{ width: "30%" }}>
-          <Image style={{ width: 18, height: 26, alignSelf: "flex-end" }} source={require('../Assets/drop.png')} />
-        </View>
-      </View>
-    </View >
-  );
-}
 
 
 
@@ -128,7 +114,6 @@ const BagdeBoxProgress = props => {
 };
 
 
-
 class HomeScreen extends React.Component {
   constructor() {
     super();
@@ -140,7 +125,6 @@ class HomeScreen extends React.Component {
       achievements: [],
       users: [],
       sortedUsers: [],
-
     };
   }
 
@@ -217,15 +201,27 @@ class HomeScreen extends React.Component {
           </View>
         );
       }
+
       case 'leaderboard': {
+
         const list = this.state.users.sort((a, b) => { return b.xp - a.xp; })
+        const userLoggedIn = 5   // ID of user that is currently logged in
+
+        const colors = ['#C0E9EE', '#80D0D8', '#46BAC6']
+        const colorsDefault = ['white', 'white', 'white',]
+
+        const firstPlace = require('../Assets/firstplace.png');
+        const secondPlace = require('../Assets/secondplace.png');
+        const thirdPlace = require('../Assets/thirdplace.png');
+        const drop = require('../Assets/drop.png');
+
         return (
           <View>
             <View>
               <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 10 }}> The following days are left of the competition</Text>
               <View style={{ flexDirection: 'row', flexWrap: "wrap" }}>
-                <Progress.Bar progress={0.5} width={240} height={10} color={'#184858'} style={{ height: 10, alignSelf: 'center', marginBottom: 10, width: '70%' }} />
-                <Text style={{ color: '#2F5D6C', fontWeight: 'bold', alignSelf: 'flex-end', width: '30%', paddingHorizontal: 10 }}>15 days left</Text>
+                <Progress.Bar progress={0.5} width={240} height={10} color={'#184858'} style={styles.progressBarLb} />
+                <Text style={styles.textLb}>15 days left</Text>
               </View>
               <View>
                 <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15 }}>The best players</Text>
@@ -234,19 +230,56 @@ class HomeScreen extends React.Component {
                   windowSize={1}
                   initialNumToRender={3}
                   data={list}
-                  renderItem={({ item, index }) => <Item index={index + 1} nickname={item.nickname} score={item.xp} image={item.image}
-                  />}
+                  renderItem={({ item, index }) =>
+                    <LinearGradient colors={index === userLoggedIn ? colors : colorsDefault} >
+                      <View style={styles.containerLb}>
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "50%", justifyContent: 'center', textAlignVertical: 'center' }}>
+                          <View style={{ width: '40%' }}>
+                            <Image style={{ marginRight: 5 }} source={
+                              index === 0 ? firstPlace : firstPlace &&
+                                index === 1 ? secondPlace : secondPlace &&
+                                  index === 2 ? thirdPlace : thirdPlace}></Image>
+                          </View>
+                          <View style={{ width: '60%' }}>
+                            <Text style={styles.textLb2}>{item.nickname}</Text>
+                          </View>
+                        </View>
+                        <View style={{ width: '50%', flexDirection: 'row', flexWrap: 'wrap' }}>
+                          <Text style={styles.textLb3}>{item.xp}</Text>
+                          <View style={{ width: "30%" }}>
+                            <Image style={styles.dropProp} source={drop} />
+                          </View>
+                        </View>
+                      </View >
+                    </LinearGradient>
+                  }
                 ></FlatList>
               </View>
+
               <View>
                 <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15 }}>Other players</Text>
                 <FlatList
-                  maxToRenderPerBatch={1}
+                  maxToRenderPerBatch={3}
                   windowSize={1}
                   initialNumToRender={4}
+                  initialScrollIndex={userLoggedIn}
                   data={list}
-                  renderItem={({ item, index }) => <Item index={index + 1} nickname={item.nickname} score={item.xp} image={item.image}
-                  />}
+                  renderItem={({ item, index }) =>
+                    <LinearGradient colors={index === userLoggedIn ? colors : colorsDefault}>
+                      <View style={styles.containerLb}>
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "50%", justifyContent: 'center' }}>
+                          <Text style={{ width: '30%' }}>{index + 1}</Text>
+                          <Text style={styles.textLb2}>{item.nickname}</Text>
+                        </View>
+                        <View style={{ width: '50%', flexDirection: 'row', flexWrap: 'wrap' }}>
+                          <Text style={styles.textLb3}>{item.xp}</Text>
+                          <View style={{ width: "30%" }}>
+                            <Image style={styles.dropProp} source={drop} />
+                          </View>
+                        </View>
+                      </View >
+                    </LinearGradient>
+                  }
                 ></FlatList>
               </View>
             </View>
@@ -480,6 +513,46 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
   },
+  progressBarLb: {
+    height: 10,
+    alignSelf: 'center',
+    marginBottom: 10,
+    width: '70%',
+  },
+  textLb: {
+    color: '#2F5D6C',
+    fontWeight: 'bold',
+    alignSelf: 'flex-end',
+    width: '30%',
+    paddingHorizontal: 10,
+  },
+  textLb2: {
+    width: '70%',
+    fontWeight: 'bold',
+    color: '#2F5D6C',
+  },
+  textLb3: {
+    width: '70%',
+    fontWeight: 'bold',
+    color: '#2F5D6C',
+    fontSize: 17,
+    textAlign: 'right',
+  },
+  containerLb: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    borderBottomWidth: 1,
+    padding: 15,
+    borderBottomColor: '#A2B7BD',
+    borderRadius: 10,
+    justifyContent: 'center',
+  },
+  dropProp: {
+    width: 18,
+    height: 26,
+    alignSelf: "flex-end",
+  },
+
 });
 
 export default HomeScreen;
