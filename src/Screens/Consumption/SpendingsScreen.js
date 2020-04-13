@@ -11,6 +11,13 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
+
+var currentWeek = moment().format('W');
+var currentMonth = moment().format('MMMM');
+var currentYear = parseInt(moment().format('YYYY'));
+const firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('DD.M.YYYY');
+const lastWeekDay = moment().day("Friday").year(currentYear).week(currentWeek).format('DD.M.YYYY');
 
 const data1 = [5, 45, 28, 80, 99, 12, 44];
 const data2 = [20, 60, 45, 60, 40, 5];
@@ -34,16 +41,47 @@ const linedata = {
 };
 
 class SpendingsScreen extends React.Component {
+  componentDidMount() {
+  }
   constructor(props) {
     super();
     this.state = {
-      date: '1.7.2020 - 7.7.2020',
+      date: firstWeekDay + ' - ' + lastWeekDay,
+
     };
   }
 
-  clickHandler = g => {
+  clickHandler = (g) => {
     this.setState({ date: g });
   };
+
+
+  increment = () => {
+    if (this.state.date === currentYear) {
+      this.setState({ date: this.state.date + 1 })
+    }
+    else {
+      alert('fuck off')
+    }
+    // else if () {
+
+    // }
+  }
+
+
+  decrement = () => {
+    if (this.state.date === currentYear) {
+      this.setState({ date: this.state.date - 1 })
+    }
+    else {
+      alert('fuck off')
+    }
+    // else if () {
+
+    // }
+  }
+
+
 
   render() {
     const { route, navigation } = this.props;
@@ -64,7 +102,7 @@ class SpendingsScreen extends React.Component {
               </View>
             </LinearGradient>
           </View>
-
+          <TouchableOpacity onPress={() => this.increment()}><Text>{currentYear}</Text></TouchableOpacity>
           <View style={styles.container}>
             <View
               style={{
@@ -79,14 +117,15 @@ class SpendingsScreen extends React.Component {
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                 }}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.decrement()}>
                   <Image
                     source={require('../../Assets/back.png')}
                     style={{ width: 20, height: 20 }}
+
                   />
                 </TouchableOpacity>
                 <Text>{this.state.date}</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.increment()}>
                   <Image
                     source={require('../../Assets/next.png')}
                     style={{ width: 20, height: 20 }}
@@ -96,21 +135,21 @@ class SpendingsScreen extends React.Component {
               <View style={{ flex: 3, flexDirection: 'row', width: '92%' }}>
                 <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity
-                    onPress={() => this.clickHandler('8.7.2020 - 15.7.2020')}
+                    onPress={() => this.clickHandler(this.state.date)}
                     style={styles.buttonStyle}>
                     <Text style={{ textAlign: 'center' }}>Week</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity
-                    onPress={() => this.clickHandler('July')}
+                    onPress={() => this.clickHandler(currentMonth)}
                     style={styles.buttonStyle}>
                     <Text style={{ textAlign: 'center' }}>Month</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
                   <TouchableOpacity
-                    onPress={() => this.clickHandler('2020')}
+                    onPress={() => this.clickHandler(currentYear)}
                     style={styles.buttonStyle}>
                     <Text style={{ textAlign: 'center' }}>Year</Text>
                   </TouchableOpacity>

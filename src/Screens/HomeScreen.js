@@ -8,7 +8,6 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
-  Button,
 } from 'react-native';
 const { height, width } = Dimensions.get('window');
 import jebani from '../Assets/competition.png';
@@ -16,11 +15,7 @@ import * as Progress from 'react-native-progress';
 import AchievementService from '../Networking/AchievementService';
 import LinearGradient from 'react-native-linear-gradient';
 import UserService from '../Networking/UserService';
-import { Line } from 'react-native-svg';
-import { abs } from 'react-native-reanimated';
-
-
-
+import moment from 'moment';
 
 
 const BagdeBox = props => {
@@ -203,12 +198,15 @@ class HomeScreen extends React.Component {
       }
 
       case 'leaderboard': {
+        const currentDate = new Date().getDate();
+        const lastDayOfCurrentMonth = moment().endOf('month').format('DD');
+        const calculateMonthProgress = currentDate / lastDayOfCurrentMonth;
 
-        const list = this.state.users.sort((a, b) => { return b.xp - a.xp; })
-        const userLoggedIn = 5   // ID of user that is currently logged in
+        const list = this.state.users.sort((a, b) => { return b.xp - a.xp; });
+        const userLoggedIn = 5;   // ID of user that is currently logged in
 
-        const colors = ['#C0E9EE', '#80D0D8', '#46BAC6']
-        const colorsDefault = ['white', 'white', 'white',]
+        const colors = ['#C0E9EE', '#80D0D8', '#46BAC6'];
+        const colorsDefault = ['white', 'white', 'white',];
 
         const firstPlace = require('../Assets/firstplace.png');
         const secondPlace = require('../Assets/secondplace.png');
@@ -220,8 +218,8 @@ class HomeScreen extends React.Component {
             <View>
               <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 10 }}> The following days are left of the competition</Text>
               <View style={{ flexDirection: 'row', flexWrap: "wrap" }}>
-                <Progress.Bar progress={0.5} width={240} height={10} color={'#184858'} style={styles.progressBarLb} />
-                <Text style={styles.textLb}>15 days left</Text>
+                <Progress.Bar progress={calculateMonthProgress} width={240} height={10} color={'#184858'} style={styles.progressBarLb} />
+                <Text style={styles.textLb}>{lastDayOfCurrentMonth - currentDate} days left</Text>
               </View>
               <View>
                 <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15 }}>The best players</Text>
