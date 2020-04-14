@@ -53,8 +53,6 @@ class SpendingsScreen extends React.Component {
     super();
     this.state = {
       date: firstWeekDay + ' - ' + lastWeekDay,
-
-
     };
   }
 
@@ -66,7 +64,11 @@ class SpendingsScreen extends React.Component {
   increment = () => {
     if (!isNaN(this.state.date)) {
       this.setState({ date: this.state.date + 1 })
+    } else {
+      var d = moment().month(this.state.date).add(1, 'month').format("MMMM")
+      this.setState({ date: d })
     }
+
     // else if (this.state.date)) {
     //   // this.setState({ date: moment(this.state.date).add(1, 'month').format('MMMM') })
     //   alert('fuck off')
