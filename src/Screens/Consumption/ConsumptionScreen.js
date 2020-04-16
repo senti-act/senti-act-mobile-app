@@ -73,56 +73,28 @@ class ConsumptionScreen extends React.Component {
                 </TouchableOpacity>
               </View>
               <View style={{ flexDirection: 'row', width: '100%', alignSelf: 'center' }}>
-                <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
+                <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
                   <TouchableOpacity style={styles.buttonStyle}>
                     <Text style={{ textAlign: 'center' }}>Week</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
+                <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
                   <TouchableOpacity style={styles.buttonStyle}>
                     <Text style={{ textAlign: 'center' }}>Month</Text>
                   </TouchableOpacity>
                 </View>
-                <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
+                <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
                   <TouchableOpacity style={styles.buttonStyle}>
                     <Text style={{ textAlign: 'center' }}>Year</Text>
                   </TouchableOpacity>
                 </View>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: '100%',
-                  alignItems: 'center',
-                }}>
-                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2, alignSelf: 'center' }}>
-                  <Text style={styles.boldText}>My Daily Consumption</Text>
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      alignSelf: 'center',
-                      fontSize: 20,
-                    }}>
-                    470 L
-                  </Text>
-                </View>
-                <View style={{ padding: 10, width: '50%', paddingHorizontal: 2 }}>
-                  <Text style={styles.boldText}>Avg. User Consumption</Text>
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      alignSelf: 'center',
-                      fontSize: 20,
-                    }}>
-                    420 L
-                  </Text>
-                </View>
-              </View>
               <View>
+
                 <ProgressChart
                   data={data}
                   width={Dimensions.get('window').width - 100}
-                  height={220}
+                  height={260}
                   hideLegend={true}
                   chartConfig={{
                     backgroundColor: 'blue',
@@ -137,9 +109,12 @@ class ConsumptionScreen extends React.Component {
                   style={{
                     borderRadius: 16,
                     fontSize: 25,
-                    marginLeft: 45,
+                    marginLeft: 55,
                   }}
                 />
+                <View style={{ position: 'absolute', alignSelf: 'center', marginVertical: 110 }}>
+                  <Text>591 L~{"\n"}(676 L)</Text>
+                </View>
               </View>
               <View style={{ flexDirection: 'row' }}>
                 <View
@@ -154,7 +129,7 @@ class ConsumptionScreen extends React.Component {
                     underlayColor="#ccc">
                     <Text></Text>
                   </TouchableHighlight>
-                  <Text style={styles.smallText}> My consumption</Text>
+                  <Text style={styles.smallText}>My consumption</Text>
                 </View>
                 <View
                   style={{
@@ -177,14 +152,25 @@ class ConsumptionScreen extends React.Component {
               </View>
               <View style={{ width: '78%', alignSelf: 'center' }}>
                 <Text style={{ textAlign: 'center', paddingTop: 10 }}>
-                  Here you can see how much water you've consumed compared to
-                  the average consumer
+                  To this date. you have used less water
+                  than last week.
                 </Text>
               </View>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'center', width: '120%', marginVertical: 15 }}>
+                <View style={{ width: '33%', marginHorizontal: 10 }}>
+                  <TouchableOpacity style={styles.buttonStyle}
+                    onPress={() => navigation.goBack()}>
+                    <Text style={{ textAlign: 'center' }}>Previous period</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: '50%', marginHorizontal: 10 }}>
+                  <TouchableOpacity style={styles.buttonStyle}
+                    onPress={() => navigation.goBack()}>
+                    <Text style={{ textAlign: 'center' }}>Average of all players</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-          </View>
-          <View style={styles.bottomConsumptionCard}>
-            <Text>You've spent 50 L more than an average user.</Text>
           </View>
         </View>
       </ScrollView>
@@ -228,11 +214,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     width: '100%',
     justifyContent: 'center',
+    padding: 4
   },
   smallText: {
     fontSize: 11,
     alignSelf: 'center',
     fontWeight: 'bold',
+    marginLeft: 5
   },
   boldText: {
     fontSize: 14,
