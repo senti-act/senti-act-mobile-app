@@ -100,8 +100,8 @@ export default class GuideScreen extends React.Component {
                 slides={slides}
                 showSkipButton={true}
                 showNextButton={false}
-                onDone={() => navigation.navigate('StartLoginScreen')}
-                onSkip={() => navigation.navigate('StartLoginScreen')}
+                onDone={() => navigation.navigate('WelcomeScreen')}
+                onSkip={() => navigation.navigate('WelcomeScreen')}
                 activeDotStyle={styles.dot}
                 buttonTextStyle={styles.text}
             />

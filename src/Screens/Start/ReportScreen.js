@@ -14,90 +14,63 @@ class DataSyncScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <ScrollView>
-                <View style={{ padding: 20, height: '100%' }}>
-                    <View style={{ width: '100%', borderRadius: 10, height: '20%', marginBottom: 15 }}>
-                        <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
-                            style={{
-                                width: '100%',
-                                borderRadius: 10,
-                                height: '95%'
-                            }} />
-                        <View style={{ width: '105%', position: "absolute" }}>
-                            <Image source={require('../../Assets/start/womanquestionares.png')} style={{ width: '50%', height: 100, alignSelf: 'flex-end' }}></Image>
-                        </View>
-                    </View>
-                    <View style={styles.contentContainer}>
-                        <View style={{ paddingVertical: 17 }}>
-                            <Text style={styles.contentFont}>We found a match between your address and the following data:</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputLongTop} mode='outlined' label='Email' underlineColor='#184B5B'
-                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <TextInput style={styles.textInputLongBottom} mode='outlined' label='Message' underlineColor='#184B5B'
-                                theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
-                        </View>
-                        <View style={{ alignSelf: 'center' }}>
-                            <Text style={styles.contentFont}>You will receive an email with the answer to your inquiry as soon as possible</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', alignSelf: "center" }}>
-                            <View style={{ width: '100%', marginVertical: 8, alignSelf: 'center' }}>
-                                <TouchableOpacity style={styles.buttonRight}
-                                    onPress={() => navigation.navigate('RegistrationScreen')}>
-                                    <Text style={{ alignSelf: 'center', color: 'white' }}>Send</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </View>
-                </View >
-            </ScrollView>
-
-
+        <View style={{ padding: 20}}>
+            <View style={{ borderRadius: 10, marginBottom: 15 }}>
+                <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
+                    style={{
+                        width: '100%',
+                        borderRadius: 10,
+                        height: 140
+                    }} />
+                <View style={{ width: '105%', position: "absolute" }}>
+                    <Image source={require('../../Assets/start/womanquestionares.png')} style={{ width: '50%', height: 150, alignSelf: 'flex-end' }}></Image>
+                </View>
+            </View>
+            <View style={styles.contentContainer}>
+                <Text style={styles.contentFont}>We found a match between your address and the following data:</Text>
+                <TextInput style={styles.textInputLongTop} mode='outlined' label='Email' underlineColor='#184B5B'
+                    theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
+                <TextInput style={styles.textInputLongBottom} mode='outlined' label='Message' underlineColor='#184B5B'
+                    theme={{ colors: { primary: '#2C5A69', background: '#003489' } }} />
+                <Text style={styles.contentFont}>You will receive an email with the answer to your inquiry as soon as possible</Text>
+                <TouchableOpacity style={styles.buttonRight}
+                    onPress={() => navigation.navigate('RegistrationScreen')}>
+                    <Text style={{ alignSelf: 'center', color: 'white' }}>Send</Text>
+                </TouchableOpacity>
+            </View>
+        </View >
         );
     }
 }
 
 
 const styles = {
-    title: {
-        alignSelf: 'center',
-        color: '#2E5C6B',
-        fontSize: 17,
-        paddingBottom: 15,
-        fontWeight: 'bold',
-        padding: 0,
-    },
     textInputLongTop: {
         backgroundColor: 'white',
-        padding: 5,
         borderRadius: 20,
-        width: '100%',
         height: 40,
+        paddingVertical:5
     },
     textInputLongBottom: {
         backgroundColor: 'white',
-        padding: 5,
         borderRadius: 20,
-        width: '100%',
         height: 130,
+        paddingVertical:5
     },
     buttonRight: {
         backgroundColor: '#FA821B',
         borderRadius: 10,
-        width: '33%',
         height: 35,
         justifyContent: 'center',
-        alignSelf: "center",
-        marginVertical: 10,
+        alignSelf: 'center',
+        marginVertical: 20,
+        width: 110
     },
     contentContainer: {
         backgroundColor: 'white',
         paddingHorizontal: 15,
-        height: '100%',
+        paddingTop:20,
         borderRadius: 10,
-        marginBottom: 120
     },
     contentFont: {
         color: '#2E5C6B',

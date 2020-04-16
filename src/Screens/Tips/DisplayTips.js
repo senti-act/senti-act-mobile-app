@@ -17,7 +17,7 @@ class LaundryScreen extends React.Component  {
     TipsService.GetTipsByCategoryId(id).then(x=>{
     this.setState({ tips : x})
         }).catch(err => {
-    alert(JSON.stringify(err));
+          console.log(JSON.stringify(err));
         });
   }
   

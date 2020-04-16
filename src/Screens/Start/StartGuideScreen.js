@@ -32,7 +32,7 @@ class StartGuideScreen extends React.Component {
                 <View style={{ width: '100%' }}>
 
                     <TouchableOpacity style={styles.skipButton}
-                        onPress={() => navigation.navigate('StartLoginScreen')}>
+                        onPress={() => navigation.navigate('WelcomeScreen')}>
                         <Text style={{ alignSelf: 'flex-end', color: 'black', fontSize: 16 }}>Skip</Text>
                     </TouchableOpacity>
                 </View>

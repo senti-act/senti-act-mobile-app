@@ -13,18 +13,11 @@ import Svg, {
 } from 'react-native-svg';
 
 class InstructionsScreen extends React.Component {
-  componentDidMount() {}
-  constructor(props) {
-    super();
-  }
   render() {
     const {navigation} = this.props;
     return (
-      <View style={{backgroundColor: 'white'}}>
+      <View style={{backgroundColor: '#EEF3F7'}}>
         <Svg height="100%" width="100%" viewBox="00 0 100 100">
-          <Text fill="#174a5a" fontSize="8" x="16" y="-10">
-            Why play Senti.act?
-          </Text>
           <Text fill="#174a5a" fontSize="4">
             <TSpan x="43" y="19">
               You get an overview of

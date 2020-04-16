@@ -1,26 +1,9 @@
 import * as React from 'react';
 import {Text, View, ScrollView, SafeAreaView} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {AccordionList} from 'accordion-collapse-react-native';
+import Accordion from '../../Components/Accordion'
 
 class About extends React.Component {
-  componentDidMount() {}
 
-  _body(item) {
-    return (
-      <View>
-        <Text style={styles.text}>{item.body}</Text>
-      </View>
-    );
-  }
-  _head(item) {
-    return (
-      <View style={styles.box}>
-        <Text style={styles.header}>{item.title}</Text>
-        <Ionicons size={24} name={'ios-arrow-forward'} color="#174A5A" />
-      </View>
-    );
-  }
   render() {
     this.state = {
       list1: [
@@ -67,11 +50,7 @@ class About extends React.Component {
               borderRadius: 10,
               flexDirection: 'column',
             }}>
-            <AccordionList
-              list={this.state.list1}
-              header={this._head}
-              body={this._body}
-            />
+            <Accordion list={this.state.list1}/>
           </View>
           <Text style={styles.title}> Senti.act on social media </Text>
           <View
@@ -81,11 +60,7 @@ class About extends React.Component {
               borderRadius: 10,
               flexDirection: 'column',
             }}>
-            <AccordionList
-              list={this.state.list2}
-              header={this._head}
-              body={this._body}
-            />
+            <Accordion list={this.state.list2}/>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -94,35 +69,7 @@ class About extends React.Component {
 }
 
 const styles = {
-  box: {
-    height: 60,
-    borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingRight: 30,
-  },
-  text: {
-    fontSize: 15,
-    fontWeight: 'normal',
-    color: '#174A5A',
-    textAlign: 'justify',
-    paddingRight: 30,
-    paddingLeft: 30,
-    paddingBottom: 10,
-    paddingTop: 10,
-    lineHeight: 24,
-  },
-  header: {
-    fontSize: 16,
-    fontWeight: 'normal',
-    color: '#174A5A',
-    paddingRight: 30,
-    paddingLeft: 30,
-  },
   title: {
-    //fontWeight: 700,
     color: '#174A5A',
     fontSize: 18,
     paddingTop: 40,
@@ -130,4 +77,5 @@ const styles = {
     fontWeight: 'bold',
   },
 };
+
 export default About;

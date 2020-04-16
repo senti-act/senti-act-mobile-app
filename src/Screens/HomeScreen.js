@@ -135,7 +135,7 @@ class HomeScreen extends React.Component {
         this.setState({ achievements: x });
       })
       .catch(err => {
-        alert(err);
+        console.log(err)
       });
   };
 
@@ -145,7 +145,7 @@ class HomeScreen extends React.Component {
         this.setState({ users: x })
       })
       .catch(err => {
-        alert(err);
+        console.log(err)
       })
   };
 
