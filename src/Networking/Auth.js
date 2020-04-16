@@ -1,15 +1,10 @@
 import axios from 'axios';
-//import AsyncStorage from '@react-native-community/async-storage';
 
-var baseApiAddress = 'http://192.168.2.235:4000';
+var baseApiAddress = 'https://dev.services.senti.cloud/core/v2/auth/organisation';
 
 const request = async function (options) {
-  //var token= await AsyncStorage.getItem('token')
   const client = axios.create({
-    baseURL: baseApiAddress,
-    // headers: {
-    //   Authorization: 'Bearer ' + token,
-    // },
+    baseURL: baseApiAddress
   });
 
   const onSuccess = function (response) {
@@ -25,7 +20,6 @@ const request = async function (options) {
       // Something else happened while setting up the request
       // triggered the error
     }
-
     return Promise.reject(error.response || error.message);
   };
 
@@ -34,4 +28,20 @@ const request = async function (options) {
     .catch(onError);
 };
 
-export default request;
+function auth(orgNickname,username,password) {
+    return request({
+      url: `/`,
+      method: 'POST',
+      data:{
+        orgNickname:orgNickname,
+        username:username,
+        password:password
+      }
+    });
+  }
+  
+  const Auth = {
+    auth
+  };
+  
+  export default Auth;

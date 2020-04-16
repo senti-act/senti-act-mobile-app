@@ -27,7 +27,8 @@ class RegistrationScreen extends React.Component {
         this.state.children,
       )
         .then(() => {
-          alert('succesfully created new user');
+          //alert('succesfully created new user');
+          this.props.navigation.navigate('startGuideSkipStack')
         })
         .catch(err => {
           alert(JSON.stringify(err));
@@ -86,7 +87,7 @@ class RegistrationScreen extends React.Component {
               <TextInput
                 style={styles.textInputLong}
                 mode="outlined"
-                label="E-mail"
+                label="Nickname"
                 onChangeText={text => this.setState({nickname: text})}
                 theme={{colors: {primary: '#18495A'}}}
                 autoCapitalize="none"

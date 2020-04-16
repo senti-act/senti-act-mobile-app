@@ -3,12 +3,11 @@ import { Text, View, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createAppContainer } from 'react-navigation';
-import { createSwitchNavigator } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import HomeScreen from './src/Screens/HomeScreen';
 import Header from './src/Components/Header'
+import DeviceInfo from 'react-native-device-info';
 //Start screens
 import DataSyncScreen from './src/Screens/Start/DataSyncScreen';
 import GuideScreen from './src/Screens/Start/GuideScreen';
@@ -43,70 +42,99 @@ const SpendingsStack = createStackNavigator();
 const StartStack = createStackNavigator();
 const LoginStack = createStackNavigator();
 const GuideStack = createStackNavigator();
-const Main = createStackNavigator();
 const RootStack = createStackNavigator();
 
-function tipsStack() {
+// First stack to be executed when app starts running
+function startStack() {
+
   return (
-    <TipsStack.Navigator
-      initialRouteName="Tips and tricks"
+    <StartStack.Navigator
+      initialRouteName="WelcomeScreen"
+
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#EEF3F7',
+          height: Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
+          shadowRadius: 0,
+          shadowOffset: {
+              height: 0,
+          },
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+          color: '#174A5A',
+          letterSpacing: 1,
+        },
+        headerTintColor: '#174A5A',
+        headerBackTitleVisible: false,
+        headerBackTitleStyle:{
+          paddingLeft:30
+        }
+      }}
+      
+      headerMode="float">
+      <StartStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
+      <StartStack.Screen name="InstructionsScreen" component={InstructionsScreen} options={{ title: 'Why play Senti.act?' }} />
+      <StartStack.Screen name="DataSyncScreen" component={DataSyncScreen} options={{ title: 'Connect to your data' }} />
+      <StartStack.Screen name="DataCheckScreen" component={DataCheckScreen} options={{ title: 'Good luck, we found a match' }} />
+      <StartStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Complete your user profile' }} />
+      <StartStack.Screen name="startGuideSkipStack" component={startGuideSkipStack} options={{ headerShown: false }} />
+      <StartStack.Screen name="GuideScreen" component={GuideScreen} options={{ title: '' }} />
+      <StartStack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'Something went wrong? ' }} />
+      <StartStack.Screen name='StartLoginScreen' component={StartLoginScreen} options={{ title: '', headerTransparent: true }} />
+      <StartStack.Screen name='Login' component={loginStack} options={{ headerShown: false }}
+       />
+    </StartStack.Navigator>
+  );
+}
+// Part of the startStack
+function startGuideSkipStack() {
+  return (
+    <GuideStack.Navigator
+      initialRouteName="startGuideSkipStack"
       screenOptions={{
         gestureEnabled: true,
         headerStyle: {
-          backgroundColor: 'trasparent',
-          backgroundColor: '#f2f2f2',
-          height: 75,
+          height: '15%',
         },
         headerTitleStyle: {
-          fontSize: 24,
+          fontSize: 20,
+          paddingVertical: 10,
         },
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
         headerBackTitleVisible: false,
-        
-
       }}
       headerMode="float">
-      <TipsStack.Screen
-        name="Tips and tricks"
-        component={TipsScreen}
-        // options={({ navigation }) => ({
-        //   header: () => <Header title="Shifts" />,
-        // })}
-      />
-      <TipsStack.Screen name="Display" component={DisplayTips} />
-      <TipsStack.Screen
-        name="Submit tips"
-        component={SubmitTipScreen}
-        options={{ headerTitle: 'Add your tips and tricks' }}
-      />
-    </TipsStack.Navigator>
+      <GuideStack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ headerShown: false }} />
+      <GuideStack.Screen name="GuideScreen" component={GuideScreen} options={{ headerShown: false }} />
+    </GuideStack.Navigator>
   );
 }
-
-function profileStack() {
+// Part of the startStack
+function loginStack() {
   return (
-    <ProfileStack.Navigator
-      initialRouteName="Profile"
+    <LoginStack.Navigator
+      initialRouteName="Login"
       screenOptions={{
+        headerTransparent: false,
         gestureEnabled: true,
         headerStyle: {
-          backgroundColor: '#f2f2f2',
-          height: 75,
+          height: '100%',
         },
         headerTitleStyle: {
-          fontSize: 24,
+          fontSize: 20,
+          paddingVertical: 10,
         },
         headerTitleAlign: 'center',
+        headerTintColor: '#174a5a',
+        headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
-      <ProfileStack.Screen name="Account" component={AccountSettings} />
-      <ProfileStack.Screen name="Notifications" component={Notifications} />
-      <ProfileStack.Screen name="Privacy policy" component={Privacy} />
-      <ProfileStack.Screen name="FAQ" component={FAQ} />
-      <ProfileStack.Screen name="About" component={About} />
-    </ProfileStack.Navigator>
+      <LoginStack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in', headerShown: false, }} />
+      <LoginStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Registration' }} />
+    </LoginStack.Navigator>
   );
 }
 
@@ -144,91 +172,98 @@ function spendingsStack() {
   );
 }
 
-// First stack to be executed when app starts running
-function startStack() {
-
+function tipsStack() {
   return (
-    <StartStack.Navigator
-      initialRouteName="WelcomeScreen"
-
+    <TipsStack.Navigator
+      initialRouteName="Tips and tricks"
       screenOptions={{
-
-        gestureEnabled: true,
         headerStyle: {
-          height: '100%',
+          backgroundColor: '#EEF3F7',
+          height: Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
+          shadowRadius: 0,
+          shadowOffset: {
+              height: 0,
+          },
         },
         headerTitleStyle: {
+          fontWeight: 'bold',
           fontSize: 20,
-          paddingVertical: 10,
+          color: '#174A5A',
+          letterSpacing: 1,
         },
-        headerTitleAlign: 'center',
-        headerTintColor: '#174a5a',
-        //headerBackTitleVisible: false,
+        headerTintColor: '#174A5A',
+        headerBackTitleVisible: false,
+        headerBackTitleStyle:{
+          paddingLeft:30
+        }
       }}
       headerMode="float">
-      <StartStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
-      <StartStack.Screen name="InstructionsScreen" component={InstructionsScreen} options={{ headerShown: false }} />
-      <StartStack.Screen name="DataSyncScreen" component={DataSyncScreen} options={{ title: 'Connect to your data' }} />
-      <StartStack.Screen name="DataCheckScreen" component={DataCheckScreen} options={{ title: 'Good luck we found a match' }} />
-      <StartStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Complete your profile' }} />
-      <StartStack.Screen name="startGuideSkipStack" component={startGuideSkipStack} options={{ headerShown: false }} />
-      <StartStack.Screen name="GuideScreen" component={GuideScreen} options={{ title: '' }} />
-      <StartStack.Screen name='StartLoginScreen' component={StartLoginScreen} options={{ title: '', headerTransparent: true }} />
-      <StartStack.Screen name='Login' component={loginStack} options={{ headerShown: false }} />
-    </StartStack.Navigator>
+      <TipsStack.Screen
+        name="Tips and tricks"
+        component={TipsScreen}
+        options={({ navigation }) => ({
+          headerRight: () => (
+            <View style={{ paddingRight: 16 }}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Submit tips')}
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 50,
+                  height: 50,
+                  backgroundColor: '#FF8000',
+                  borderRadius: 25,
+                }}>
+                <LineIcons name={'pencil'} size={25} color={'white'} />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
+      <TipsStack.Screen name="Display" component={DisplayTips}
+      options={({ route }) => ({ title: route.params.title })}/>
+      <TipsStack.Screen
+        name="Submit tips"
+        component={SubmitTipScreen}
+        options={{ headerTitle: 'Add your tips and tricks' }}
+      />
+    </TipsStack.Navigator>
   );
 }
 
-// Part of the startStack
-function loginStack() {
+function profileStack() {
   return (
-    <LoginStack.Navigator
-      initialRouteName="Login"
+    <ProfileStack.Navigator
+      initialRouteName="Profile"
       screenOptions={{
-        headerTransparent: false,
-        gestureEnabled: true,
         headerStyle: {
-          height: '100%',
+          backgroundColor: '#EEF3F7',
+          height: Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
+          shadowRadius: 0,
+          shadowOffset: {
+              height: 0,
+          },
         },
         headerTitleStyle: {
+          fontWeight: 'bold',
           fontSize: 20,
-          paddingVertical: 10,
+          color: '#174A5A',
+          letterSpacing: 1,
         },
-        headerTitleAlign: 'center',
-        headerTintColor: '#174a5a',
+        headerTintColor: '#174A5A',
         headerBackTitleVisible: false,
+        headerBackTitleStyle:{
+          paddingLeft:30
+        }
       }}
       headerMode="float">
-      <LoginStack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in', headerShown: false, }} />
-      <LoginStack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'Do you have coronavirus? ' }} />
-      <LoginStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Registration' }} />
-    </LoginStack.Navigator>
-  );
-}
-
-// Part of the startStack
-function startGuideSkipStack() {
-  return (
-    <GuideStack.Navigator
-      initialRouteName="startGuideSkipStack"
-      screenOptions={{
-        gestureEnabled: true,
-        headerStyle: {
-          height: '15%',
-        },
-        headerTitleStyle: {
-          fontSize: 20,
-          paddingVertical: 10,
-        },
-        headerTitleAlign: 'center',
-        headerTintColor: '#174a5a',
-        headerBackTitleVisible: false,
-      }}
-      headerMode="float">
-      <GuideStack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ headerShown: false }} />
-      <GuideStack.Screen name="GuideScreen" component={GuideScreen} options={{ headerShown: false }} />
-      <GuideStack.Screen name="Login" component={loginStack} options={{ headerShown: false }} />
-    </GuideStack.Navigator>
+      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+      <ProfileStack.Screen name="Account" component={AccountSettings} />
+      <ProfileStack.Screen name="Notifications" component={Notifications} />
+      <ProfileStack.Screen name="Privacy policy" component={Privacy} />
+      <ProfileStack.Screen name="FAQ" component={FAQ} />
+      <ProfileStack.Screen name="About" component={About} />
+    </ProfileStack.Navigator>
   );
 }
 

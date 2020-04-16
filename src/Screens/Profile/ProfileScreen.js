@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import UserService from '../../Networking/UserService'
+import AsyncStorage from '@react-native-community/async-storage';
 
 class ProfileScreen extends React.Component {
   constructor(props) {
@@ -26,13 +27,13 @@ class ProfileScreen extends React.Component {
   }
 
   getUserById(){
-    var id = this.state.id
+    var id = this.state.id 
     UserService.getById(id).then(x => {
       this.setState({
         user:x
       })
     }).catch(err =>{
-      alert(err)
+      console.log(err)
     })
   }
 
@@ -95,26 +96,26 @@ class ProfileScreen extends React.Component {
               <Text style={styles.text}>Notifications</Text>
               <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.touchable}>
+            <TouchableOpacity style={styles.touchable} 
+              onPress={() => navigation.navigate('Privacy policy')}>
               <Text
-                style={styles.text}
-                onPress={() => navigation.navigate('Privacy policy')}>
+                style={styles.text}>
                 Privacy Policy
               </Text>
               <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.touchable}>
+            <TouchableOpacity style={styles.touchable}
+              onPress={() => navigation.navigate('FAQ')}>
               <Text
-                style={styles.text}
-                onPress={() => navigation.navigate('FAQ')}>
+                style={styles.text}>
                 FAQ
               </Text>
               <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.touchable}>
+            <TouchableOpacity style={styles.touchable}
+              onPress={() => navigation.navigate('About')}>
               <Text
-                style={styles.text}
-                onPress={() => navigation.navigate('About')}>
+                style={styles.text}>
                 About Senti.act
               </Text>
               <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
@@ -126,7 +127,14 @@ class ProfileScreen extends React.Component {
           </View>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate('LoginScreen')}
+            onPress={async () => {
+              try {
+                await AsyncStorage.removeItem('token');
+                this.props.navigation.navigate('WelcomeScreen');
+              } catch (e) {
+                alert(e.message);
+              }
+            }}
             style={[
               styles.touchable,
               {
