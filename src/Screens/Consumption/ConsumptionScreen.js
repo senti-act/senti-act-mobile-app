@@ -11,19 +11,73 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import moment from 'moment';
 
-const data = {
-  data: [0.7, 0.8],
-};
+
+var currentWeek = moment().format('W');
+var currentMonth = moment().format('MMMM');
+
+var currentYear = parseInt(moment().format('YYYY'));
+const firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('DD.M.YYYY');
+const lastWeekDay = moment().day("Friday").year(currentYear).week(currentWeek).format('DD.M.YYYY');
+
 
 class ConsumptionScreen extends React.Component {
-  constructor(props) {
-    super();
+
+  componentDidMount() {
+
   }
 
-  changeValue = g => {
-    this.setState({ value: g });
+  constructor(props) {
+    super(props);
+    this.state = {
+      fill: '15 L',
+      previous: '20 L',
+      date: firstWeekDay,
+      selectedButton: 'button1'
+    }
+  }
+
+  clickHandler = (g) => {
+    this.setState({ date: g });
   };
+
+  increment = () => {
+    if (!isNaN(this.state.date)) {
+      this.setState({ date: this.state.date + 1 })
+    }
+    else if (this.state.date.length < 8) {
+      var mAdd = moment().month(this.state.date).add(1, 'month').format("MMMM")
+      this.setState({ date: mAdd })
+    }
+    else if (this.state.date.length > 7) {
+      var dAdd = moment().day(this.state.date).add(8, 'day').format("DD-MM-YYYY")
+      this.setState({ date: dAdd })
+    }
+  }
+
+  decrement = () => {
+    if (!isNaN(this.state.date)) {
+      this.setState({ date: this.state.date - 1 })
+    }
+    else if (this.state.date.length < 8) {
+      var mSub = moment().month(this.state.date).subtract(1, 'month').format("MMMM")
+      this.setState({ date: mSub })
+    }
+    else if (this.state.date.length > 7) {
+      var dAdd = moment().day(this.state.date).subtract(8, 'day').format("DD.M.YYYY")
+      this.setState({ date: dAdd })
+    }
+
+  }
+
+  onButtonPress = (g, m) => {
+
+    this.setState({ selectedButton: m, date: g })
+  }
+
+
 
   render() {
     const { navigation } = this.props;
@@ -31,13 +85,17 @@ class ConsumptionScreen extends React.Component {
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
           <View style={styles.header}>
-            <LinearGradient colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
+            <LinearGradient colors={['#aacce5', '#c5e9f4']}
               style={{
                 width: '100%',
                 borderRadius: 10,
                 flexDirection: 'row',
+                padding: 3
               }}>
-              <View style={{}}>
+              <View style={{ width: '100%', position: "absolute" }}>
+                <Image source={require('../../Assets/start/girlphone.png')} style={{ width: '40%', height: 100, alignSelf: 'flex-end' }}></Image>
+              </View>
+              <View style={{ width: '70%' }}>
                 <Text style={styles.headerText}>
                   Get an overview of your consumption status
               </Text>
@@ -57,15 +115,16 @@ class ConsumptionScreen extends React.Component {
                   flex: 0.8,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
+                  marginBottom: 10
                 }}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.decrement()}>
                   <Image
                     source={require('../../Assets/back.png')}
                     style={{ width: 20, height: 20 }}
                   />
                 </TouchableOpacity>
-                <Text style={{}}>December</Text>
-                <TouchableOpacity>
+                <Text style={{ color: "#174A5A" }}>{this.state.date}</Text>
+                <TouchableOpacity onPress={() => this.increment()}>
                   <Image
                     source={require('../../Assets/next.png')}
                     style={{ width: 20, height: 20 }}
@@ -74,84 +133,135 @@ class ConsumptionScreen extends React.Component {
               </View>
               <View style={{ flexDirection: 'row', width: '100%', alignSelf: 'center' }}>
                 <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
-                  <TouchableOpacity style={styles.buttonStyle}>
-                    <Text style={{ textAlign: 'center' }}>Week</Text>
+                  <TouchableOpacity style={{
+                    backgroundColor: this.state.selectedButton === "button1" ? 'orange' : 'white',
+                    borderColor: this.state.selectedButton === "button1" ? 'orange' : '#174A5A',
+                    marginRight: 5,
+                    borderRadius: 50,
+                    borderWidth: 2,
+                    width: '100%',
+                    justifyContent: 'center',
+                    padding: 4
+                  }}
+                    onPress={() => this.onButtonPress(firstWeekDay, 'button1')}>
+                    <Text style={{
+                      textAlign: 'center',
+                      color: this.state.selectedButton === "button1" ? 'white' : '#174A5A'
+                    }}>
+                      Week</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
-                  <TouchableOpacity style={styles.buttonStyle}>
-                    <Text style={{ textAlign: 'center' }}>Month</Text>
+                  <TouchableOpacity style={{
+                    backgroundColor: this.state.selectedButton === "button2" ? 'orange' : 'white',
+                    borderColor: this.state.selectedButton === "button2" ? 'orange' : '#174A5A',
+                    marginRight: 5,
+                    borderRadius: 50,
+                    borderWidth: 2,
+                    width: '100%',
+                    justifyContent: 'center',
+                    padding: 4
+                  }}
+                    onPress={() => this.onButtonPress(currentMonth, 'button2')}>
+                    <Text style={{
+                      textAlign: 'center',
+                      color: this.state.selectedButton === "button2" ? 'white' : '#174A5A'
+                    }}>Month</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
-                  <TouchableOpacity style={styles.buttonStyle}>
-                    <Text style={{ textAlign: 'center' }}>Year</Text>
+                  <TouchableOpacity style={{
+                    backgroundColor: this.state.selectedButton === "button3" ? 'orange' : 'white',
+                    borderColor: this.state.selectedButton === "button3" ? 'orange' : '#174A5A',
+                    marginRight: 5,
+                    borderRadius: 50,
+                    borderWidth: 2,
+                    width: '100%',
+                    justifyContent: 'center',
+                    padding: 4
+                  }}
+                    onPress={() => this.onButtonPress(currentYear, 'button3')}>
+                    <Text style={{
+                      textAlign: 'center',
+                      color: this.state.selectedButton === "button3" ? 'white' : '#174A5A'
+                    }}>Year</Text>
                   </TouchableOpacity>
                 </View>
               </View>
-              <View>
-
-                <ProgressChart
-                  data={data}
-                  width={Dimensions.get('window').width - 100}
-                  height={260}
-                  hideLegend={true}
-                  chartConfig={{
-                    backgroundColor: 'blue',
-                    backgroundGradientFrom: 'white',
-                    backgroundGradientTo: 'white',
-                    decimalPlaces: 3,
-                    color: (opacity = 1) => `rgba(23, 74, 92, ${opacity})`,
-                    style: {
-                      borderRadius: 16,
-                    },
-                  }}
+              <View style={{ marginVertical: 25 }}>
+                <AnimatedCircularProgress
+                  size={180}
+                  width={10}
+                  fill={75}
+                  tintColor="#174A5A"
+                  onAnimationComplete={() => console.log('onAnimationComplete')}
+                  backgroundColor="white"
                   style={{
-                    borderRadius: 16,
-                    fontSize: 25,
-                    marginLeft: 55,
-                  }}
-                />
-                <View style={{ position: 'absolute', alignSelf: 'center', marginVertical: 110 }}>
-                  <Text>591 L~{"\n"}(676 L)</Text>
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row' }}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    alignSelf: 'center',
-                    justifyContent: 'center',
+                    alignSelf: 'center'
                   }}>
-                  <TouchableHighlight
-                    style={styles.circleMyConsumption}
-                    underlayColor="#ccc">
-                    <Text></Text>
-                  </TouchableHighlight>
-                  <Text style={styles.smallText}>My consumption</Text>
-                </View>
-                <View
+                  {
+                    () => (
+                      <View>
+                        <Text style={{ fontSize: 25, color: '#174A5A' }}>
+                          {this.state.fill}
+                        </Text>
+                        <Text style={{ fontSize: 18, color: '#95ACB4' }}>
+                          ({this.state.previous})
+                        </Text>
+                      </View>
+                    )
+                  }
+                </AnimatedCircularProgress>
+                <AnimatedCircularProgress
+                  size={145}
+                  width={10}
+                  fill={89}
+                  tintColor="#AFDFDB"
+                  onAnimationComplete={() => console.log('onAnimationComplete')}
+                  backgroundColor="white"
                   style={{
-                    flexDirection: 'row',
-                    margin: 5,
-                    flex: 1,
                     alignSelf: 'center',
-                    justifyContent: 'center',
+                    position: 'absolute',
+                    marginTop: 17
                   }}>
-                  <TouchableHighlight
-                    style={styles.circleAvgConsumption}
-                    underlayColor="#ccc">
-                    <Text></Text>
-                  </TouchableHighlight>
-                  <Text style={styles.smallText}> Avg. user consumption</Text>
+                </AnimatedCircularProgress>
+                <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <TouchableHighlight
+                      style={styles.circleMyConsumption}
+                      underlayColor="#ccc">
+                      <Text></Text>
+                    </TouchableHighlight>
+                    <Text style={styles.smallText}>Current period</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      margin: 5,
+                      flex: 1,
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <TouchableHighlight
+                      style={styles.circleAvgConsumption}
+                      underlayColor="#ccc">
+                      <Text></Text>
+                    </TouchableHighlight>
+                    <Text style={styles.smallText}>Previous period</Text>
+                  </View>
                 </View>
               </View>
               <View>
                 <Text style={styles.boldText}>My consumption status</Text>
               </View>
               <View style={{ width: '78%', alignSelf: 'center' }}>
-                <Text style={{ textAlign: 'center', paddingTop: 10 }}>
+                <Text style={{ textAlign: 'center', color: '#174A5A', marginVertical: 10 }}>
                   To this date. you have used less water
                   than last week.
                 </Text>
@@ -160,20 +270,20 @@ class ConsumptionScreen extends React.Component {
                 <View style={{ width: '33%', marginHorizontal: 10 }}>
                   <TouchableOpacity style={styles.buttonStyle}
                     onPress={() => navigation.goBack()}>
-                    <Text style={{ textAlign: 'center' }}>Previous period</Text>
+                    <Text style={{ textAlign: 'center', color: '#174A5A' }}>Previous period</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={{ width: '50%', marginHorizontal: 10 }}>
                   <TouchableOpacity style={styles.buttonStyle}
                     onPress={() => navigation.goBack()}>
-                    <Text style={{ textAlign: 'center' }}>Average of all players</Text>
+                    <Text style={{ textAlign: 'center', color: '#174A5A' }}>Average of all players</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
           </View>
         </View>
-      </ScrollView>
+      </ScrollView >
     );
   }
 }
@@ -184,19 +294,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEF3F7',
     alignItems: 'center',
     justifyContent: 'center',
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 1.41,
-    // elevation: 2,
     paddingHorizontal: 15,
   },
   header: {
     marginVertical: 10,
     width: '100%',
+
   },
   headerTitle: {
     fontWeight: 'bold',
@@ -206,9 +309,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 25,
     fontSize: 16,
+    color: '#174A5A'
   },
   buttonStyle: {
-    backgroundColor: 'rgba(0,0,0,0)',
+    // backgroundColor: this.state.buttonColor,
+    borderColor: '#174A5A',
     marginRight: 5,
     borderRadius: 50,
     borderWidth: 2,
@@ -220,12 +325,14 @@ const styles = StyleSheet.create({
     fontSize: 11,
     alignSelf: 'center',
     fontWeight: 'bold',
-    marginLeft: 5
+    marginLeft: 5,
+    color: '#174A5A'
   },
   boldText: {
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
     fontWeight: 'bold',
+    color: '#174A5A'
   },
   consumptionCard: {
     flex: 1,
@@ -234,25 +341,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     minHeight: 130,
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 1.41,
-    // elevation: 2,
   },
   bottomConsumptionCard: {
     marginTop: 5,
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 1,
-    // },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 1.41,
-    // elevation: 2,
     borderRadius: 10,
     padding: 10,
     backgroundColor: 'white',
@@ -267,10 +358,11 @@ const styles = StyleSheet.create({
       ) / 2,
     width: Dimensions.get('window').width * 0.04,
     height: Dimensions.get('window').width * 0.04,
-    backgroundColor: '#446E7B',
+    backgroundColor: '#2D5F6D',
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 5,
+    marginHorizontal: 5,
   },
   circleAvgConsumption: {
     borderRadius:
@@ -279,10 +371,11 @@ const styles = StyleSheet.create({
       ) / 2,
     width: Dimensions.get('window').width * 0.04,
     height: Dimensions.get('window').width * 0.04,
-    backgroundColor: '#73929C',
+    backgroundColor: '#AFDFDB',
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 5,
+    marginHorizontal: 5,
   },
 });
 
