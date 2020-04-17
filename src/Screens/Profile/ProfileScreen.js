@@ -18,12 +18,14 @@ class ProfileScreen extends React.Component {
     super();
     this.state={
       id:'1574ec1a-7443-11ea-9eaf-08606e6ce1c1',
-      user:{}
+      user:{},
+      sentiUser:{}
     }
   }
 
   componentDidMount(){
     this.getUserById()
+    this.getSentiUser()
   }
 
   getUserById(){
@@ -34,6 +36,14 @@ class ProfileScreen extends React.Component {
       })
     }).catch(err =>{
       console.log(err)
+    })
+  }
+
+  async getSentiUser(){
+    var user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user)
+    this.setState({
+      sentiUser:user
     })
   }
 
@@ -86,7 +96,7 @@ class ProfileScreen extends React.Component {
             }}>
             <TouchableOpacity
               style={styles.touchable}
-              onPress={() => navigation.navigate('Account', {user: this.state.user})}>
+              onPress={() => navigation.navigate('Account', {user: this.state.sentiUser})}>
               <Text style={styles.text}>Account setting</Text>
               <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>

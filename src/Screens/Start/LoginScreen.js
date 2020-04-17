@@ -11,13 +11,27 @@ class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nickname: '',
-            password:'',
-            organisation:'',
+            nickname: 'cbroberg',
+            password:'webhouse',
+            organisation:'hfsundbyvester',
             //hfsundbyvester
             users: [],
             loading: false,
         };
+    }
+
+    componentDidMount() {
+        this.getAllUsers()
+    }
+
+    getAllUsers() {
+        UserService.getAllUsers().then(x => {
+            this.setState({
+                users: x
+            })
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     handleLogin = () => {
@@ -27,8 +41,22 @@ class LoginScreen extends React.Component {
                 .then(async token => {
                   try {
                     await AsyncStorage.setItem('token', token.token);
+                    if (this.state.users.length > 0) {
+                        if (this.state.users.find(users => users.uuid === token.uuid)) {
+                            this.setState({loading: false});
+                            await this.setUser()
+                            this.props.navigation.navigate('navigation');
+                        } else {
+                            UserService.registerUser(this.state.nickname, token.uuid).then(async () => {
+                                this.setState({loading: false});
+                                await this.setUser()
+                                this.props.navigation.navigate('navigation');
+                              })
+                              .catch(err => {
+                                alert(JSON.stringify(err));
+                              })}
+                    }
                     this.setState({loading: false});
-                    this.props.navigation.navigate('navigation');
                   } catch (e) {
                     this.setState({loading: false});
                     alert(e.message);
@@ -42,6 +70,24 @@ class LoginScreen extends React.Component {
             this.setState({loading: false});
         } 
       };
+
+    setUser = () => {
+        return new Promise((resolve, reject) => {
+          Auth.getMe()
+            .then(async x => {
+              console.log(x)
+              try {
+                await AsyncStorage.setItem('user', JSON.stringify(x));
+                resolve();
+              } catch (e) {
+                reject(e);
+              }
+            })
+            .catch(e => {
+              reject(e);
+            });
+        });
+    };
 
     render() {
         const { navigation } = this.props;

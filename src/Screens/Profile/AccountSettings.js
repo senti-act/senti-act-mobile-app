@@ -12,23 +12,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ModalDropdown from 'react-native-modal-dropdown';
 
-
 class AccountSettings extends React.Component {
-  constructor(props) {
-    super();
-    this.state={
-      user:{}
-    }
-  }
-
-  componentDidMount() {
-    var user = this.props.route.params.user[0]
-    this.setState({
-      user:user
-    })
-  }
 
   render() {
+    const user = this.props.route.params.user
     return (
       <SafeAreaView style={{ height: '100%', width: '100%' }}>
         <ScrollView
@@ -58,7 +45,6 @@ class AccountSettings extends React.Component {
               </View>
             </LinearGradient>
           </View>
-
           <View
             style={{
               backgroundColor: 'white',
@@ -69,37 +55,37 @@ class AccountSettings extends React.Component {
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Email</Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>{this.state.user.nickname}</Text>
+                <Text style={styles.secondRowText}>{user.userName}</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Password</Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>senti123</Text>
+                <Text style={styles.secondRowText}>lol?</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Name</Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>Christian</Text>
+                <Text style={styles.secondRowText}>{user.firstName} {user.lastName}</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Address</Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>Korsgade 40</Text>
+                <Text style={styles.secondRowText}>{user.aux.sentiWaterworks.extendedProfile.address}</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Post number</Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>9000</Text>
+                <Text style={styles.secondRowText}>{user.aux.sentiWaterworks.extendedProfile.postnr}</Text>
               </View>
             </View>
             <View style={styles.box}>
               <Text style={styles.firstRowText}>City</Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>Aalborg</Text>
+                <Text style={styles.secondRowText}>{user.aux.sentiWaterworks.extendedProfile.city}</Text>
               </View>
             </View>
             <View style={styles.box}>
@@ -107,7 +93,7 @@ class AccountSettings extends React.Component {
                 Number of adults in the household
               </Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>{this.state.user.numOfAdults}</Text>
+                <Text style={styles.secondRowText}>{user.aux.sentiWaterworks.extendedProfile.noOfAdults}</Text>
               </View>
             </View>
             <View style={styles.box}>
@@ -115,7 +101,7 @@ class AccountSettings extends React.Component {
                 Number of children in the household
               </Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>{this.state.user.numOfKids}</Text>
+                <Text style={styles.secondRowText}>{user.aux.sentiWaterworks.extendedProfile.noOfChildren}</Text>
               </View>
             </View>
             <View style={styles.box}>
@@ -166,8 +152,6 @@ class AccountSettings extends React.Component {
     );
   }
 }
-
-
 
 const styles = {
   box: {

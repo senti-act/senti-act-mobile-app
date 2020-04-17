@@ -4,37 +4,42 @@ import { AsyncStorage } from 'react-native';
 function getAllUsers() {
   return request({
     url: `/api/users`,
-    method: 'GET',
-
+    method: 'GET'
   });
 }
 
 function getById(id) {
   return request({
     url: `/api/users/${id}`,
-    method: 'GET',
+    method: 'GET'
   });
 }
 
-function registerUser(nickname, numOfAdults, numOfKids) {
+function getByUuid(uuid) {
+  return request({
+    url: `/api/users/uuid/${uuid}`,
+    method: 'GET'
+  });
+}
+
+function registerUser(nickname, uuid) {
   return request({
     url: `/api/users`,
     method: 'POST',
     data: {
       nickname: nickname,
-      numOfAdults: numOfAdults,
-      numOfKids: numOfKids,
       xp: 0,
-      level_id: 1
+      level_id: 1,
+      uuid:uuid
     },
   });
 }
 
-
 const UserService = {
   getAllUsers,
   registerUser,
-  getById
+  getById,
+  getByUuid
 };
 
 export default UserService;

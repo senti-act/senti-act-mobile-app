@@ -9,7 +9,10 @@ import {
 import Switches from 'react-native-switches';
 import {TextInput} from 'react-native-gesture-handler';
 import ModalDropdown from 'react-native-modal-dropdown';
+import RNPickerSelect from 'react-native-picker-select';
 import TipsService from '../../Networking/TipsService';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 class SubmitTipScreen extends React.Component {
   constructor(props) {
@@ -19,12 +22,12 @@ class SubmitTipScreen extends React.Component {
       category: '',
       title: '',
       description: '',
-      user_id: '1574ec1a-7443-11ea-9eaf-08606e6ce1c1'
     };
   }
 
-  submitTip() {
-    TipsService.SubmitTip(this.state.category + 1, this.state.title, this.state.description, this.state.user_id,this.state.anonymous) 
+  async submitTip() {
+    var id = await AsyncStorage.getItem('id');
+    TipsService.SubmitTip(this.state.category, this.state.title, this.state.description, id,this.state.anonymous) 
       .then(() => {
         alert('succesfully submitted the tip');
       })
@@ -47,7 +50,17 @@ class SubmitTipScreen extends React.Component {
 
   componentDidMount() {}
 
-  render() {
+  render(){
+    const categories =
+    [
+        {label: 'Laundry tips', value: '1'},
+        {label: 'Bathing tips', value: '2'},
+        {label: 'Toilet tips', value: '3'},
+        {label: 'Washing dishes tips', value: '4'},
+        {label: 'Faucet tips', value: '5'},
+        {label: 'Water waste tips', value: '6'},
+    ]
+
     return (
       <SafeAreaView style={{height: '100%', width: '100%'}}>
         <ScrollView
@@ -109,36 +122,39 @@ class SubmitTipScreen extends React.Component {
             <View style={styles.box}>
               <Text style={styles.text}> Category </Text>
               <View
-                style={{
-                  height: 35,
-                  width: 180,
-                  borderWidth: 1,
-                  borderColor: '#BBD7E9',
-                  borderRadius: 12,
-                  backgroundColor: 'white',
-                }}>
-                <ModalDropdown
-                  options={[
-                    'Laundry tips',
-                    'Bathing tips',
-                    'Toilet tips',
-                    'Washing dishes tips',
-                    'Faucet tips',
-                    'Water waste tips',
-                  ]}
-                  onSelect={category => this.setState({category})}
-                  value={this.state.category}
-                  textStyle={{
-                    alignSelf: 'center',
-                    fontSize: 14,
-                    paddingTop: 7,
-                    color: '#6D6993',
+                style={styles.viewPicker}>
+                <RNPickerSelect
+                  onValueChange={value => {
+                    this.setState({
+                      category: value,
+                    });
                   }}
-                  dropdownTextStyle={{fontSize: 15, color: '#174A5A'}}
-                  dropdownTextHighlightStyle={{
-                    fontSize: 16,
-                    color: '#174A5A',
-                  }}></ModalDropdown>
+                  placeholder={{label: 'Select the category',value: null,color: '#2E5C6B',
+                  }}
+                  items={categories}
+                  style={{
+                    inputAndroid: {
+                      color: '#2E5C6B',
+                      fontSize: 12,
+                      fontWeight: 'bold',  
+                    },
+                    iconContainer: {
+                      right: 10,
+                      top: -4,
+                    },
+                    placeholder: {
+                      color: '#2E5C6B',
+                      fontSize: 12,
+                      fontWeight: 'bold',
+                    },
+                    inputIOS:{
+                      color: '#2E5C6B',
+                      fontSize: 12,
+                      fontWeight: 'bold',                    
+                    }
+                  }}
+                  useNativeAndroidPickerStyle={false}
+                />
               </View>
             </View>
             <View
@@ -255,6 +271,15 @@ const styles = {
     paddingBottom: 10,
     alignSelf: 'center',
   },
+  viewPicker:{
+    height: 35,
+    width: 220,
+    borderWidth: 1,
+    borderColor: '#BBD7E9',
+    borderRadius: 12,
+    justifyContent:'center',
+    paddingLeft:10
+  }
 };
 
 export default SubmitTipScreen;

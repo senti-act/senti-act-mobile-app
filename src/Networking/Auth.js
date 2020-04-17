@@ -1,6 +1,7 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
-var baseApiAddress = 'https://dev.services.senti.cloud/core/v2/auth/organisation';
+var baseApiAddress = 'https://dev.services.senti.cloud/core/v2/auth';
 
 const request = async function (options) {
   const client = axios.create({
@@ -30,7 +31,7 @@ const request = async function (options) {
 
 function auth(orgNickname,username,password) {
     return request({
-      url: `/`,
+      url: `/organisation`,
       method: 'POST',
       data:{
         orgNickname:orgNickname,
@@ -39,9 +40,21 @@ function auth(orgNickname,username,password) {
       }
     });
   }
+
+  async function getMe() {
+    var token= await AsyncStorage.getItem('token')
+    return request({
+      url: `/user`,
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
+  }
   
   const Auth = {
-    auth
+    auth,
+    getMe
   };
   
   export default Auth;

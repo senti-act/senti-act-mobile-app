@@ -15,8 +15,8 @@ import * as Progress from 'react-native-progress';
 import AchievementService from '../Networking/AchievementService';
 import LinearGradient from 'react-native-linear-gradient';
 import UserService from '../Networking/UserService';
+import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
-
 
 const BagdeBox = props => {
   return (
@@ -108,7 +108,6 @@ const BagdeBoxProgress = props => {
   );
 };
 
-
 class HomeScreen extends React.Component {
   constructor() {
     super();
@@ -116,28 +115,18 @@ class HomeScreen extends React.Component {
       value: 0,
       status: 'badges',
       text: 'Reduce your water consumption and earn badges',
-      userId: '1574ec1a-7443-11ea-9eaf-08606e6ce1c1',
       achievements: [],
       users: [],
       sortedUsers: [],
+      userId:''
     };
   }
 
-
   componentDidMount() {
-    this.getAchievements();
     this.getAllUsers();
+    this.getId();
+    this.getAchievements();
   }
-
-  getAchievements = () => {
-    AchievementService.getForUser(this.state.userId)
-      .then(x => {
-        this.setState({ achievements: x });
-      })
-      .catch(err => {
-        console.log(err)
-      });
-  };
 
   getAllUsers = () => {
     UserService.getAllUsers()
@@ -147,6 +136,31 @@ class HomeScreen extends React.Component {
       .catch(err => {
         console.log(err)
       })
+  };
+
+  getId = async ()=>{
+    var user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user)
+    var uuid = user.uuid
+    UserService.getByUuid(uuid).then(async x =>{
+      // this.setState({
+      //   userId:x[0].id
+      // })
+      await AsyncStorage.setItem('id', x[0].id);
+    }).catch(err=>{
+      alert(JSON.stringify(err))
+    })
+  }
+
+  getAchievements = async () => {
+    var id = await AsyncStorage.getItem('id')
+    AchievementService.getForUser(id)
+      .then(x => {
+        this.setState({ achievements: x });
+      })
+      .catch(err => {
+        console.log(err)
+      });
   };
 
   decide = () => {
@@ -173,7 +187,7 @@ class HomeScreen extends React.Component {
                 />
               </View>
               <Text style={styles.userBoxPoints}>
-                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>1500</Text>{' '}
+                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>1500</Text>
                 points
               </Text>
               <Text style={styles.userBoxDescr}>
@@ -187,7 +201,9 @@ class HomeScreen extends React.Component {
                 return <BagdeBox title={x.name} description={x.description} />;
               })
             ) : (
-                <Text>Cannot load achievements</Text>
+              <View style={{width:'100%', height:30, justifyContent:'center', alignItems:'center'}}>
+                <Text style={styles.userBoxDescr}>You don't have any achievements yet :/</Text>
+                </View>
               )}
             {/* <BagdeBox title='Expert' description='You have been an active player for 3 months and you have therefore earned the title as an expert.'></BagdeBox>
               <BagdeBoxProgress title='Water Expert' description='You have been reduced you water consumption by 10%.' progress={0.8}></BagdeBoxProgress>
