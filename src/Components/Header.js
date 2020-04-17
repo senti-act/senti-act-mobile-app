@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Platform,
-} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, Platform} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
 class Header extends React.Component {
@@ -30,8 +24,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 22,
     color: '#174A5A',
     letterSpacing: 1,
-  }
+  },
 });

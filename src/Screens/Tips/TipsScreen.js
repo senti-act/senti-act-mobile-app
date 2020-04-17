@@ -83,8 +83,11 @@ class TipsScreen extends React.Component {
                 scrollEnabled={false}
                 renderItem={({item}) => (
                   <TouchableOpacity
-                    onPress={() => 
-                      this.props.navigation.navigate('Display', {key:item.id, title:item.title})
+                    onPress={() =>
+                      this.props.navigation.navigate('Display', {
+                        key: item.id,
+                        title: item.title,
+                      })
                     }
                     style={{
                       flex: 1,

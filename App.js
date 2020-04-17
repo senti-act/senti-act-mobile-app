@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Text, View, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {Text, View, SafeAreaView} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import HomeScreen from './src/Screens/HomeScreen';
-import Header from './src/Components/Header'
+import Header from './src/Components/Header';
 import DeviceInfo from 'react-native-device-info';
 //Start screens
 import DataSyncScreen from './src/Screens/Start/DataSyncScreen';
@@ -46,15 +46,14 @@ const RootStack = createStackNavigator();
 
 // First stack to be executed when app starts running
 function startStack() {
-
   return (
     <StartStack.Navigator
       initialRouteName="WelcomeScreen"
-
       screenOptions={{
         headerStyle: {
           backgroundColor: '#EEF3F7',
-          height: Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
+          height:
+            Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
           shadowRadius: 0,
           shadowOffset: {
             height: 0,
@@ -69,21 +68,59 @@ function startStack() {
         headerTintColor: '#174A5A',
         headerBackTitleVisible: false,
         headerBackTitleStyle: {
-          paddingLeft: 30
-        }
+          paddingLeft: 30,
+        },
       }}
-
       headerMode="float">
-      <StartStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
-      <StartStack.Screen name="InstructionsScreen" component={InstructionsScreen} options={{ title: 'Why play Senti.act?' }} />
-      <StartStack.Screen name="DataSyncScreen" component={DataSyncScreen} options={{ title: 'Connect to your data' }} />
-      <StartStack.Screen name="DataCheckScreen" component={DataCheckScreen} options={{ title: 'Good luck, we found a match' }} />
-      <StartStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Complete your user profile' }} />
-      <StartStack.Screen name="startGuideSkipStack" component={startGuideSkipStack} options={{ headerShown: false }} />
-      <StartStack.Screen name="GuideScreen" component={GuideScreen} options={{ title: '' }} />
-      <StartStack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'Something went wrong? ' }} />
-      <StartStack.Screen name='StartLoginScreen' component={StartLoginScreen} options={{ title: '', headerTransparent: true }} />
-      <StartStack.Screen name='Login' component={loginStack} options={{ headerShown: false }}
+      <StartStack.Screen
+        name="WelcomeScreen"
+        component={WelcomeScreen}
+        options={{headerShown: false}}
+      />
+      <StartStack.Screen
+        name="InstructionsScreen"
+        component={InstructionsScreen}
+        options={{title: 'Why play Senti.act?'}}
+      />
+      <StartStack.Screen
+        name="DataSyncScreen"
+        component={DataSyncScreen}
+        options={{title: 'Connect to your data'}}
+      />
+      <StartStack.Screen
+        name="DataCheckScreen"
+        component={DataCheckScreen}
+        options={{title: 'Good luck, we found a match'}}
+      />
+      <StartStack.Screen
+        name="RegistrationScreen"
+        component={RegistrationScreen}
+        options={{title: 'Complete your user profile'}}
+      />
+      <StartStack.Screen
+        name="startGuideSkipStack"
+        component={startGuideSkipStack}
+        options={{headerShown: false}}
+      />
+      <StartStack.Screen
+        name="GuideScreen"
+        component={GuideScreen}
+        options={{title: ''}}
+      />
+      <StartStack.Screen
+        name="ReportScreen"
+        component={ReportScreen}
+        options={{title: 'Something went wrong? '}}
+      />
+      <StartStack.Screen
+        name="StartLoginScreen"
+        component={StartLoginScreen}
+        options={{title: '', headerTransparent: true}}
+      />
+      <StartStack.Screen
+        name="Login"
+        component={loginStack}
+        options={{headerShown: false}}
       />
     </StartStack.Navigator>
   );
@@ -107,8 +144,16 @@ function startGuideSkipStack() {
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <GuideStack.Screen name="StartGuideScreen" component={StartGuideScreen} options={{ headerShown: false }} />
-      <GuideStack.Screen name="GuideScreen" component={GuideScreen} options={{ headerShown: false }} />
+      <GuideStack.Screen
+        name="StartGuideScreen"
+        component={StartGuideScreen}
+        options={{headerShown: false}}
+      />
+      <GuideStack.Screen
+        name="GuideScreen"
+        component={GuideScreen}
+        options={{headerShown: false}}
+      />
     </GuideStack.Navigator>
   );
 }
@@ -132,8 +177,16 @@ function loginStack() {
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <LoginStack.Screen name="LoginScreen" component={LoginScreen} options={{ title: 'Log in', headerShown: false, }} />
-      <LoginStack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{ title: 'Registration' }} />
+      <LoginStack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{title: 'Log in', headerShown: false}}
+      />
+      <LoginStack.Screen
+        name="RegistrationScreen"
+        component={RegistrationScreen}
+        options={{title: 'Registration'}}
+      />
     </LoginStack.Navigator>
   );
 }
@@ -147,8 +200,7 @@ function competitionStack() {
         header: () => <Header title="Competition" />,
         gestureEnabled: true,
       }}
-      headerMode="float"
-    >
+      headerMode="float">
       <CompetitionStack.Screen name="Competition" component={HomeScreen} />
     </CompetitionStack.Navigator>
   );
@@ -159,13 +211,18 @@ function spendingsStack() {
     <SpendingsStack.Navigator
       initialRouteName="My water status"
       screenOptions={{
+        header: () => <Header title="Consumption" />,
         gestureEnabled: true,
-        headerTitleAlign: 'center',
-        headerTintColor: '#174a5a',
       }}
       headerMode="float">
-      <SpendingsStack.Screen name="My water consumption" component={SpendingsScreen} options={{ title: 'My water status' }} />
-      <SpendingsStack.Screen name="ConsumptionScreen" component={ConsumptionScreen} options={{ title: 'My water consumption' }} />
+      <SpendingsStack.Screen
+        name="My water consumption"
+        component={SpendingsScreen}
+      />
+      <SpendingsStack.Screen
+        name="ConsumptionScreen"
+        component={ConsumptionScreen}
+      />
     </SpendingsStack.Navigator>
   );
 }
@@ -177,7 +234,8 @@ function tipsStack() {
       screenOptions={{
         headerStyle: {
           backgroundColor: '#EEF3F7',
-          height: Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
+          height:
+            Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
           shadowRadius: 0,
           shadowOffset: {
             height: 0,
@@ -192,16 +250,16 @@ function tipsStack() {
         headerTintColor: '#174A5A',
         headerBackTitleVisible: false,
         headerBackTitleStyle: {
-          paddingLeft: 30
-        }
+          paddingLeft: 30,
+        },
       }}
       headerMode="float">
       <TipsStack.Screen
         name="Tips and tricks"
         component={TipsScreen}
-        options={({ navigation }) => ({
+        options={({navigation}) => ({
           headerRight: () => (
-            <View style={{ paddingRight: 16 }}>
+            <View style={{paddingRight: 16}}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Submit tips')}
                 style={{
@@ -218,12 +276,15 @@ function tipsStack() {
           ),
         })}
       />
-      <TipsStack.Screen name="Display" component={DisplayTips}
-        options={({ route }) => ({ title: route.params.title })} />
+      <TipsStack.Screen
+        name="Display"
+        component={DisplayTips}
+        options={({route}) => ({title: route.params.title})}
+      />
       <TipsStack.Screen
         name="Submit tips"
         component={SubmitTipScreen}
-        options={{ headerTitle: 'Add your tips and tricks' }}
+        options={{headerTitle: 'Add your tips and tricks'}}
       />
     </TipsStack.Navigator>
   );
@@ -234,25 +295,8 @@ function profileStack() {
     <ProfileStack.Navigator
       initialRouteName="Profile"
       screenOptions={{
-        headerStyle: {
-          backgroundColor: '#EEF3F7',
-          height: Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
-          shadowRadius: 0,
-          shadowOffset: {
-            height: 0,
-          },
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 20,
-          color: '#174A5A',
-          letterSpacing: 1,
-        },
-        headerTintColor: '#174A5A',
-        headerBackTitleVisible: false,
-        headerBackTitleStyle: {
-          paddingLeft: 30
-        }
+        header: () => <Header title="Profile" />,
+        gestureEnabled: true,
       }}
       headerMode="float">
       <ProfileStack.Screen name="Profile" component={ProfileScreen} />
@@ -269,14 +313,14 @@ function profileStack() {
 function tabNavigation() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
           if (route.name === 'Competition') {
             iconName = focused ? 'trophy' : 'trophy';
             size = focused ? 30 : 28;
-          } else if (route.name === 'Spendings') {
+          } else if (route.name === 'Consumption') {
             iconName = focused ? 'drop' : 'drop';
             size = focused ? 30 : 28;
           } else if (route.name === 'Tips') {
@@ -296,13 +340,12 @@ function tabNavigation() {
         inactiveBackgroundColor: '#174A5A',
         style: {
           height: 90,
-          backgroundColor: '#174A5A'
+          backgroundColor: '#174A5A',
         },
-        labelStyle: { fontSize: 12, paddingBottom: 5 },
-
+        labelStyle: {fontSize: 12, paddingBottom: 5},
       }}>
       <Tab.Screen name="Competition" component={competitionStack} />
-      <Tab.Screen name="Spendings" component={spendingsStack} />
+      <Tab.Screen name="Consumption" component={spendingsStack} />
       <Tab.Screen name="Tips" component={tipsStack} />
       <Tab.Screen name="Profile" component={profileStack} />
     </Tab.Navigator>
@@ -311,10 +354,18 @@ function tabNavigation() {
 
 export default function App() {
   return (
-    <NavigationContainer >
+    <NavigationContainer>
       <RootStack.Navigator>
-        <RootStack.Screen name="WelcomeScreen" component={startStack} options={{ headerShown: false }} />
-        <RootStack.Screen name="navigation" component={tabNavigation} options={{ headerShown: false }} />
+        <RootStack.Screen
+          name="WelcomeScreen"
+          component={startStack}
+          options={{headerShown: false}}
+        />
+        <RootStack.Screen
+          name="navigation"
+          component={tabNavigation}
+          options={{headerShown: false}}
+        />
       </RootStack.Navigator>
     </NavigationContainer>
   );
