@@ -57,7 +57,7 @@ function startStack() {
           height: Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
           shadowRadius: 0,
           shadowOffset: {
-              height: 0,
+            height: 0,
           },
         },
         headerTitleStyle: {
@@ -68,11 +68,11 @@ function startStack() {
         },
         headerTintColor: '#174A5A',
         headerBackTitleVisible: false,
-        headerBackTitleStyle:{
-          paddingLeft:30
+        headerBackTitleStyle: {
+          paddingLeft: 30
         }
       }}
-      
+
       headerMode="float">
       <StartStack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
       <StartStack.Screen name="InstructionsScreen" component={InstructionsScreen} options={{ title: 'Why play Senti.act?' }} />
@@ -84,7 +84,7 @@ function startStack() {
       <StartStack.Screen name="ReportScreen" component={ReportScreen} options={{ title: 'Something went wrong? ' }} />
       <StartStack.Screen name='StartLoginScreen' component={StartLoginScreen} options={{ title: '', headerTransparent: true }} />
       <StartStack.Screen name='Login' component={loginStack} options={{ headerShown: false }}
-       />
+      />
     </StartStack.Navigator>
   );
 }
@@ -148,7 +148,7 @@ function competitionStack() {
         gestureEnabled: true,
       }}
       headerMode="float"
-      >
+    >
       <CompetitionStack.Screen name="Competition" component={HomeScreen} />
     </CompetitionStack.Navigator>
   );
@@ -159,11 +159,9 @@ function spendingsStack() {
     <SpendingsStack.Navigator
       initialRouteName="My water status"
       screenOptions={{
-        header: () => <Header title="My water status" />,
         gestureEnabled: true,
         headerTitleAlign: 'center',
         headerTintColor: '#174a5a',
-        headerBackTitleVisible: false,
       }}
       headerMode="float">
       <SpendingsStack.Screen name="My water consumption" component={SpendingsScreen} options={{ title: 'My water status' }} />
@@ -182,7 +180,7 @@ function tipsStack() {
           height: Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
           shadowRadius: 0,
           shadowOffset: {
-              height: 0,
+            height: 0,
           },
         },
         headerTitleStyle: {
@@ -193,8 +191,8 @@ function tipsStack() {
         },
         headerTintColor: '#174A5A',
         headerBackTitleVisible: false,
-        headerBackTitleStyle:{
-          paddingLeft:30
+        headerBackTitleStyle: {
+          paddingLeft: 30
         }
       }}
       headerMode="float">
@@ -221,7 +219,7 @@ function tipsStack() {
         })}
       />
       <TipsStack.Screen name="Display" component={DisplayTips}
-      options={({ route }) => ({ title: route.params.title })}/>
+        options={({ route }) => ({ title: route.params.title })} />
       <TipsStack.Screen
         name="Submit tips"
         component={SubmitTipScreen}
@@ -241,7 +239,7 @@ function profileStack() {
           height: Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
           shadowRadius: 0,
           shadowOffset: {
-              height: 0,
+            height: 0,
           },
         },
         headerTitleStyle: {
@@ -252,8 +250,8 @@ function profileStack() {
         },
         headerTintColor: '#174A5A',
         headerBackTitleVisible: false,
-        headerBackTitleStyle:{
-          paddingLeft:30
+        headerBackTitleStyle: {
+          paddingLeft: 30
         }
       }}
       headerMode="float">
@@ -296,8 +294,10 @@ function tabNavigation() {
         inactiveTintColor: 'white',
         activeBackgroundColor: '#1f657a',
         inactiveBackgroundColor: '#174A5A',
-        style: { height: 90,
-        backgroundColor:'#174A5A' },
+        style: {
+          height: 90,
+          backgroundColor: '#174A5A'
+        },
         labelStyle: { fontSize: 12, paddingBottom: 5 },
 
       }}>
@@ -312,10 +312,10 @@ function tabNavigation() {
 export default function App() {
   return (
     <NavigationContainer >
-    <RootStack.Navigator>
-      <RootStack.Screen name="WelcomeScreen" component={startStack} options={{ headerShown: false }} />
-      <RootStack.Screen name="navigation" component={tabNavigation} options={{ headerShown: false }} />
-    </RootStack.Navigator>
-  </NavigationContainer>
+      <RootStack.Navigator>
+        <RootStack.Screen name="WelcomeScreen" component={startStack} options={{ headerShown: false }} />
+        <RootStack.Screen name="navigation" component={tabNavigation} options={{ headerShown: false }} />
+      </RootStack.Navigator>
+    </NavigationContainer>
   );
 }

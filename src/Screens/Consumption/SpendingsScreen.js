@@ -94,9 +94,7 @@ class SpendingsScreen extends React.Component {
     // }
   }
 
-  wtf = () => {
-    moment(currentMonth).add(1, 'M')
-  }
+
 
 
   render() {
@@ -138,7 +136,7 @@ class SpendingsScreen extends React.Component {
                     style={{ width: 20, height: 20 }}
                   />
                 </TouchableOpacity>
-                <Text>{this.state.date}</Text>
+                <Text style={{ color: "#174A5A" }}>{this.state.date}</Text>
                 <TouchableOpacity onPress={() => this.increment()}>
                   <Image
                     source={require('../../Assets/next.png')}
