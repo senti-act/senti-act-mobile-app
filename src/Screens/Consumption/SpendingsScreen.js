@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { LineChart } from 'react-native-chart-kit';
 import {
   Text,
   View,
@@ -8,12 +7,14 @@ import {
   Image,
   ScrollView,
   Dimensions,
-  TouchableHighlight,
-  Button,
+  TouchableHighlight
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { AreaChart, YAxis, Path } from 'react-native-svg-charts'
+import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L } from 'react-native-svg'
+import * as shape from 'd3-shape'
 
 var currentWeek = moment().format('W');
 var currentMonth = moment().format('MMMM');
@@ -22,31 +23,59 @@ var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).fo
 var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('Do MMMM YYYY');
 const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
+const data = [50, 10, 40, 95, 40, 24, 85]
 const data1 = [5, 45, 28, 80, 99, 12, 44];
-const data2 = [20, 60, 45, 60, 40, 5];
-const data3 = [50, 50, 50, 50, 50, 50, 50];
-const linedata = {
-  labels: ['Jan', 'Mar', 'May', 'July', 'Aug', 'Oct', 'Dec'],
-  datasets: [
-    {
-      data: data1,
-      color: (opacity = 1) => '#174A5A',
-    },
-    {
-      data: data2,
-      color: (opacity = 1) => '#9FD9D4',
-    },
-    {
-      data: data3,
-      color: (opacity = 1) => '#F88621',
-    },
-  ],
-};
+const data2 = [20, 60, 45, 60];
+
+const indexToClipFrom = 10
+
+const Gradient = () => (
+  <Defs key={'defs'}>
+    <LiGr id={'gradient'} x1={'0%'} y={'0%'} x2={'0%'} y2={'100%'}>
+      <Stop offset={'0%'} stopColor={'#5ebdb5'} stopOpacity={2} />
+      <Stop offset={'100%'} stopColor={'#a0d9d4'} stopOpacity={0.8} />
+    </LiGr>
+  </Defs>
+)
+
+const Clips = ({ x, width }) => (
+  <Defs key={'clips'}>
+    <ClipPath id={'clip-path-1'} key={'0'}>
+      <Rect x={0} y={'0'} width={x(indexToClipFrom)} height={'100%'} />
+    </ClipPath>
+    <ClipPath id="clip-path-2" key={'1'}>
+      <Rect x={x(indexToClipFrom)} y={'0'} width={width - x(indexToClipFrom)} height={'100%'} />
+    </ClipPath>
+  </Defs>
+)
+
+const Line = ({ line }) => (
+  <Path
+    key={'line'}
+    d={line}
+    stroke={'#2F5D6B'}
+    strokeWidth={3}
+    fill={'none'}
+    clipPath={'url(#clip-path-1)'}
+  />
+)
+
+const HorizontalLine = (({ y }) => (
+  <L
+    key={'zero-axis'}
+    x1={'0%'}
+    x2={'100%'}
+    y1={y(50)}
+    y2={y(50)}
+    stroke={'orange'}
+    strokeDasharray={[7, 5]}
+    strokeWidth={3}
+  />
+))
 
 
 class SpendingsScreen extends React.Component {
   componentDidMount() {
-
 
   }
   constructor(props) {
@@ -225,7 +254,7 @@ class SpendingsScreen extends React.Component {
                   width: '92%',
                   alignSelf: 'center',
                   marginTop: 10,
-                  marginBottom: 25
+                  marginBottom: 10
                 }}>
                 <View style={{ width: '50%', alignSelf: 'center' }}>
                   <Text style={styles.boldText}>Daily Consumption</Text>
@@ -252,28 +281,42 @@ class SpendingsScreen extends React.Component {
                   </Text>
                 </View>
               </View>
-              <LineChart
-                data={linedata}
-                width={Dimensions.get('window').width - 50}
-                height={220}
-                withDots={false}
-                withInnerLines={false}
-                yAxisLabel={''}
-                chartConfig={{
-                  backgroundGradientFrom: 'white',
-                  backgroundGradientTo: 'white',
-                  decimalPlaces: 1,
-                  strokeWidth: 2,
-                  color: (opacity = 1) => 'rgba(20, 10, 10, 1)',
-                  style: {
-                    borderRadius: 16,
-                  },
-                }}
-                bezier
-                style={{
-                  borderRadius: 16,
-                }}></LineChart>
-              <View style={{ flexDirection: 'row', width: '75%', justifyContent: 'center', alignSelf: 'center' }}>
+              <View style={{ height: 200 }}>
+                <AreaChart
+                  style={{ flex: 1 }}
+                  data={data}
+                  contentInset={{ top: 50, bottom: 0 }}
+                  svg={{
+                    fill: 'url(#gradient)',
+                    clipPath: 'url(#clip-path-1)',
+                  }}
+                  curve={shape.curveNatural}
+                  extras={[HorizontalLine, Gradient, Clips]}
+                />
+                <AreaChart
+                  style={StyleSheet.absoluteFill}
+                  data={data1}
+                  contentInset={{ top: 50, bottom: 0 }}
+                  curve={shape.curveNatural}
+                  showGrid={false}
+                  extras={[Line]}
+                />
+                <YAxis
+                  style={{ position: 'absolute', top: 15, bottom: 0 }}
+                  data={data2}
+                  contentInset={{ top: 25, bottom: 12 }}
+                  svg={{
+                    fontSize: 13,
+                    color: 'black',
+                    fill: 'black',
+                    stroke: 'black',
+                    strokeWidth: 0.1,
+                    alignmentBaseline: 'baseline',
+                    baselineShift: '3',
+                  }}
+                />
+              </View>
+              <View style={{ flexDirection: 'row', width: '75%', justifyContent: 'center', alignSelf: 'center', marginTop: 15 }}>
                 <View style={{ flexDirection: 'row', width: '33%' }}>
                   <TouchableHighlight
                     style={styles.circleCurrent}
@@ -350,6 +393,7 @@ class SpendingsScreen extends React.Component {
                       marginTop: 17,
                     }}>
                   </AnimatedCircularProgress>
+
                 </View>
                 <Text style={styles.boldText}>
                   My consumption status?
@@ -382,6 +426,7 @@ class SpendingsScreen extends React.Component {
                 <B>{this.state.waterSavings} DKK</B> on water and <B>{this.state.wastewaterSavings} DKK</B> on wastewater. This gives
                 a total saving of <B>{this.state.totalSavings} DKK</B>.
               </Text>
+
             </View>
           </View>
         </View>
