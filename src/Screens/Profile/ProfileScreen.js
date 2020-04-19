@@ -75,7 +75,7 @@ class ProfileScreen extends React.Component {
                     paddingLeft: 20,
                     color: '#1a1352',
                   }}>
-                  Good morning, Christian!
+                  Good morning, {this.state.sentiUser.firstName}
                 </Text>
               </View>
               <View style={{ flex: 1, height: '110%' }}>

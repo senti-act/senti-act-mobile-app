@@ -143,9 +143,9 @@ class HomeScreen extends React.Component {
     user = JSON.parse(user)
     var uuid = user.uuid
     UserService.getByUuid(uuid).then(async x =>{
-      // this.setState({
-      //   userId:x[0].id
-      // })
+      this.setState({
+        userId:x[0].id
+      })
       await AsyncStorage.setItem('id', x[0].id);
     }).catch(err=>{
       alert(JSON.stringify(err))
@@ -231,14 +231,14 @@ class HomeScreen extends React.Component {
 
         return (
           <View>
-            <View>
+            <View >
               <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 10 }}> The following days are left of the competition</Text>
               <View style={{ flexDirection: 'row', flexWrap: "wrap" }}>
                 <Progress.Bar progress={calculateMonthProgress} width={240} height={10} color={'#184858'} style={styles.progressBarLb} />
                 <Text style={styles.textLb}>{lastDayOfCurrentMonth - currentDate} days left</Text>
               </View>
-              <View>
-                <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15 }}>The best players</Text>
+              <View >
+                <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15,  }}>The best players</Text>
                 <FlatList
                   maxToRenderPerBatch={1}
                   windowSize={1}
@@ -247,18 +247,14 @@ class HomeScreen extends React.Component {
                   renderItem={({ item, index }) =>
                     <LinearGradient colors={index === userLoggedIn ? colors : colorsDefault} >
                       <View style={styles.containerLb}>
-                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "50%", justifyContent: 'center', textAlignVertical: 'center' }}>
-                          <View style={{ width: '40%' }}>
-                            <Image style={{ marginRight: 5 }} source={
+                        <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
+                            <Image style={{ paddingLeft:5 }} source={
                               index === 0 ? firstPlace : firstPlace &&
                                 index === 1 ? secondPlace : secondPlace &&
                                   index === 2 ? thirdPlace : thirdPlace}></Image>
-                          </View>
-                          <View style={{ width: '60%' }}>
                             <Text style={styles.textLb2}>{item.nickname}</Text>
-                          </View>
                         </View>
-                        <View style={{ width: '50%', flexDirection: 'row', flexWrap: 'wrap' }}>
+                        <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                           <Text style={styles.textLb3}>{item.xp}</Text>
                           <View style={{ width: "30%" }}>
                             <Image style={styles.dropProp} source={drop} />
@@ -281,11 +277,11 @@ class HomeScreen extends React.Component {
                   renderItem={({ item, index }) =>
                     <LinearGradient colors={index === userLoggedIn ? colors : colorsDefault}>
                       <View style={styles.containerLb}>
-                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', width: "50%", justifyContent: 'center' }}>
-                          <Text style={{ width: '30%' }}>{index + 1}</Text>
+                      <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
+                          <Text style={{width: '20%', textAlign:'center', color: '#2F5D6C', fontWeight:'bold'}}>{index + 1}</Text>
                           <Text style={styles.textLb2}>{item.nickname}</Text>
                         </View>
-                        <View style={{ width: '50%', flexDirection: 'row', flexWrap: 'wrap' }}>
+                        <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                           <Text style={styles.textLb3}>{item.xp}</Text>
                           <View style={{ width: "30%" }}>
                             <Image style={styles.dropProp} source={drop} />
@@ -565,6 +561,7 @@ const styles = StyleSheet.create({
     width: 18,
     height: 26,
     alignSelf: "flex-end",
+    paddingRight:5
   },
 
 });
