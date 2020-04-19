@@ -14,27 +14,21 @@ import LinearGradient from 'react-native-linear-gradient';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import moment from 'moment';
 
-
 var currentWeek = moment().format('W');
 var currentMonth = moment().format('MMMM');
-
 var currentYear = parseInt(moment().format('YYYY'));
-const firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('DD.M.YYYY');
-const lastWeekDay = moment().day("Friday").year(currentYear).week(currentWeek).format('DD.M.YYYY');
-
+var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('Do MMMM YYYY');
+var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('Do MMMM YYYY');
 
 class ConsumptionScreen extends React.Component {
-
-  componentDidMount() {
-
-  }
+  componentDidMount() { }
 
   constructor(props) {
     super(props);
     this.state = {
-      fill: '15 L',
-      previous: '20 L',
-      date: firstWeekDay,
+      currentConsumption: 15,
+      previousConsumpion: 20,
+      date: firstWeekDay + ' - ' + lastWeekDay,
       selectedButton: 'button1'
     }
   }
@@ -43,17 +37,22 @@ class ConsumptionScreen extends React.Component {
     this.setState({ date: g });
   };
 
+  buttonColorChange = (g, m) => {
+    this.setState({ selectedButton: m, date: g })
+  }
+
   increment = () => {
     if (!isNaN(this.state.date)) {
       this.setState({ date: this.state.date + 1 })
     }
-    else if (this.state.date.length < 8) {
+    else if (this.state.date.length < 10) {
       var mAdd = moment().month(this.state.date).add(1, 'month').format("MMMM")
       this.setState({ date: mAdd })
     }
-    else if (this.state.date.length > 7) {
-      var dAdd = moment().day(this.state.date).add(8, 'day').format("DD-MM-YYYY")
-      this.setState({ date: dAdd })
+    else if (this.state.date.length > 10) {
+      var first = moment(this.state.date, 'Do MMMM YYYY ').add('days', 7).format("Do MMMM YYYY  ");
+      var last = moment(this.state.date, '- Do MMMM YYYY').add('days', 7).format("- Do MMMM YYYY ");
+      this.setState({ date: first + last })
     }
   }
 
@@ -61,22 +60,16 @@ class ConsumptionScreen extends React.Component {
     if (!isNaN(this.state.date)) {
       this.setState({ date: this.state.date - 1 })
     }
-    else if (this.state.date.length < 8) {
+    else if (this.state.date.length < 10) {
       var mSub = moment().month(this.state.date).subtract(1, 'month').format("MMMM")
       this.setState({ date: mSub })
     }
-    else if (this.state.date.length > 7) {
-      var dAdd = moment().day(this.state.date).subtract(8, 'day').format("DD.M.YYYY")
-      this.setState({ date: dAdd })
+    else if (this.state.date.length > 10) {
+      var firstDate = moment(this.state.date, 'Do MMMM YYYY ').subtract('days', 7).format("Do MMMM YYYY ");
+      var lastDate = moment(this.state.date, '- Do MMMM YYYY').subtract('days', 7).format("- Do MMMM YYYY");
+      this.setState({ date: firstDate + lastDate })
     }
-
   }
-
-  onButtonPress = (g, m) => {
-
-    this.setState({ selectedButton: m, date: g })
-  }
-
 
 
   render() {
@@ -109,25 +102,34 @@ class ConsumptionScreen extends React.Component {
                 borderRadius: 10,
                 padding: 10,
                 marginBottom: 5,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 1.41,
+                elevation: 2,
               }}>
               <View
                 style={{
                   flex: 0.8,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  marginBottom: 10
+                  marginBottom: 10,
+                  marginVertical: 15,
                 }}>
                 <TouchableOpacity onPress={() => this.decrement()}>
                   <Image
                     source={require('../../Assets/back.png')}
-                    style={{ width: 20, height: 20 }}
+                    style={styles.datePickerButton}
                   />
                 </TouchableOpacity>
-                <Text style={{ color: "#174A5A" }}>{this.state.date}</Text>
+                <Text style={{ color: "#174A5A", fontSize: 13 }}>{this.state.date}</Text>
                 <TouchableOpacity onPress={() => this.increment()}>
                   <Image
                     source={require('../../Assets/next.png')}
-                    style={{ width: 20, height: 20 }}
+                    style={styles.datePickerButton}
                   />
                 </TouchableOpacity>
               </View>
@@ -143,7 +145,7 @@ class ConsumptionScreen extends React.Component {
                     justifyContent: 'center',
                     padding: 4
                   }}
-                    onPress={() => this.onButtonPress(firstWeekDay, 'button1')}>
+                    onPress={() => this.buttonColorChange(firstWeekDay + ' - ' + lastWeekDay, 'button1')}>
                     <Text style={{
                       textAlign: 'center',
                       color: this.state.selectedButton === "button1" ? 'white' : '#174A5A'
@@ -162,7 +164,7 @@ class ConsumptionScreen extends React.Component {
                     justifyContent: 'center',
                     padding: 4
                   }}
-                    onPress={() => this.onButtonPress(currentMonth, 'button2')}>
+                    onPress={() => this.buttonColorChange(currentMonth, 'button2')}>
                     <Text style={{
                       textAlign: 'center',
                       color: this.state.selectedButton === "button2" ? 'white' : '#174A5A'
@@ -180,7 +182,7 @@ class ConsumptionScreen extends React.Component {
                     justifyContent: 'center',
                     padding: 4
                   }}
-                    onPress={() => this.onButtonPress(currentYear, 'button3')}>
+                    onPress={() => this.buttonColorChange(currentYear, 'button3')}>
                     <Text style={{
                       textAlign: 'center',
                       color: this.state.selectedButton === "button3" ? 'white' : '#174A5A'
@@ -203,10 +205,10 @@ class ConsumptionScreen extends React.Component {
                     () => (
                       <View>
                         <Text style={{ fontSize: 25, color: '#174A5A' }}>
-                          {this.state.fill}
+                          {this.state.currentConsumption} L
                         </Text>
                         <Text style={{ fontSize: 18, color: '#95ACB4' }}>
-                          ({this.state.previous})
+                          ({this.state.previousConsumpion} L)
                         </Text>
                       </View>
                     )
@@ -266,7 +268,7 @@ class ConsumptionScreen extends React.Component {
                   than last week.
                 </Text>
               </View>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'center', width: '120%', marginVertical: 15 }}>
+              <View style={styles.buttonBottomRow}>
                 <View style={{ width: '33%', marginHorizontal: 10 }}>
                   <TouchableOpacity style={styles.buttonStyle}
                     onPress={() => navigation.goBack()}>
@@ -291,65 +293,38 @@ class ConsumptionScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EEF3F7',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 15,
   },
   header: {
+    width: '103%',
     marginVertical: 10,
-    width: '100%',
-
-  },
-  headerTitle: {
-    fontWeight: 'bold',
-    fontSize: 20,
   },
   headerText: {
-    borderRadius: 10,
     padding: 25,
     fontSize: 16,
     color: '#174A5A'
   },
   buttonStyle: {
-    // backgroundColor: this.state.buttonColor,
-    borderColor: '#174A5A',
-    marginRight: 5,
-    borderRadius: 50,
-    borderWidth: 2,
     width: '100%',
-    justifyContent: 'center',
+    borderColor: '#174A5A',
+    borderRadius: 15,
+    borderWidth: 2,
     padding: 4
   },
   smallText: {
-    fontSize: 11,
+    fontSize: 13,
+    color: '#174A5A',
     alignSelf: 'center',
     fontWeight: 'bold',
     marginLeft: 5,
-    color: '#174A5A'
   },
   boldText: {
     fontSize: 16,
-    textAlign: 'center',
+    color: '#174A5A',
     fontWeight: 'bold',
-    color: '#174A5A'
-  },
-  consumptionCard: {
-    flex: 1,
-    backgroundColor: 'white',
-    marginHorizontal: 5,
-    borderRadius: 5,
-    padding: 5,
-    minHeight: 130,
-  },
-  bottomConsumptionCard: {
-    marginTop: 5,
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: 'white',
-    width: '100%',
-    marginBottom: 10,
-    shadowOpacity: 5,
+    textAlign: 'center',
   },
   circleMyConsumption: {
     borderRadius:
@@ -359,10 +334,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.04,
     height: Dimensions.get('window').width * 0.04,
     backgroundColor: '#2D5F6D',
-    justifyContent: 'center',
-    alignItems: 'center',
     marginVertical: 5,
-    marginHorizontal: 5,
   },
   circleAvgConsumption: {
     borderRadius:
@@ -372,11 +344,21 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width * 0.04,
     height: Dimensions.get('window').width * 0.04,
     backgroundColor: '#AFDFDB',
-    justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 5,
-    marginHorizontal: 5,
   },
+  datePickerButton: {
+    width: 20,
+    height: 20,
+    tintColor: '#174A5A'
+  },
+  buttonBottomRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignSelf: 'center',
+    width: '120%',
+    marginVertical: 15
+  }
 });
 
 export default ConsumptionScreen;
