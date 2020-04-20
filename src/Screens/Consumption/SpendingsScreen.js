@@ -12,8 +12,8 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { AreaChart, YAxis, Path } from 'react-native-svg-charts'
-import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L } from 'react-native-svg'
+import { AreaChart, YAxis, Path, Grid } from 'react-native-svg-charts'
+import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L, Circle } from 'react-native-svg'
 import * as shape from 'd3-shape'
 
 var currentWeek = moment().format('W');
@@ -53,7 +53,7 @@ const Line = ({ line }) => (
   <Path
     key={'line'}
     d={line}
-    stroke={'#2F5D6B'}
+    stroke={'#174A5A'}
     strokeWidth={3}
     fill={'none'}
     clipPath={'url(#clip-path-1)'}
@@ -73,6 +73,19 @@ const HorizontalLine = (({ y }) => (
   />
 ))
 
+const Decorator = ({ x, y, data }) => {
+  return data.map((value, index) => (
+    <Circle
+      key={index}
+      cx={x(index)}
+      cy={y(value)}
+      r={4}
+      stroke={'rgb(134, 65, 244)'}
+      fill={'white'}
+    />
+  ))
+}
+
 
 class SpendingsScreen extends React.Component {
   componentDidMount() {
@@ -89,6 +102,7 @@ class SpendingsScreen extends React.Component {
       current: '15 L',
       previous: '20 L',
       regionReduction: 25,
+      currentConsumption: 45,
     };
   }
 
@@ -296,15 +310,27 @@ class SpendingsScreen extends React.Component {
                 <AreaChart
                   style={StyleSheet.absoluteFill}
                   data={data1}
+                  dataPoints={24}
                   contentInset={{ top: 50, bottom: 0 }}
                   curve={shape.curveNatural}
                   showGrid={false}
                   extras={[Line]}
+                  renderDecorator={({ x, y, index, value }) => (
+                    <Circle
+                      key={index}
+                      cx={x(index = 1)}
+                      cy={y(value = this.state.currentConsumption)}
+                      r={5}
+                      stroke={'#174A5A'}
+                      strokeWidth={4}
+                      fill={'#174A5A'}
+                    />
+                  )}
                 />
                 <YAxis
-                  style={{ position: 'absolute', top: 15, bottom: 0 }}
-                  data={data2}
-                  contentInset={{ top: 25, bottom: 12 }}
+                  style={{ position: 'absolute', top: 50, bottom: 0 }}
+                  data={data1}
+                  contentInset={{ top: 5, bottom: 0 }}
                   svg={{
                     fontSize: 13,
                     color: 'black',
