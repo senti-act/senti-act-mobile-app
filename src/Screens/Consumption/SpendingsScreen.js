@@ -7,28 +7,32 @@ import {
   Image,
   ScrollView,
   Dimensions,
-  TouchableHighlight
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
+// Chart libraries
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { AreaChart, YAxis, XAxis, Path, Grid } from 'react-native-svg-charts'
+import { AreaChart, YAxis, XAxis, Path } from 'react-native-svg-charts'
 import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L, Circle } from 'react-native-svg'
 import * as shape from 'd3-shape'
-import * as scale from 'd3-scale';
 
+// Datepicker data
 var currentWeek = moment().format('W');
 var currentMonth = moment().format('MMMM');
 var currentYear = parseInt(moment().format('YYYY'));
 var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('Do MMMM YYYY');
 var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('Do MMMM YYYY');
+
 const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
-const data = [0, 50, 10, 40, 95, 40, 24, 85, 0]
+// Charts data
+const data = [0, 50, 10, 40, 95, 40, 24, 85, 0];
+const xAxisDays = [" ", "Mo", "Tue", "We", "Thu", "Fri", "Sa", "Sun", " "];
 const data1 = [0, 5, 45, 28, 80, 99, 12, 44, 0];
-
 const indexToClipFrom = 10
 
+
+// Charts components
 const Gradient = () => (
   <Defs key={'defs'}>
     <LiGr id={'gradient'} x1={'0%'} y={'0%'} x2={'0%'} y2={'100%'}>
@@ -110,7 +114,12 @@ class SpendingsScreen extends React.Component {
     this.setState({ date: g });
   };
 
+  // Changes color of the button when pressed
+  onButtonPress = (g, m) => {
+    this.setState({ selectedButton: m, date: g })
+  }
 
+  // Increment function for the datepicker
   increment = () => {
     if (!isNaN(this.state.date)) {
       this.setState({ date: this.state.date + 1 })
@@ -125,7 +134,7 @@ class SpendingsScreen extends React.Component {
       this.setState({ date: first + last })
     }
   }
-
+  // Decrement function for the datepicker
   decrement = () => {
     if (!isNaN(this.state.date)) {
       this.setState({ date: this.state.date - 1 })
@@ -141,15 +150,15 @@ class SpendingsScreen extends React.Component {
     }
   }
 
-  onButtonPress = (g, m) => {
-    this.setState({ selectedButton: m, date: g })
-  }
 
   render() {
     const { route, navigation } = this.props;
     return (
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
+
+
+          {/* HEADER */}
           <View style={styles.header}>
             <LinearGradient colors={['#aacce5', '#c5e9f4']}
               style={{
@@ -168,33 +177,18 @@ class SpendingsScreen extends React.Component {
               </View>
             </LinearGradient>
           </View>
+          {/* HEADER */}
+
           <View style={styles.container}>
-            <View
-              style={{
-                backgroundColor: 'white',
-                borderRadius: 10,
-                padding: 10,
-                marginBottom: 5,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.2,
-                shadowRadius: 1.41,
-                elevation: 2
-              }}>
-              <View
-                style={{
-                  flex: 0.8,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginVertical: 15,
-                }}>
+            <View style={styles.content}>
+
+
+              {/* DATE PICKER */}
+              <View style={styles.datepickerContainer}>
                 <TouchableOpacity onPress={() => this.decrement()}>
                   <Image
                     source={require('../../Assets/consumption/back.png')}
-                    style={{ width: 20, height: 20, tintColor: '#174A5A' }}
+                    style={styles.arrow}
                   />
                 </TouchableOpacity>
                 <Text style={{ color: "#174A5A" }}>{this.state.date}</Text>
@@ -205,6 +199,7 @@ class SpendingsScreen extends React.Component {
                   />
                 </TouchableOpacity>
               </View>
+              {/* DATE PICKER BUTTONS - refactoring needed */}
               <View style={{ flexDirection: 'row', width: '80%', alignSelf: 'center' }}>
                 <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
                   <TouchableOpacity style={{
@@ -262,38 +257,22 @@ class SpendingsScreen extends React.Component {
                   </TouchableOpacity>
                 </View>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: '92%',
-                  alignSelf: 'center',
-                  marginTop: 10,
-                }}>
+              {/* DATE PICKER BUTTONS - refactoring needed */}
+              {/* DATE PICKER */}
+
+
+              <View style={{ flexDirection: 'row', width: '92%', alignSelf: 'center', marginTop: 10 }}>
                 <View style={{ width: '50%', alignSelf: 'center' }}>
                   <Text style={styles.boldText}>Daily Consumption</Text>
-                  <Text
-                    style={{
-                      color: '#174A5A',
-                      fontWeight: 'bold',
-                      alignSelf: 'center',
-                      fontSize: 18,
-                    }}>
-                    470 L
-                  </Text>
+                  <Text style={styles.consumptionText}>470 L</Text>
                 </View>
                 <View style={{ alignSelf: 'center', width: '50%' }}>
                   <Text style={styles.boldText}>Reduced Consumption</Text>
-                  <Text
-                    style={{
-                      color: '#174A5A',
-                      fontWeight: 'bold',
-                      alignSelf: 'center',
-                      fontSize: 18,
-                    }}>
-                    10%
-                  </Text>
+                  <Text style={styles.consumptionText}>10%</Text>
                 </View>
               </View>
+
+              {/* Multiline chart */}
               <View style={{ flexDirection: 'row', height: 200, width: '90%' }}>
                 <View style={{ width: '15%' }}>
                   <YAxis
@@ -310,7 +289,7 @@ class SpendingsScreen extends React.Component {
                       stroke: 'black',
                       strokeWidth: 0.3,
                       alignmentBaseline: 'baseline',
-                      baselineShift: '3',
+                      baselineShift: '6',
                     }}
                   />
                 </View>
@@ -351,11 +330,18 @@ class SpendingsScreen extends React.Component {
               </View>
               <View style={{ marginTop: 10, height: 10, marginLeft: 35 }}>
                 <XAxis
-                  data={data}
-                  formatLabel={(index) => index}
-                  svg={{ fontSize: 8, fill: 'black' }}
+                  data={xAxisDays}
+                  xAccessor={({ index }) => index}
+                  formatLabel={index => xAxisDays[index]}
+                  svg={{
+                    fontSize: 12, fill: 'black'
+                  }}
                 />
               </View>
+              {/* Multiline chart */}
+
+
+              {/* Legend for multiline chart */}
               <View style={{ flexDirection: 'row', width: '75%', justifyContent: 'center', alignSelf: 'center', marginVertical: 15, alignSelf: 'center' }}>
                 <View style={{ flexDirection: 'row', width: '33%' }}>
                   <Image source={require('../../Assets/consumption/currentperiodlegend.png')}></Image>
@@ -370,16 +356,14 @@ class SpendingsScreen extends React.Component {
                   <Text style={styles.smallText}>Recommended</Text>
                 </View>
               </View>
+              {/* Legend for multiline chart */}
             </View>
           </View>
-          <View
-            style={{
-              flex: 2,
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderRadius: 10,
-              padding: 10,
-            }}>
+
+
+          <View style={styles.consumptionContainer}>
+
+            {/* Progress circle (left card) - REFACTORING? */}
             <TouchableOpacity
               style={styles.consumptionCard}
               onPress={() => navigation.navigate('ConsumptionScreen')}>
@@ -430,6 +414,10 @@ class SpendingsScreen extends React.Component {
                 </Text>
               </View>
             </TouchableOpacity>
+            {/* Progress circle (left card) */}
+
+
+            {/* Map (right card)     */}
             <View style={styles.consumptionCard}>
               <Image source={require('../../Assets/consumption/map.png')} style={{ width: 135, height: 135, alignSelf: 'center' }} />
               <Text style={{ fontSize: 13, paddingHorizontal: 10, marginTop: 13, color: '#174A5A' }}>
@@ -440,7 +428,11 @@ class SpendingsScreen extends React.Component {
                 {this.state.regionReduction} %
               </Text>
             </View>
+            {/* Map (right card)     */}
           </View>
+
+
+          {/* Savings bottom card [pig]*/}
           <View style={styles.bottomConsumptionCard}>
             <View style={{ width: '25%' }}>
               <Image source={require('../../Assets/consumption/pig.png')} style={{ width: 71, height: 67 }} />
@@ -450,12 +442,13 @@ class SpendingsScreen extends React.Component {
                 You've saved in the last week
               </Text>
               <Text style={{ fontSize: 14, color: '#174A5A' }}>
-                <B>{this.state.waterSavings} DKK</B> on water and <B>{this.state.wastewaterSavings} DKK</B> on wastewater. This gives
+                <B>{this.state.waterSavings} DKK</B> on water and <B>
+                  {this.state.wastewaterSavings} DKK</B> on wastewater. This gives
                 a total saving of <B>{this.state.totalSavings} DKK</B>.
               </Text>
-
             </View>
           </View>
+          {/* Savings bottom card [pig]*/}
         </View>
       </ScrollView >
     );
@@ -463,12 +456,30 @@ class SpendingsScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+  // Main components
   container: {
     flex: 1,
     backgroundColor: '#EEF3F7',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  content: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+  },
+
+  // Header
   header: {
     padding: 10,
     width: '98%',
@@ -484,13 +495,34 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#174A5A'
   },
-  buttonStyle: {
-    backgroundColor: 'rgba(0,0,0,0)',
-    marginRight: 5,
-    borderRadius: 50,
-    borderWidth: 2,
-    width: '100%',
-    justifyContent: 'center',
+
+  // Datepicker
+  datepickerContainer: {
+    flex: 0.8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 15,
+  },
+  arrow: {
+    width: 20,
+    height: 20,
+    tintColor: '#174A5A',
+  },
+  // button: {
+  //   backgroundColor: 'rgba(0,0,0,0)',
+  //   marginRight: 5,
+  //   borderRadius: 50,
+  //   borderWidth: 2,
+  //   width: '100%',
+  //   justifyContent: 'center',
+  // },
+
+  // Text
+  boldText: {
+    color: '#174A5A',
+    fontSize: 13,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   smallText: {
     color: '#174A5A',
@@ -498,11 +530,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginLeft: 5,
   },
-  boldText: {
+  consumptionText: {
     color: '#174A5A',
-    fontSize: 13,
     fontWeight: 'bold',
-    textAlign: 'center',
+    alignSelf: 'center',
+    fontSize: 18,
+  },
+
+  // Section under multiline chart
+  consumptionContainer: {
+    flex: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 10,
   },
   consumptionCard: {
     flex: 1,
@@ -536,42 +577,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 5,
     flexDirection: 'row',
     flexWrap: 'wrap',
-  },
-  circleCurrent: {
-    borderRadius:
-      Math.round(
-        Dimensions.get('window').width + Dimensions.get('window').height,
-      ) / 2,
-    width: Dimensions.get('window').width * 0.04,
-    height: Dimensions.get('window').width * 0.04,
-    backgroundColor: '#174A5A',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  circlePrevious: {
-    borderRadius:
-      Math.round(
-        Dimensions.get('window').width + Dimensions.get('window').height,
-      ) / 2,
-    width: Dimensions.get('window').width * 0.04,
-    height: Dimensions.get('window').width * 0.04,
-    backgroundColor: '#9FD9D4',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 5,
-  },
-  circleRecommended: {
-    borderRadius:
-      Math.round(
-        Dimensions.get('window').width + Dimensions.get('window').height,
-      ) / 2,
-    width: Dimensions.get('window').width * 0.04,
-    height: Dimensions.get('window').width * 0.04,
-    backgroundColor: '#F88621',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 5,
   },
 });
 
