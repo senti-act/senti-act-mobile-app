@@ -121,14 +121,14 @@ class ConsumptionScreen extends React.Component {
                 }}>
                 <TouchableOpacity onPress={() => this.decrement()}>
                   <Image
-                    source={require('../../Assets/back.png')}
+                    source={require('../../Assets/consumption/back.png')}
                     style={styles.datePickerButton}
                   />
                 </TouchableOpacity>
                 <Text style={{ color: "#174A5A", fontSize: 13 }}>{this.state.date}</Text>
                 <TouchableOpacity onPress={() => this.increment()}>
                   <Image
-                    source={require('../../Assets/next.png')}
+                    source={require('../../Assets/consumption/next.png')}
                     style={styles.datePickerButton}
                   />
                 </TouchableOpacity>

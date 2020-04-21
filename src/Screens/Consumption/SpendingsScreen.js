@@ -12,9 +12,10 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { AreaChart, YAxis, Path, Grid } from 'react-native-svg-charts'
+import { AreaChart, YAxis, XAxis, Path, Grid } from 'react-native-svg-charts'
 import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L, Circle } from 'react-native-svg'
 import * as shape from 'd3-shape'
+import * as scale from 'd3-scale';
 
 var currentWeek = moment().format('W');
 var currentMonth = moment().format('MMMM');
@@ -23,9 +24,8 @@ var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).fo
 var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('Do MMMM YYYY');
 const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
-const data = [50, 10, 40, 95, 40, 24, 85]
-const data1 = [5, 45, 28, 80, 99, 12, 44];
-const data2 = [20, 60, 45, 60];
+const data = [0, 50, 10, 40, 95, 40, 24, 85, 0]
+const data1 = [0, 5, 45, 28, 80, 99, 12, 44, 0];
 
 const indexToClipFrom = 10
 
@@ -193,14 +193,14 @@ class SpendingsScreen extends React.Component {
                 }}>
                 <TouchableOpacity onPress={() => this.decrement()}>
                   <Image
-                    source={require('../../Assets/back.png')}
+                    source={require('../../Assets/consumption/back.png')}
                     style={{ width: 20, height: 20, tintColor: '#174A5A' }}
                   />
                 </TouchableOpacity>
                 <Text style={{ color: "#174A5A" }}>{this.state.date}</Text>
                 <TouchableOpacity onPress={() => this.increment()}>
                   <Image
-                    source={require('../../Assets/next.png')}
+                    source={require('../../Assets/consumption/next.png')}
                     style={{ width: 20, height: 20, tintColor: '#174A5A' }}
                   />
                 </TouchableOpacity>
@@ -268,7 +268,6 @@ class SpendingsScreen extends React.Component {
                   width: '92%',
                   alignSelf: 'center',
                   marginTop: 10,
-                  marginBottom: 10
                 }}>
                 <View style={{ width: '50%', alignSelf: 'center' }}>
                   <Text style={styles.boldText}>Daily Consumption</Text>
@@ -295,76 +294,79 @@ class SpendingsScreen extends React.Component {
                   </Text>
                 </View>
               </View>
-              <View style={{ height: 200 }}>
-                <AreaChart
-                  style={{ flex: 1 }}
+              <View style={{ flexDirection: 'row', height: 200, width: '90%' }}>
+                <View style={{ width: '15%' }}>
+                  <YAxis
+                    style={{ top: 0, bottom: 0, height: 200, marginTop: 10 }}
+                    data={data1}
+                    contentInset={{ top: 45, bottom: 0 }}
+                    numberOfTicks={5}
+                    spacingInner={100}
+                    yAccessor={({ item }) => item}
+                    svg={{
+                      fontSize: 13,
+                      color: 'black',
+                      fill: 'black',
+                      stroke: 'black',
+                      strokeWidth: 0.3,
+                      alignmentBaseline: 'baseline',
+                      baselineShift: '3',
+                    }}
+                  />
+                </View>
+                <View style={{ width: '85%', alignSelf: 'flex-end' }}>
+                  <AreaChart
+                    style={{ flex: 1 }}
+                    data={data}
+                    contentInset={{ top: 50, bottom: 0 }}
+                    svg={{
+                      fill: 'url(#gradient)',
+                      clipPath: 'url(#clip-path-1)',
+                    }}
+                    numberOfTicks={5}
+                    curve={shape.curveNatural}
+                    extras={[HorizontalLine, Gradient, Clips]}
+                  />
+                  <AreaChart
+                    style={StyleSheet.absoluteFill}
+                    data={data1}
+                    contentInset={{ top: 50, bottom: 0 }}
+                    curve={shape.curveNatural}
+                    showGrid={false}
+                    numberOfTicks={5}
+                    extras={[Line]}
+                    renderDecorator={({ x, y, index, value }) => (
+                      <Circle
+                        key={index}
+                        cx={x(index = 2)}
+                        cy={y(value = this.state.currentConsumption)}
+                        r={3}
+                        stroke={'#174A5A'}
+                        strokeWidth={6}
+                        fill={'#174A5A'}
+                      />
+                    )}
+                  />
+                </View>
+              </View>
+              <View style={{ marginTop: 10, height: 10, marginLeft: 35 }}>
+                <XAxis
                   data={data}
-                  contentInset={{ top: 50, bottom: 0 }}
-                  svg={{
-                    fill: 'url(#gradient)',
-                    clipPath: 'url(#clip-path-1)',
-                  }}
-                  curve={shape.curveNatural}
-                  extras={[HorizontalLine, Gradient, Clips]}
-                />
-                <AreaChart
-                  style={StyleSheet.absoluteFill}
-                  data={data1}
-                  dataPoints={24}
-                  contentInset={{ top: 50, bottom: 0 }}
-                  curve={shape.curveNatural}
-                  showGrid={false}
-                  extras={[Line]}
-                  renderDecorator={({ x, y, index, value }) => (
-                    <Circle
-                      key={index}
-                      cx={x(index = 1)}
-                      cy={y(value = this.state.currentConsumption)}
-                      r={5}
-                      stroke={'#174A5A'}
-                      strokeWidth={4}
-                      fill={'#174A5A'}
-                    />
-                  )}
-                />
-                <YAxis
-                  style={{ position: 'absolute', top: 50, bottom: 0 }}
-                  data={data1}
-                  contentInset={{ top: 5, bottom: 0 }}
-                  svg={{
-                    fontSize: 13,
-                    color: 'black',
-                    fill: 'black',
-                    stroke: 'black',
-                    strokeWidth: 0.1,
-                    alignmentBaseline: 'baseline',
-                    baselineShift: '3',
-                  }}
+                  formatLabel={(index) => index}
+                  svg={{ fontSize: 8, fill: 'black' }}
                 />
               </View>
-              <View style={{ flexDirection: 'row', width: '75%', justifyContent: 'center', alignSelf: 'center', marginTop: 15 }}>
+              <View style={{ flexDirection: 'row', width: '75%', justifyContent: 'center', alignSelf: 'center', marginVertical: 15, alignSelf: 'center' }}>
                 <View style={{ flexDirection: 'row', width: '33%' }}>
-                  <TouchableHighlight
-                    style={styles.circleCurrent}
-                    underlayColor="#ccc">
-                    <Text></Text>
-                  </TouchableHighlight>
+                  <Image source={require('../../Assets/consumption/currentperiodlegend.png')}></Image>
                   <Text style={styles.smallText}>Current</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '33%' }}>
-                  <TouchableHighlight
-                    style={styles.circlePrevious}
-                    underlayColor="#ccc">
-                    <Text></Text>
-                  </TouchableHighlight>
+                  <Image style={{ alignSelf: 'center' }} source={require('../../Assets/consumption/recommendedlegend.png')}></Image>
                   <Text style={styles.smallText}>Previous</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '33%' }}>
-                  <TouchableHighlight
-                    style={styles.circleRecommended}
-                    underlayColor="#ccc">
-                    <Text></Text>
-                  </TouchableHighlight>
+                  <Image source={require('../../Assets/consumption/previousperiodlegend.png')}></Image>
                   <Text style={styles.smallText}>Recommended</Text>
                 </View>
               </View>
@@ -419,7 +421,6 @@ class SpendingsScreen extends React.Component {
                       marginTop: 17,
                     }}>
                   </AnimatedCircularProgress>
-
                 </View>
                 <Text style={styles.boldText}>
                   My consumption status?
@@ -430,7 +431,7 @@ class SpendingsScreen extends React.Component {
               </View>
             </TouchableOpacity>
             <View style={styles.consumptionCard}>
-              <Image source={require('../../Assets/map.png')} style={{ width: 135, height: 135, alignSelf: 'center' }} />
+              <Image source={require('../../Assets/consumption/map.png')} style={{ width: 135, height: 135, alignSelf: 'center' }} />
               <Text style={{ fontSize: 13, paddingHorizontal: 10, marginTop: 13, color: '#174A5A' }}>
                 In total, all players in the Northern Jutland region have reduced water consumption by:
               </Text>
@@ -442,7 +443,7 @@ class SpendingsScreen extends React.Component {
           </View>
           <View style={styles.bottomConsumptionCard}>
             <View style={{ width: '25%' }}>
-              <Image source={require('../../Assets/pig.png')} style={{ width: 71, height: 67 }} />
+              <Image source={require('../../Assets/consumption/pig.png')} style={{ width: 71, height: 67 }} />
             </View>
             <View style={{ width: '75%' }}>
               <Text style={{ fontWeight: 'bold', color: '#174A5A', marginBottom: 5, fontSize: 15 }}>
