@@ -23,13 +23,18 @@ var currentYear = parseInt(moment().format('YYYY'));
 var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('Do MMMM YYYY');
 var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('Do MMMM YYYY');
 
+
 const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
 // Charts data
-const data = [0, 50, 10, 40, 95, 40, 24, 85, 0];
-const xAxisDays = [" ", "Mo", "Tue", "We", "Thu", "Fri", "Sa", "Sun", " "];
+const data = [0, 50, 10, 40, 95, 40, 130, 85, 0];
 const data1 = [0, 5, 45, 28, 80, 99, 12, 44, 0];
 const indexToClipFrom = 10
+const dataYear = [" ", 'Jan', 'Mar', 'May', 'June', 'Sep', 'Oct', 'Dec', " "];
+const dataDays = [" ", "Mon", "Tue", "We", "Thu", "Fri", "Sat", "Sun", " "];
+
+
+
 
 
 // Charts components
@@ -77,26 +82,11 @@ const HorizontalLine = (({ y }) => (
   />
 ))
 
-const Decorator = ({ x, y, data }) => {
-  return data.map((value, index) => (
-    <Circle
-      key={index}
-      cx={x(index)}
-      cy={y(value)}
-      r={4}
-      stroke={'rgb(134, 65, 244)'}
-      fill={'white'}
-    />
-  ))
-}
-
 
 class SpendingsScreen extends React.Component {
-  componentDidMount() {
-
-  }
+  componentDidMount() { }
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       date: firstWeekDay + ' - ' + lastWeekDay,
       selectedButton: 'button1',
@@ -107,6 +97,9 @@ class SpendingsScreen extends React.Component {
       previous: '20 L',
       regionReduction: 25,
       currentConsumption: 45,
+      data: dataDays,
+      lastDayMonth: '28',
+      dataMonth: [" ", "1", "5", "10", "15", "20", "25", "0", " "],
     };
   }
 
@@ -114,25 +107,31 @@ class SpendingsScreen extends React.Component {
     this.setState({ date: g });
   };
 
-  // Changes color of the button when pressed
-  onButtonPress = (g, m) => {
-    this.setState({ selectedButton: m, date: g })
-  }
+
 
   // Increment function for the datepicker
   increment = () => {
     if (!isNaN(this.state.date)) {
       this.setState({ date: this.state.date + 1 })
+
     }
     else if (this.state.date.length < 10) {
       var mAdd = moment().month(this.state.date).add(1, 'month').format("MMMM")
-      this.setState({ date: mAdd })
+      var lastDayMonth = moment().month(mAdd).daysInMonth().toString()
+
+      let dataMonth = [...this.state.dataMonth];
+      dataMonth[7] = lastDayMonth
+      alert(dataMonth)
+      this.setState({ date: mAdd, lastDayMonth: lastDayMonth, dataMonth: dataMonth })
+
     }
     else if (this.state.date.length > 10) {
       var first = moment(this.state.date, 'Do MMMM YYYY ').add('days', 7).format("Do MMMM YYYY  ");
       var last = moment(this.state.date, '- Do MMMM YYYY').add('days', 7).format("- Do MMMM YYYY ");
       this.setState({ date: first + last })
     }
+
+
   }
   // Decrement function for the datepicker
   decrement = () => {
@@ -148,6 +147,20 @@ class SpendingsScreen extends React.Component {
       var lastDate = moment(this.state.date, '- Do MMMM YYYY').subtract('days', 7).format("- Do MMMM YYYY");
       this.setState({ date: firstDate + lastDate })
     }
+  }
+
+  // Changes color of the button when pressed
+  onButtonPress = (g, m) => {
+    if (m === 'button1') {
+      this.setState({ data: dataDays })
+    }
+    if (m === 'button2') {
+      this.setState({ data: this.state.dataMonth })
+    }
+    if (m === 'button3') {
+      this.setState({ data: dataYear })
+    }
+    this.setState({ selectedButton: m, date: g })
   }
 
 
@@ -284,9 +297,7 @@ class SpendingsScreen extends React.Component {
                     yAccessor={({ item }) => item}
                     svg={{
                       fontSize: 13,
-                      color: 'black',
-                      fill: 'black',
-                      stroke: 'black',
+                      fill: '#174A5A',
                       strokeWidth: 0.3,
                       alignmentBaseline: 'baseline',
                       baselineShift: '6',
@@ -330,11 +341,11 @@ class SpendingsScreen extends React.Component {
               </View>
               <View style={{ marginTop: 10, height: 10, marginLeft: 35 }}>
                 <XAxis
-                  data={xAxisDays}
+                  data={this.state.data}
                   xAccessor={({ index }) => index}
-                  formatLabel={index => xAxisDays[index]}
+                  formatLabel={index => this.state.data[index]}
                   svg={{
-                    fontSize: 12, fill: 'black'
+                    fontSize: 12, fill: '#174A5A'
                   }}
                 />
               </View>
