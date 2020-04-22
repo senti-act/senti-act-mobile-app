@@ -35,8 +35,6 @@ const dataDays = [" ", "Mon", "Tue", "We", "Thu", "Fri", "Sat", "Sun", " "];
 
 
 
-
-
 // Charts components
 const Gradient = () => (
   <Defs key={'defs'}>
@@ -107,61 +105,69 @@ class SpendingsScreen extends React.Component {
     this.setState({ date: g });
   };
 
-
-
-  // Increment function for the datepicker
-  increment = () => {
-    if (!isNaN(this.state.date)) {
-      this.setState({ date: this.state.date + 1 })
-
-    }
-    else if (this.state.date.length < 10) {
-      var mAdd = moment().month(this.state.date).add(1, 'month').format("MMMM")
-      var lastDayMonth = moment().month(mAdd).daysInMonth().toString()
-
-      let dataMonth = [...this.state.dataMonth];
-      dataMonth[7] = lastDayMonth
-      alert(dataMonth)
-      this.setState({ date: mAdd, lastDayMonth: lastDayMonth, dataMonth: dataMonth })
-
-    }
-    else if (this.state.date.length > 10) {
-      var first = moment(this.state.date, 'Do MMMM YYYY ').add('days', 7).format("Do MMMM YYYY  ");
-      var last = moment(this.state.date, '- Do MMMM YYYY').add('days', 7).format("- Do MMMM YYYY ");
-      this.setState({ date: first + last })
-    }
-
-
-  }
-  // Decrement function for the datepicker
-  decrement = () => {
-    if (!isNaN(this.state.date)) {
-      this.setState({ date: this.state.date - 1 })
-    }
-    else if (this.state.date.length < 10) {
-      var mSub = moment().month(this.state.date).subtract(1, 'month').format("MMMM")
-      this.setState({ date: mSub })
-    }
-    else if (this.state.date.length > 10) {
-      var firstDate = moment(this.state.date, 'Do MMMM YYYY ').subtract('days', 7).format("Do MMMM YYYY ");
-      var lastDate = moment(this.state.date, '- Do MMMM YYYY').subtract('days', 7).format("- Do MMMM YYYY");
-      this.setState({ date: firstDate + lastDate })
-    }
-  }
-
   // Changes color of the button when pressed
   onButtonPress = (g, m) => {
     if (m === 'button1') {
       this.setState({ data: dataDays })
     }
     if (m === 'button2') {
-      this.setState({ data: this.state.dataMonth })
+      var lastDayOfCurrentMonth = moment().month(currentMonth).daysInMonth().toString()
+      let dataMonth = [...this.state.dataMonth];
+      dataMonth[7] = lastDayOfCurrentMonth
+      this.setState({ data: dataMonth })
     }
     if (m === 'button3') {
       this.setState({ data: dataYear })
     }
     this.setState({ selectedButton: m, date: g })
   }
+
+  // Increment function for the datepicker
+  increment = () => {
+    if (!isNaN(this.state.date)) {
+      // format: 2020
+      this.setState({ date: this.state.date + 1 })
+    }
+    else if (this.state.date.length < 10) {
+      // format: April
+      var mAdd = moment().month(this.state.date).add(1, 'month').format("MMMM") // month increment +1
+      var lastDayMonth = moment().month(mAdd).daysInMonth().toString() // number of days in a month
+      let dataMonth = [...this.state.dataMonth];
+      dataMonth[7] = lastDayMonth // adding last day of the month at the end of the xAxis
+
+      this.setState({ date: mAdd, lastDayMonth: lastDayMonth, data: dataMonth })
+    }
+    else if (this.state.date.length > 10) {
+      // format: 1st April 2020 - 7th April 2020
+      var first = moment(this.state.date, 'Do MMMM YYYY ').add('days', 7).format("Do MMMM YYYY  ");
+      var last = moment(this.state.date, '- Do MMMM YYYY').add('days', 7).format("- Do MMMM YYYY ");
+      this.setState({ date: first + last })
+    }
+
+  }
+  // Decrement function for the datepicker
+  decrement = () => {
+    if (!isNaN(this.state.date)) {
+      // format: 2020
+      this.setState({ date: this.state.date - 1 })
+    }
+    else if (this.state.date.length < 10) {
+      // format: April
+      var mSub = moment().month(this.state.date).subtract(1, 'month').format("MMMM")
+      var lastDayMonth = moment().month(mSub).daysInMonth().toString() // number of days in a month
+      let dataMonth = [...this.state.dataMonth];
+      dataMonth[7] = lastDayMonth // adding last day of the month at the end of the xAxis
+
+      this.setState({ date: mSub, data: dataMonth })
+    }
+    else if (this.state.date.length > 10) {
+      // format: 1st April 2020 - 7th April 2020
+      var firstDate = moment(this.state.date, 'Do MMMM YYYY ').subtract('days', 7).format("Do MMMM YYYY ");
+      var lastDate = moment(this.state.date, '- Do MMMM YYYY').subtract('days', 7).format("- Do MMMM YYYY");
+      this.setState({ date: firstDate + lastDate })
+    }
+  }
+
 
 
   render() {
