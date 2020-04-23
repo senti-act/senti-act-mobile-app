@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
@@ -18,21 +17,34 @@ import * as shape from 'd3-shape'
 
 // Datepicker data
 var currentWeek = moment().format('W');
-var currentMonth = moment().format('MMMM');
+var currentMonth = moment().format('MMMM YYYY');
 var currentYear = parseInt(moment().format('YYYY'));
 var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('Do MMMM YYYY');
 var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('Do MMMM YYYY');
 
-
-const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
-
 // Charts data
-const data = [0, 50, 10, 40, 95, 40, 130, 85, 0];
-const data1 = [0, 5, 45, 28, 80, 99, 12, 44, 0];
-const indexToClipFrom = 10
-const dataYear = [" ", 'Jan', 'Mar', 'May', 'June', 'Sep', 'Oct', 'Dec', " "];
-const dataDays = [" ", "Mon", "Tue", "We", "Thu", "Fri", "Sat", "Sun", " "];
+// here we store the real consumption data by category (week, month, year) from the current period
+const dataWeekCurrent = [0, 0.3, 5, 0.54, 0.99, 1.5, 1.30, 8.5, 0];
+const dataMonthCurrent = [0, 32.13, 12.31, 23.14, 45.52, 23.30, 0, 56.64, 32.13, 42.31, 56.74,
+  32.15, 12.36, 23.31, 45.35, 23.53, 0, 56.26, 32.41, 42.53, 56.72, 0, 34.21, 12.53, 26.31, 43.55, 23.63, 0, 56.36, 36.21, 42.23, 0];
+const dataYearCurrent = [0, 314.1, 564.3, 552.1, 111.1, 42, 1, 325.2, 0];
 
+// here we store the real consumption data by category (week, month, year) from the previous period
+const dataWeekPrevious = [0, 5, 0.45, 2.8, 0.8, 0.90, 1.2, 4.4, 0];
+const dataMonthPrevious = [0, 12.12, 32.13, 66.51, 21.42, 43.22, 65.55, 89.42, 12.23, 44.34, 65.55, 21.33, 43.44,
+  15.22, 32.21, 66.55, 21.32, 43.52, 65.35, 89.24, 12.52, 44.23, 63.55, 11.23, 43.44, 12.52, 32.13, 66.25, 21.42, 45.2, 65.5, 0]
+const dataYearPrevious = [0, 212.3, 342.1, 112.3, 786.5, 888.8, 854.5, 123.1, 0]
+
+// data for xAxis
+const indexToClipFrom = 31
+const dataYear = [" ", 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Sep', 'Oct', 'Nov', 'Dec', " "];
+const dataDays = [" ", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", " "];
+
+
+const recommendedDayConsumption = 5
+
+// Other
+const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
 
 // Charts components
@@ -72,8 +84,8 @@ const HorizontalLine = (({ y }) => (
     key={'zero-axis'}
     x1={'0%'}
     x2={'100%'}
-    y1={y(50)}
-    y2={y(50)}
+    y1={y(recommendedDayConsumption)}
+    y2={y(recommendedDayConsumption)}
     stroke={'orange'}
     strokeDasharray={[7, 5]}
     strokeWidth={3}
@@ -87,17 +99,23 @@ class SpendingsScreen extends React.Component {
     super(props);
     this.state = {
       date: firstWeekDay + ' - ' + lastWeekDay,
+      lastDayMonth: '28',
       selectedButton: 'button1',
+
       waterSavings: 40,
       wastewaterSavings: 75,
       totalSavings: 115,
+
       current: '15 L',
       previous: '20 L',
       regionReduction: 25,
-      currentConsumption: 45,
-      data: dataDays,
-      lastDayMonth: '28',
-      dataMonth: [" ", "1", "5", "10", "15", "20", "25", "0", " "],
+      recommendedConsumption: recommendedDayConsumption,
+
+      xAxisData: dataDays,
+      dataCurrentPeriod: dataWeekCurrent,
+      dataPreviousPeriod: dataWeekPrevious,
+      dataMonth: [" ", "1", " ", "3", " ", "5", " ", "7", ' ', '9', ' ', '11', ' '
+        , '13', ' ', '15 ', ' ', '17', ' ', '19', ' ', '21', ' ', '23', ' ', '25', ' ', '27', ' ', "29", " ", "31", " "],
     };
   }
 
@@ -105,19 +123,34 @@ class SpendingsScreen extends React.Component {
     this.setState({ date: g });
   };
 
-  // Changes color of the button when pressed
+  // Changes data, color of the button when pressed
   onButtonPress = (g, m) => {
     if (m === 'button1') {
-      this.setState({ data: dataDays })
+      this.setState({
+        xAxisData: dataDays,
+        dataCurrentPeriod: dataWeekCurrent,
+        dataPreviousPeriod: dataWeekPrevious
+      })
     }
     if (m === 'button2') {
-      var lastDayOfCurrentMonth = moment().month(currentMonth).daysInMonth().toString()
+      var lastDayOfCurrentMonth = moment().month(currentMonth).daysInMonth() // last day of the CURRENT month
       let dataMonth = [...this.state.dataMonth];
-      dataMonth[7] = lastDayOfCurrentMonth
-      this.setState({ data: dataMonth })
+      let recommendedMonthConsumption = recommendedDayConsumption * lastDayOfCurrentMonth
+      dataMonth[31] = lastDayOfCurrentMonth.toString() // adding last day of the current month at the end of the xAxis
+
+      this.setState({
+        xAxisData: dataMonth,
+        dataCurrentPeriod: dataMonthCurrent,
+        dataPreviousPeriod: dataMonthPrevious,
+        recommendedConsumption: recommendedMonthConsumption
+      })
     }
     if (m === 'button3') {
-      this.setState({ data: dataYear })
+      this.setState({
+        xAxisData: dataYear,
+        dataCurrentPeriod: dataYearCurrent,
+        dataPreviousPeriod: dataYearPrevious
+      })
     }
     this.setState({ selectedButton: m, date: g })
   }
@@ -128,16 +161,20 @@ class SpendingsScreen extends React.Component {
       // format: 2020
       this.setState({ date: this.state.date + 1 })
     }
-    else if (this.state.date.length < 10) {
+    else if (this.state.date.length < 15) {
       // format: April
-      var mAdd = moment().month(this.state.date).add(1, 'month').format("MMMM") // month increment +1
+      var mAdd = moment(this.state.date, "MMMM YYYY").add('month', 1).format("MMMM YYYY") // month increment +1
       var lastDayMonth = moment().month(mAdd).daysInMonth().toString() // number of days in a month
       let dataMonth = [...this.state.dataMonth];
-      dataMonth[7] = lastDayMonth // adding last day of the month at the end of the xAxis
+      dataMonth[31] = lastDayMonth // adding last day of the selected month at the end of the xAxis
 
-      this.setState({ date: mAdd, lastDayMonth: lastDayMonth, data: dataMonth })
+      this.setState({
+        date: mAdd,
+        lastDayMonth: lastDayMonth,
+        xAxisData: dataMonth
+      })
     }
-    else if (this.state.date.length > 10) {
+    else if (this.state.date.length > 16) {
       // format: 1st April 2020 - 7th April 2020
       var first = moment(this.state.date, 'Do MMMM YYYY ').add('days', 7).format("Do MMMM YYYY  ");
       var last = moment(this.state.date, '- Do MMMM YYYY').add('days', 7).format("- Do MMMM YYYY ");
@@ -151,16 +188,16 @@ class SpendingsScreen extends React.Component {
       // format: 2020
       this.setState({ date: this.state.date - 1 })
     }
-    else if (this.state.date.length < 10) {
+    else if (this.state.date.length < 15) {
       // format: April
-      var mSub = moment().month(this.state.date).subtract(1, 'month').format("MMMM")
+      var mSub = moment().month(this.state.date).subtract(1, 'month').format("MMMM YYYY")
       var lastDayMonth = moment().month(mSub).daysInMonth().toString() // number of days in a month
       let dataMonth = [...this.state.dataMonth];
-      dataMonth[7] = lastDayMonth // adding last day of the month at the end of the xAxis
+      dataMonth[32] = lastDayMonth // adding last day of the selected month at the end of the xAxis
 
-      this.setState({ date: mSub, data: dataMonth })
+      this.setState({ date: mSub, xAxisData: dataMonth })
     }
-    else if (this.state.date.length > 10) {
+    else if (this.state.date.length > 16) {
       // format: 1st April 2020 - 7th April 2020
       var firstDate = moment(this.state.date, 'Do MMMM YYYY ').subtract('days', 7).format("Do MMMM YYYY ");
       var lastDate = moment(this.state.date, '- Do MMMM YYYY').subtract('days', 7).format("- Do MMMM YYYY");
@@ -291,89 +328,110 @@ class SpendingsScreen extends React.Component {
                 </View>
               </View>
 
-              {/* Multiline chart */}
+              {/* MULTILINE CHART */}
               <View style={{ flexDirection: 'row', height: 200, width: '90%' }}>
-                <View style={{ width: '15%' }}>
+                <View style={{ width: '10%' }}>
                   <YAxis
-                    style={{ top: 0, bottom: 0, height: 200, marginTop: 10 }}
-                    data={data1}
-                    contentInset={{ top: 45, bottom: 0 }}
+                    style={{ top: 0, bottom: 0, height: 180, marginTop: 30 }}
+                    data={this.state.dataCurrentPeriod}
+                    contentInset={{ top: 50, bottom: 0 }}
                     numberOfTicks={5}
-                    spacingInner={100}
+                    // spacingInner={100}
                     yAccessor={({ item }) => item}
                     svg={{
                       fontSize: 13,
                       fill: '#174A5A',
                       strokeWidth: 0.3,
                       alignmentBaseline: 'baseline',
-                      baselineShift: '6',
+                      baselineShift: '25',
                     }}
                   />
                 </View>
-                <View style={{ width: '85%', alignSelf: 'flex-end' }}>
-                  <AreaChart
-                    style={{ flex: 1 }}
-                    data={data}
-                    contentInset={{ top: 50, bottom: 0 }}
-                    svg={{
-                      fill: 'url(#gradient)',
-                      clipPath: 'url(#clip-path-1)',
-                    }}
-                    numberOfTicks={5}
-                    curve={shape.curveNatural}
-                    extras={[HorizontalLine, Gradient, Clips]}
-                  />
-                  <AreaChart
-                    style={StyleSheet.absoluteFill}
-                    data={data1}
-                    contentInset={{ top: 50, bottom: 0 }}
-                    curve={shape.curveNatural}
-                    showGrid={false}
-                    numberOfTicks={5}
-                    extras={[Line]}
-                    renderDecorator={({ x, y, index, value }) => (
-                      <Circle
-                        key={index}
-                        cx={x(index = 2)}
-                        cy={y(value = this.state.currentConsumption)}
-                        r={3}
-                        stroke={'#174A5A'}
-                        strokeWidth={6}
-                        fill={'#174A5A'}
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                  <View style={{ width: this.state.selectedButton === "button2" ? 500 : 350, alignSelf: 'flex-end' }}>
+                    <AreaChart
+                      style={{ flex: 1 }}
+                      data={this.state.dataPreviousPeriod}
+                      contentInset={{ top: 50, bottom: 0 }}
+                      svg={{
+                        fill: 'url(#gradient)',
+                        clipPath: 'url(#clip-path-1)',
+                      }}
+                      numberOfTicks={5}
+                      // yAccessor={({ item }) => item}
+                      curve={shape.curveNatural}
+                      extras={[Gradient, Clips]}
+                      animate={true}
+                      animationDuration={600}
+                      showGrid={false}
+                    />
+                    <AreaChart
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        flexDirection: 'row',
+                        bottom: 19,
+                        width: '100%',
+                      }}
+                      data={this.state.dataCurrentPeriod}
+                      contentInset={{ top: 50, bottom: 0 }}
+                      curve={shape.curveNatural}
+                      numberOfTicks={5}
+                      extras={[Line]}
+                      animate={true}
+                      animationDuration={500}
+                      // yAccessor={({ item }) => item}
+                      renderDecorator={({ x, y, index, value }) => (
+                        <Circle
+                          key={index}
+                          cx={x(index = 2)}
+                          cy={y(value = 5)}
+                          r={3}
+                          stroke={'#174A5A'}
+                          strokeWidth={6}
+                          fill={'#174A5A'}
+                        />
+                      )}>
+                      <HorizontalLine></HorizontalLine>
+                    </AreaChart>
+
+                    <View style={{ marginTop: 10, height: 10, width: this.state.selectedButton === "button2" ? 500 : 350 }}>
+                      <XAxis
+                        data={this.state.xAxisData}
+                        xAccessor={({ index }) => index}
+                        formatLabel={index => this.state.xAxisData[index]}
+                        svg={{
+                          fontSize: 12, fill: '#174A5A'
+                        }}
                       />
-                    )}
-                  />
-                </View>
+                    </View>
+                  </View>
+                </ScrollView>
               </View>
-              <View style={{ marginTop: 10, height: 10, marginLeft: 35 }}>
-                <XAxis
-                  data={this.state.data}
-                  xAccessor={({ index }) => index}
-                  formatLabel={index => this.state.data[index]}
-                  svg={{
-                    fontSize: 12, fill: '#174A5A'
-                  }}
-                />
-              </View>
-              {/* Multiline chart */}
+              <ScrollView horizontal={true}>
+
+              </ScrollView>
+
+              {/* MULTILINE CHART */}
 
 
-              {/* Legend for multiline chart */}
+              {/* LEGEND FOR MULTILINE CHART */}
               <View style={{ flexDirection: 'row', width: '75%', justifyContent: 'center', alignSelf: 'center', marginVertical: 15, alignSelf: 'center' }}>
                 <View style={{ flexDirection: 'row', width: '33%' }}>
                   <Image source={require('../../Assets/consumption/currentperiodlegend.png')}></Image>
                   <Text style={styles.smallText}>Current</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '33%' }}>
-                  <Image style={{ alignSelf: 'center' }} source={require('../../Assets/consumption/recommendedlegend.png')}></Image>
+                  <Image source={require('../../Assets/consumption/previousperiodlegend.png')}></Image>
                   <Text style={styles.smallText}>Previous</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '33%' }}>
-                  <Image source={require('../../Assets/consumption/previousperiodlegend.png')}></Image>
+                  <Image style={{ alignSelf: 'center', marginLeft: 5 }} source={require('../../Assets/consumption/recommendedlegend.png')}></Image>
                   <Text style={styles.smallText}>Recommended</Text>
                 </View>
               </View>
-              {/* Legend for multiline chart */}
+              {/* LEGEND FOR MULTILINE CHART */}
             </View>
           </View>
 
