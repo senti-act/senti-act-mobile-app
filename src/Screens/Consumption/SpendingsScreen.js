@@ -25,21 +25,21 @@ var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add
 
 // Charts  TEST data
 // here we store the real consumption data by category (week, month, year) from the current period
-const dataWeekCurrent = [0, 0.3, 5, 0.54, 0.99, 1.5, 1.30, 8.5, 0];
+const dataWeekCurrent = [0, 3, 5, 0.54, 0.99, 1.5, 1.30, 8.5, 0];
 const dataMonthCurrent = [0, 32.13, 12.31, 23.14, 45.52, 23.30, 0, 56.64, 32.13, 42.31, 56.74,
   32.15, 12.36, 23.31, 45.35, 23.53, 0, 56.26, 32.41, 42.53, 56.72, 0, 34.21, 12.53, 26.31, 43.55, 23.63, 0, 56.36, 36.21, 42.23, 0];
-const dataYearCurrent = [0, 314.1, 564.3, 552.1, 111.1, 42, 1, 325.2, 0];
+const dataYearCurrent = [0, 314.1, 564.3, 552.1, 111.1, 42, 1, 325.2, 321, 444, 333, 111, 0];
 
 // here we store the real consumption data by category (week, month, year) from the previous period
 const dataWeekPrevious = [0, 5, 0.45, 2.8, 0.8, 0.90, 1.2, 4.4, 0];
 const dataMonthPrevious = [0, 12.12, 32.13, 66.51, 21.42, 43.22, 65.55, 89.42, 12.23, 44.34, 65.55, 21.33, 43.44,
   15.22, 32.21, 66.55, 21.32, 43.52, 65.35, 89.24, 12.52, 44.23, 63.55, 11.23, 43.44, 12.52, 32.13, 66.25, 21.42, 45.2, 65.5, 0]
-const dataYearPrevious = [0, 212.3, 342.1, 112.3, 786.5, 888.8, 854.5, 123.1, 0]
+const dataYearPrevious = [0, 212.3, 342.1, 112.3, 786.5, 888.8, 854.5, 123.1, 314.1, 564.3, 552.1, 232, 0]
 
 // data for xAxis
 const indexToClipFrom = 31
-const dataYear = [" ", 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Sep', 'Oct', 'Nov', 'Dec', " "];
-const dataDays = [" ", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", " "];
+const dataYear = [' ', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Sep', 'Oct', 'Nov', 'Dec', ' '];
+const dataDays = [" ", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", ""];
 
 const recommendedDayConsumption = 0.95 // here we store recommended consumption
 const weekdaySequence = moment(currentDay).isoWeekday()  //  sequenence of week day (1-7)
@@ -131,6 +131,7 @@ class SpendingsScreen extends React.Component {
   // Changes data, color of the button when pressed
   onButtonPress = (g, m) => {
     if (m === 'button1') {
+
       this.setState({
         xAxisData: dataDays,
         dataCurrentPeriod: dataWeekCurrent,
@@ -142,11 +143,11 @@ class SpendingsScreen extends React.Component {
     if (m === 'button2') {
       var lastDayOfCurrentMonth = moment().month(currentMonth).daysInMonth() // last day of the CURRENT month
       let dataMonth = [...this.state.dataMonth];
-      let recommendedMonthConsumption = recommendedDayConsumption * lastDayOfCurrentMonth
       dataMonth[31] = lastDayOfCurrentMonth.toString() // adding last day of the current month at the end of the xAxis
+      let recommendedMonthConsumption = recommendedDayConsumption * lastDayOfCurrentMonth
 
       var monthSequence = parseInt(currentDay) // day sequence in current month (for example: 21.1 = 21)
-      monthSequence = monthSequence + 1
+
 
       this.setState({
         xAxisData: dataMonth,
@@ -160,12 +161,13 @@ class SpendingsScreen extends React.Component {
     if (m === 'button3') {
       let recommendedYearConsumption = this.state.recommendedMonthConsumption * 12
       let yearSequence = parseInt(moment().date(currentMonth).format('M')) // month sequence in current year (for example: February = 2)
+
       this.setState({
         xAxisData: dataYear,
         dataCurrentPeriod: dataYearCurrent,
         dataPreviousPeriod: dataYearPrevious,
         recommendedConsumption: recommendedYearConsumption,
-        circleSequence: yearSequence - 1
+        circleSequence: yearSequence
       })
     }
     this.setState({ selectedButton: m, date: g })
@@ -352,8 +354,7 @@ class SpendingsScreen extends React.Component {
                     data={this.state.dataCurrentPeriod}
                     contentInset={{ top: 50, bottom: 0 }}
                     numberOfTicks={5}
-                    // spacingInner={100}
-                    yAccessor={({ item }) => item}
+
                     svg={{
                       fontSize: 13,
                       fill: '#174A5A',
@@ -364,7 +365,10 @@ class SpendingsScreen extends React.Component {
                   />
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                  <View style={{ width: this.state.selectedButton === "button2" ? 500 : 350, alignSelf: 'flex-end' }}>
+                  <View style={{
+                    width: this.state.selectedButton === "button2" ? 500 : 350,
+                    alignSelf: 'flex-end',
+                  }}>
                     <AreaChart
                       style={{ flex: 1 }}
                       data={this.state.dataPreviousPeriod}
@@ -374,11 +378,10 @@ class SpendingsScreen extends React.Component {
                         clipPath: 'url(#clip-path-1)',
                       }}
                       numberOfTicks={5}
-                      // yAccessor={({ item }) => item}
                       curve={shape.curveNatural}
                       extras={[Gradient, Clips]}
                       animate={true}
-                      animationDuration={600}
+                      animationDuration={500}
                       showGrid={false}
                     />
                     <AreaChart
@@ -397,7 +400,6 @@ class SpendingsScreen extends React.Component {
                       extras={[Line]}
                       animate={true}
                       animationDuration={500}
-                      // yAccessor={({ item }) => item}
                       renderDecorator={({ x, y, index, value }) => (
                         <View>
                           <L
@@ -424,7 +426,7 @@ class SpendingsScreen extends React.Component {
                       <HorizontalLine></HorizontalLine>
                     </AreaChart>
 
-                    <View style={{ marginTop: 10, height: 10, width: this.state.selectedButton === "button2" ? 500 : 350 }}>
+                    <View style={{ marginTop: 10, height: 10, width: '100%', alignSelf: 'flex-end' }}>
                       <XAxis
                         data={this.state.xAxisData}
                         xAccessor={({ index }) => index}
