@@ -16,13 +16,14 @@ import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L, Circle }
 import * as shape from 'd3-shape'
 
 // Datepicker data
+var currentDay = moment().format('DD-MM-YY');
 var currentWeek = moment().format('W');
 var currentMonth = moment().format('MMMM YYYY');
 var currentYear = parseInt(moment().format('YYYY'));
 var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('Do MMMM YYYY');
 var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('Do MMMM YYYY');
 
-// Charts data
+// Charts  TEST data
 // here we store the real consumption data by category (week, month, year) from the current period
 const dataWeekCurrent = [0, 0.3, 5, 0.54, 0.99, 1.5, 1.30, 8.5, 0];
 const dataMonthCurrent = [0, 32.13, 12.31, 23.14, 45.52, 23.30, 0, 56.64, 32.13, 42.31, 56.74,
@@ -40,8 +41,8 @@ const indexToClipFrom = 31
 const dataYear = [" ", 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Sep', 'Oct', 'Nov', 'Dec', " "];
 const dataDays = [" ", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", " "];
 
-
-const recommendedDayConsumption = 5
+const recommendedDayConsumption = 0.95 // here we store recommended consumption
+const weekdaySequence = moment(currentDay).isoWeekday()  //  sequenence of week day (1-7)
 
 // Other
 const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
@@ -109,7 +110,11 @@ class SpendingsScreen extends React.Component {
       current: '15 L',
       previous: '20 L',
       regionReduction: 25,
+
       recommendedConsumption: recommendedDayConsumption,
+      recommendedMonthConsumption: 0,
+
+      circleSequence: weekdaySequence - 1,
 
       xAxisData: dataDays,
       dataCurrentPeriod: dataWeekCurrent,
@@ -129,7 +134,9 @@ class SpendingsScreen extends React.Component {
       this.setState({
         xAxisData: dataDays,
         dataCurrentPeriod: dataWeekCurrent,
-        dataPreviousPeriod: dataWeekPrevious
+        dataPreviousPeriod: dataWeekPrevious,
+        recommendedConsumption: recommendedDayConsumption,
+        circleSequence: weekdaySequence - 1, // day sequence in current week  (for example: Friday = 5)
       })
     }
     if (m === 'button2') {
@@ -138,18 +145,27 @@ class SpendingsScreen extends React.Component {
       let recommendedMonthConsumption = recommendedDayConsumption * lastDayOfCurrentMonth
       dataMonth[31] = lastDayOfCurrentMonth.toString() // adding last day of the current month at the end of the xAxis
 
+      var monthSequence = parseInt(currentDay) // day sequence in current month (for example: 21.1 = 21)
+      monthSequence = monthSequence + 1
+
       this.setState({
         xAxisData: dataMonth,
         dataCurrentPeriod: dataMonthCurrent,
         dataPreviousPeriod: dataMonthPrevious,
-        recommendedConsumption: recommendedMonthConsumption
+        recommendedConsumption: recommendedMonthConsumption,
+        recommendedMonthConsumption: recommendedMonthConsumption,
+        circleSequence: monthSequence - 1,
       })
     }
     if (m === 'button3') {
+      let recommendedYearConsumption = this.state.recommendedMonthConsumption * 12
+      let yearSequence = parseInt(moment().date(currentMonth).format('M')) // month sequence in current year (for example: February = 2)
       this.setState({
         xAxisData: dataYear,
         dataCurrentPeriod: dataYearCurrent,
-        dataPreviousPeriod: dataYearPrevious
+        dataPreviousPeriod: dataYearPrevious,
+        recommendedConsumption: recommendedYearConsumption,
+        circleSequence: yearSequence - 1
       })
     }
     this.setState({ selectedButton: m, date: g })
@@ -383,15 +399,27 @@ class SpendingsScreen extends React.Component {
                       animationDuration={500}
                       // yAccessor={({ item }) => item}
                       renderDecorator={({ x, y, index, value }) => (
-                        <Circle
-                          key={index}
-                          cx={x(index = 2)}
-                          cy={y(value = 5)}
-                          r={3}
-                          stroke={'#174A5A'}
-                          strokeWidth={6}
-                          fill={'#174A5A'}
-                        />
+                        <View>
+                          <L
+                            key={'zero-axis'}
+                            x1={'0%'}
+                            x2={'100%'}
+                            y1={y(this.state.recommendedConsumption)}
+                            y2={y(this.state.recommendedConsumption)}
+                            stroke={'orange'}
+                            strokeDasharray={[7, 5]}
+                            strokeWidth={3}
+                          />
+                          <Circle
+                            key={index}
+                            cx={x(this.state.circleSequence)}
+                            cy={y(this.state.dataCurrentPeriod[this.state.circleSequence])}
+                            r={3}
+                            stroke={'#174A5A'}
+                            strokeWidth={6}
+                            fill={'#174A5A'}
+                          />
+                        </View>
                       )}>
                       <HorizontalLine></HorizontalLine>
                     </AreaChart>
