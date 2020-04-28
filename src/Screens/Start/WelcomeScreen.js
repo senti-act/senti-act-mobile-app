@@ -1,54 +1,10 @@
 import * as React from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import Auth from '../../Networking/Auth';
 
 class WelcomeScreen extends React.Component {
     constructor(props) {
-        super();
+        super(props);
     }
-
-    componentDidMount() {
-       this.checkToken()
-     }
-
-    checkToken = async () => {
-        try {
-          const value = await AsyncStorage.getItem('token');
-          if (value !== null) {
-            this.setUser()
-              .then(() => {
-                this.props.navigation.navigate('navigation');
-              })
-              .catch(e => {
-                console.log('error',e)
-                alert(e);
-              });
-          } else {
-            //this.props.navigation.navigate('dupa');
-          }
-        } catch (e) {
-          alert(e);
-        }
-      };
-
-      setUser = () => {
-        return new Promise((resolve, reject) => {
-          Auth.getMe()
-            .then(async x => {
-              console.log(x)
-              try {
-                await AsyncStorage.setItem('user', JSON.stringify(x));
-                resolve();
-              } catch (e) {
-                reject(e);
-              }
-            })
-            .catch(e => {
-              reject(e);
-            });
-        });
-      };
 
     render() {
         const { navigation } = this.props;

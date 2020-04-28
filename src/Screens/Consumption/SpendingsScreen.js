@@ -14,14 +14,15 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { AreaChart, YAxis, XAxis, Path } from 'react-native-svg-charts'
 import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L, Circle } from 'react-native-svg'
 import * as shape from 'd3-shape'
+import UserService from '../../Networking/UserService';
 
 // Datepicker data
 var currentDay = moment().format('DD-MM-YY');
 var currentWeek = moment().format('W');
 var currentMonth = moment().format('MMMM YYYY');
 var currentYear = parseInt(moment().format('YYYY'));
-var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('Do MMMM YYYY');
-var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('Do MMMM YYYY');
+var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('YYYY-MM-DD');
+var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('YYYY-MM-DD');
 
 // Charts  TEST data
 // here we store the real consumption data by category (week, month, year) from the current period
@@ -31,7 +32,7 @@ const dataMonthCurrent = [0, 32.13, 12.31, 23.14, 45.52, 23.30, 0, 56.64, 32.13,
 const dataYearCurrent = [0, 314.1, 564.3, 552.1, 111.1, 42, 1, 325.2, 321, 444, 333, 111, 0];
 
 // here we store the real consumption data by category (week, month, year) from the previous period
-const dataWeekPrevious = [0, 5, 0.45, 2.8, 0.8, 0.90, 1.2, 4.4, 0];
+const dataWeekPrevious = [0, 5, 0.45, 2.8, 0.8, 0.90, 1.2];
 const dataMonthPrevious = [0, 12.12, 32.13, 66.51, 21.42, 43.22, 65.55, 89.42, 12.23, 44.34, 65.55, 21.33, 43.44,
   15.22, 32.21, 66.55, 21.32, 43.52, 65.35, 89.24, 12.52, 44.23, 63.55, 11.23, 43.44, 12.52, 32.13, 66.25, 21.42, 45.2, 65.5, 0]
 const dataYearPrevious = [0, 212.3, 342.1, 112.3, 786.5, 888.8, 854.5, 123.1, 314.1, 564.3, 552.1, 232, 0]
@@ -39,7 +40,7 @@ const dataYearPrevious = [0, 212.3, 342.1, 112.3, 786.5, 888.8, 854.5, 123.1, 31
 // data for xAxis
 const indexToClipFrom = 31
 const dataYear = [' ', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Sep', 'Oct', 'Nov', 'Dec', ' '];
-const dataDays = [" ", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", ""];
+const dataDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const recommendedDayConsumption = 0.95 // here we store recommended consumption
 const weekdaySequence = moment(currentDay).isoWeekday()  //  sequenence of week day (1-7)
@@ -119,8 +120,8 @@ class SpendingsScreen extends React.Component {
       xAxisData: dataDays,
       dataCurrentPeriod: dataWeekCurrent,
       dataPreviousPeriod: dataWeekPrevious,
-      dataMonth: [" ", "1", " ", "3", " ", "5", " ", "7", ' ', '9', ' ', '11', ' '
-        , '13', ' ', '15 ', ' ', '17', ' ', '19', ' ', '21', ' ', '23', ' ', '25', ' ', '27', ' ', "29", " ", "31", " "],
+      dataMonth: ["1", "2", "3", "4", "5", "6", "7", "8", '9', '10', '11', '12'
+        , '13', '14', '15 ', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', "29", "30", "31"],
     };
   }
 
@@ -128,35 +129,92 @@ class SpendingsScreen extends React.Component {
     this.setState({ date: g });
   };
 
+  getSelectedConsumption=(startDate,endDate)=>{
+    var weekData = []
+    UserService.getUsageByDay(startDate,endDate).then(data=>{
+      // alert(JSON.stringify(x))
+      data.forEach(x => {
+        // console.log(moment(x.d).isoWeekday())
+        // console.log(x.averageFlowPerDay.toFixed(2))
+        // weekData.push({day:moment(x.d).isoWeekday(),value:x.averageFlowPerDay.toFixed(2)})
+        weekData.push(x.averageFlowPerDay.toFixed(2)*1)
+
+      });
+      this.setState({dataCurrentPeriod:weekData})
+      console.log('THIS WEEK', startDate, weekData)
+    }).catch(err=>{
+      alert(err)
+    })
+  }
+
+  getPreviousConsumption=(startDate,endDate,type)=>{
+    var start = null;
+    var end = null;
+    if(type == "week"){
+      start=moment(startDate).subtract(1,'week').format('YYYY-MM-DD')
+      end=moment(endDate).subtract(1,'week').format('YYYY-MM-DD')
+    }
+    else if (type == "month"){
+      start=moment(startDate).subtract(1,'month').format('YYYY-MM-DD')
+      end=moment(endDate).subtract(1,'month').format('YYYY-MM-DD')
+    }
+    else{
+      start=moment(startDate).subtract(1,'year').format('YYYY-MM-DD')
+      end=moment(endDate).subtract(1,'year').format('YYYY-MM-DD')
+    }
+  
+    var weekData = []
+    UserService.getUsageByDay(start,end).then(data=>{
+      // alert(JSON.stringify(x))
+      data.forEach(x => {
+        // console.log(moment(x.d).isoWeekday())
+        // console.log(x.averageFlowPerDay.toFixed(2))
+        // weekData.push({day:moment(x.d).isoWeekday(),value:x.averageFlowPerDay.toFixed(2)})
+        weekData.push(x.averageFlowPerDay.toFixed(2)*1)
+
+      });
+      this.setState({dataPreviousPeriod:weekData})
+      console.log(weekData)
+    }).catch(err=>{
+      alert(err)
+    })
+  }
+
+
   // Changes data, color of the button when pressed
   onButtonPress = (g, m) => {
     if (m === 'button1') {
 
       this.setState({
         xAxisData: dataDays,
-        dataCurrentPeriod: dataWeekCurrent,
-        dataPreviousPeriod: dataWeekPrevious,
         recommendedConsumption: recommendedDayConsumption,
         circleSequence: weekdaySequence - 1, // day sequence in current week  (for example: Friday = 5)
       })
+
+      this.getSelectedConsumption(firstWeekDay,lastWeekDay)
+      this.getPreviousConsumption(firstWeekDay,lastWeekDay,'week')
     }
     if (m === 'button2') {
       var lastDayOfCurrentMonth = moment().month(currentMonth).daysInMonth() // last day of the CURRENT month
+      
       let dataMonth = [...this.state.dataMonth];
-      dataMonth[31] = lastDayOfCurrentMonth.toString() // adding last day of the current month at the end of the xAxis
+      dataMonth[30] = lastDayOfCurrentMonth.toString() // adding last day of the current month at the end of the xAxis
       let recommendedMonthConsumption = recommendedDayConsumption * lastDayOfCurrentMonth
 
       var monthSequence = parseInt(currentDay) // day sequence in current month (for example: 21.1 = 21)
 
+      var startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
+      var endOfMonth   = moment().endOf('month').format('YYYY-MM-DD');
 
       this.setState({
         xAxisData: dataMonth,
-        dataCurrentPeriod: dataMonthCurrent,
-        dataPreviousPeriod: dataMonthPrevious,
         recommendedConsumption: recommendedMonthConsumption,
         recommendedMonthConsumption: recommendedMonthConsumption,
-        circleSequence: monthSequence - 1,
+        // circleSequence: monthSequence - 1,
       })
+      this.getSelectedConsumption(startOfMonth,endOfMonth)
+      this.getPreviousConsumption(startOfMonth,endOfMonth, 'month')
+
     }
     if (m === 'button3') {
       let recommendedYearConsumption = this.state.recommendedMonthConsumption * 12
@@ -305,7 +363,7 @@ class SpendingsScreen extends React.Component {
                     justifyContent: 'center',
                     padding: 4
                   }}
-                    onPress={() => this.onButtonPress(currentMonth, 'button2')}>
+                    onPress={()=>this.onButtonPress(currentMonth, 'button2')}>
                     <Text style={{
                       textAlign: 'center',
                       color: this.state.selectedButton === "button2" ? 'white' : '#174A5A'
@@ -352,7 +410,8 @@ class SpendingsScreen extends React.Component {
                   <YAxis
                     style={{ top: 0, bottom: 0, height: 180, marginTop: 30 }}
                     data={this.state.dataCurrentPeriod}
-                    contentInset={{ top: 50, bottom: 0 }}
+                    contentInset={{ top: 50, bottom: 0}}
+
                     numberOfTicks={5}
 
                     svg={{
@@ -394,7 +453,7 @@ class SpendingsScreen extends React.Component {
                         width: '100%',
                       }}
                       data={this.state.dataCurrentPeriod}
-                      contentInset={{ top: 50, bottom: 0 }}
+                      contentInset={{ top: 50, bottom: 10 }}
                       curve={shape.curveNatural}
                       numberOfTicks={5}
                       extras={[Line]}
@@ -426,10 +485,11 @@ class SpendingsScreen extends React.Component {
                       <HorizontalLine></HorizontalLine>
                     </AreaChart>
 
-                    <View style={{ marginTop: 10, height: 10, width: '100%', alignSelf: 'flex-end' }}>
+                    <View style={{ marginTop: 10, height: 10, width: '100%',  }}>
                       <XAxis
                         data={this.state.xAxisData}
                         xAccessor={({ index }) => index}
+                        contentInset={{ left: 12, right: 12 }}
                         formatLabel={index => this.state.xAxisData[index]}
                         svg={{
                           fontSize: 12, fill: '#174A5A'

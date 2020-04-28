@@ -1,15 +1,21 @@
 import axios from 'axios';
-//import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
-var baseApiAddress = 'http://192.168.2.166:4000';
+var baseApiAddress = 'http://192.168.87.107:4000';
 
-const request = async function (options) {
-  //var token= await AsyncStorage.getItem('token')
+const request = async function (options, isHeader=true) {
+
+  let authHeader = null;
+
+  if (isHeader){
+    authHeader = await AsyncStorage.getItem('token')
+  }
+  // var token= await AsyncStorage.getItem('token')
   const client = axios.create({
     baseURL: baseApiAddress,
-    // headers: {
-    //   Authorization: 'Bearer ' + token,
-    // },
+    headers: {
+      'Authorization': 'Bearer ' + authHeader,
+    },
   });
 
   const onSuccess = function (response) {

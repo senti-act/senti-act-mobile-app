@@ -12,10 +12,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import UserService from '../../Networking/UserService'
 import AsyncStorage from '@react-native-community/async-storage';
+import { AuthContext } from '../../Context/AuthContext';
 
 class ProfileScreen extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state={
       id:'1574ec1a-7443-11ea-9eaf-08606e6ce1c1',
       user:{},
@@ -51,6 +52,8 @@ class ProfileScreen extends React.Component {
     const { route, navigation } = this.props;
 
     return (
+    <AuthContext.Consumer>
+      {({setToken})=>(
       <SafeAreaView style={{ height: '100%', width: '100%' }}>
         <ScrollView
           style={{ flex: 1, marginTop: 10 }}
@@ -140,7 +143,8 @@ class ProfileScreen extends React.Component {
             onPress={async () => {
               try {
                 await AsyncStorage.removeItem('token');
-                this.props.navigation.navigate('WelcomeScreen');
+                setToken(null)
+                //this.props.navigation.navigate('WelcomeScreen');
               } catch (e) {
                 alert(e.message);
               }
@@ -161,6 +165,8 @@ class ProfileScreen extends React.Component {
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
+        )}
+      </AuthContext.Consumer>
     );
   }
 }

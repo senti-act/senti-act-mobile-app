@@ -35,11 +35,19 @@ function registerUser(nickname, uuid) {
   });
 }
 
+function getUsageByDay(startDate,endDate) {
+  return request({
+    url: `/api/users/usageByDay/${startDate}/${endDate}`,
+    method: 'GET'
+  });
+}
+
 const UserService = {
   getAllUsers,
   registerUser,
   getById,
-  getByUuid
+  getByUuid,
+  getUsageByDay
 };
 
 export default UserService;

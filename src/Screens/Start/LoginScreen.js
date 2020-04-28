@@ -4,6 +4,7 @@ import { TextInput } from 'react-native-paper';
 import UserService from '../../Networking/UserService';
 import Auth from '../../Networking/Auth';
 import AsyncStorage from '@react-native-community/async-storage';
+import { AuthContext } from '../../Context/AuthContext';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -34,7 +35,7 @@ class LoginScreen extends React.Component {
     })
   }
 
-  handleLogin = () => {
+  handleLogin = (setToken) => {
     this.setState({ loading: true });
     if (this.state.nickname.length > 0 && this.state.password.length > 0 && this.state.organisation.length > 0) {
       Auth.auth(this.state.organisation, this.state.nickname, this.state.password)
@@ -45,12 +46,14 @@ class LoginScreen extends React.Component {
               if (this.state.users.find(users => users.uuid === token.uuid)) {
                 this.setState({ loading: false });
                 await this.setUser()
-                this.props.navigation.navigate('navigation');
+                setToken(token.token)
+                // this.props.navigation.navigate('navigation');
               } else {
                 UserService.registerUser(this.state.nickname, token.uuid).then(async () => {
                   this.setState({ loading: false });
                   await this.setUser()
-                  this.props.navigation.navigate('navigation');
+                  setToken(token.token)
+                  // this.props.navigation.navigate('navigation');
                 })
                   .catch(err => {
                     alert(JSON.stringify(err));
@@ -93,7 +96,8 @@ class LoginScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     return (
-
+    <AuthContext.Consumer>
+      {({setToken})=>(
       <View style={{ alignItems: "center", width: '100%', backgroundColor: 'white', padding: 30, paddingVertical: 50, height: '100%' }}>
         <KeyboardAvoidingView style={styles.wholePageContainer}
           behavior={Platform.OS === 'android' ? null : 'padding'}
@@ -128,8 +132,9 @@ class LoginScreen extends React.Component {
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.buttonStyle}
-            // onPress={() => this.handleLogin()}
-            onPress={() => this.props.navigation.navigate('navigation')}>
+            onPress={() => this.handleLogin(setToken)}
+            //onPress={() => navigation.navigate('navigation')}
+            >
             <Text style={{ alignSelf: 'center', color: 'white', fontSize: 14, fontWeight: '500' }}>Login</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
@@ -140,6 +145,8 @@ class LoginScreen extends React.Component {
             <Text style={{ color: 'white' }}>Logging in</Text>
           </View>) : null}
       </View >
+      )}
+      </AuthContext.Consumer>
     )
   }
 }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Text, View, SafeAreaView} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -8,6 +8,9 @@ import LineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import HomeScreen from './src/Screens/HomeScreen';
 import Header from './src/Components/Header';
 import DeviceInfo from 'react-native-device-info';
+import AsyncStorage from '@react-native-community/async-storage';
+import Auth from '../senti-act-mobile-app/src/Networking/Auth';
+import {AuthContext} from './src/Context/AuthContext'
 //Start screens
 import DataSyncScreen from './src/Screens/Start/DataSyncScreen';
 import GuideScreen from './src/Screens/Start/GuideScreen';
@@ -35,19 +38,20 @@ import ConsumptionScreen from './src/Screens/Consumption/ConsumptionScreen';
 import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
 
 const Tab = createBottomTabNavigator();
-const TipsStack = createStackNavigator();
-const ProfileStack = createStackNavigator();
-const CompetitionStack = createStackNavigator();
-const SpendingsStack = createStackNavigator();
-const StartStack = createStackNavigator();
-const LoginStack = createStackNavigator();
-const GuideStack = createStackNavigator();
-const RootStack = createStackNavigator();
+const Stack = createStackNavigator();
+// const TipsStack = createStackNavigator();
+// const ProfileStack = createStackNavigator();
+// const CompetitionStack = createStackNavigator();
+// const SpendingsStack = createStackNavigator();
+// const StartStack = createStackNavigator();
+// const LoginStack = createStackNavigator();
+// const GuideStack = createStackNavigator();
+// const RootStack = createStackNavigator();
 
 // First stack to be executed when app starts running
-function startStack() {
+const StartStack = ()=> {
   return (
-    <StartStack.Navigator
+    <Stack.Navigator
       initialRouteName="WelcomeScreen"
       screenOptions={{
         headerStyle: {
@@ -72,63 +76,63 @@ function startStack() {
         },
       }}
       headerMode="float">
-      <StartStack.Screen
+      <Stack.Screen
         name="WelcomeScreen"
         component={WelcomeScreen}
         options={{headerShown: false}}
       />
-      <StartStack.Screen
+      <Stack.Screen
         name="InstructionsScreen"
         component={InstructionsScreen}
         options={{title: 'Why play Senti.act?'}}
       />
-      <StartStack.Screen
+      <Stack.Screen
         name="DataSyncScreen"
         component={DataSyncScreen}
         options={{title: 'Connect to your data'}}
       />
-      <StartStack.Screen
+      <Stack.Screen
         name="DataCheckScreen"
         component={DataCheckScreen}
         options={{title: 'Good luck, we found a match'}}
       />
-      <StartStack.Screen
+      <Stack.Screen
         name="RegistrationScreen"
         component={RegistrationScreen}
         options={{title: 'Complete your user profile'}}
       />
-      <StartStack.Screen
+      <Stack.Screen
         name="startGuideSkipStack"
         component={startGuideSkipStack}
         options={{headerShown: false}}
       />
-      <StartStack.Screen
+      {/* <StartStack.Screen
         name="GuideScreen"
         component={GuideScreen}
         options={{title: ''}}
-      />
-      <StartStack.Screen
+      /> */}
+      <Stack.Screen
         name="ReportScreen"
         component={ReportScreen}
         options={{title: 'Something went wrong? '}}
       />
-      <StartStack.Screen
+      <Stack.Screen
         name="StartLoginScreen"
         component={StartLoginScreen}
         options={{title: '', headerTransparent: true}}
       />
-      <StartStack.Screen
+      <Stack.Screen
         name="Login"
         component={loginStack}
         options={{headerShown: false}}
       />
-    </StartStack.Navigator>
+    </Stack.Navigator>
   );
 }
 // Part of the startStack
-function startGuideSkipStack() {
+const startGuideSkipStack = () => {
   return (
-    <GuideStack.Navigator
+    <Stack.Navigator
       initialRouteName="startGuideSkipStack"
       screenOptions={{
         gestureEnabled: true,
@@ -144,23 +148,23 @@ function startGuideSkipStack() {
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <GuideStack.Screen
+      <Stack.Screen
         name="StartGuideScreen"
         component={StartGuideScreen}
         options={{headerShown: false}}
       />
-      <GuideStack.Screen
+      <Stack.Screen
         name="GuideScreen"
         component={GuideScreen}
         options={{headerShown: false}}
       />
-    </GuideStack.Navigator>
+    </Stack.Navigator>
   );
 }
 // Part of the startStack
-function loginStack() {
+const loginStack = () => {
   return (
-    <LoginStack.Navigator
+    <Stack.Navigator
       initialRouteName="Login"
       screenOptions={{
         headerTransparent: false,
@@ -177,59 +181,59 @@ function loginStack() {
         headerBackTitleVisible: false,
       }}
       headerMode="float">
-      <LoginStack.Screen
+      <Stack.Screen
         name="LoginScreen"
         component={LoginScreen}
         options={{title: 'Log in', headerShown: false}}
       />
-      <LoginStack.Screen
+      <Stack.Screen
         name="RegistrationScreen"
         component={RegistrationScreen}
         options={{title: 'Registration'}}
       />
-    </LoginStack.Navigator>
+    </Stack.Navigator>
   );
 }
 
 // HomeStack
-function competitionStack() {
+const competitionStack = () => {
   return (
-    <CompetitionStack.Navigator
+    <Stack.Navigator
       initialRouteName="Competition"
       screenOptions={{
         header: () => <Header title="Competition" />,
         gestureEnabled: true,
       }}
       headerMode="float">
-      <CompetitionStack.Screen name="Competition" component={HomeScreen} />
-    </CompetitionStack.Navigator>
+      <Stack.Screen name="Competition" component={HomeScreen} />
+    </Stack.Navigator>
   );
 }
 
-function spendingsStack() {
+const spendingsStack=()=> {
   return (
-    <SpendingsStack.Navigator
+    <Stack.Navigator
       initialRouteName="My water status"
       screenOptions={{
         header: () => <Header title="Consumption" />,
         gestureEnabled: true,
       }}
       headerMode="float">
-      <SpendingsStack.Screen
+      <Stack.Screen
         name="My water consumption"
         component={SpendingsScreen}
       />
-      <SpendingsStack.Screen
+      <Stack.Screen
         name="ConsumptionScreen"
         component={ConsumptionScreen}
       />
-    </SpendingsStack.Navigator>
+    </Stack.Navigator>
   );
 }
 
-function tipsStack() {
+const tipsStack=()=> {
   return (
-    <TipsStack.Navigator
+    <Stack.Navigator
       initialRouteName="Tips and tricks"
       screenOptions={{
         headerStyle: {
@@ -254,7 +258,7 @@ function tipsStack() {
         },
       }}
       headerMode="float">
-      <TipsStack.Screen
+      <Stack.Screen
         name="Tips and tricks"
         component={TipsScreen}
         options={({navigation}) => ({
@@ -276,43 +280,44 @@ function tipsStack() {
           ),
         })}
       />
-      <TipsStack.Screen
+      <Stack.Screen
         name="Display"
         component={DisplayTips}
         options={({route}) => ({title: route.params.title})}
       />
-      <TipsStack.Screen
+      <Stack.Screen
         name="Submit tips"
         component={SubmitTipScreen}
         options={{headerTitle: 'Add your tips and tricks'}}
       />
-    </TipsStack.Navigator>
+    </Stack.Navigator>
   );
 }
 
-function profileStack() {
+const profileStack=()=> {
   return (
-    <ProfileStack.Navigator
+    <Stack.Navigator
       initialRouteName="Profile"
       screenOptions={{
         header: () => <Header title="Profile" />,
         gestureEnabled: true,
       }}
       headerMode="float">
-      <ProfileStack.Screen name="Profile" component={ProfileScreen} />
-      <ProfileStack.Screen name="Account" component={AccountSettings} />
-      <ProfileStack.Screen name="Notifications" component={Notifications} />
-      <ProfileStack.Screen name="Privacy policy" component={Privacy} />
-      <ProfileStack.Screen name="FAQ" component={FAQ} />
-      <ProfileStack.Screen name="About" component={About} />
-    </ProfileStack.Navigator>
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Account" component={AccountSettings} />
+      <Stack.Screen name="Notifications" component={Notifications} />
+      <Stack.Screen name="Privacy policy" component={Privacy} />
+      <Stack.Screen name="FAQ" component={FAQ} />
+      <Stack.Screen name="About" component={About} />
+    </Stack.Navigator>
   );
 }
 
 // Bottom tabbar navigation
-function tabNavigation() {
+const TabNavigation = () => {
   return (
     <Tab.Navigator
+      name='navigation'
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
@@ -352,21 +357,68 @@ function tabNavigation() {
   );
 }
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <RootStack.Navigator>
-        <RootStack.Screen
-          name="WelcomeScreen"
-          component={startStack}
-          options={{headerShown: false}}
-        />
-        <RootStack.Screen
-          name="navigation"
-          component={tabNavigation}
-          options={{headerShown: false}}
-        />
-      </RootStack.Navigator>
-    </NavigationContainer>
-  );
+export default function App(props) {
+  
+  const [token,setToken] = useState(null);
+
+  useEffect(() => {
+    checkToken()
+  }, []);
+
+  const checkToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem('token');
+      if (value !== null) {
+        setUser().then(() => {
+            //this.props.navigation.navigate('navigation');
+            setToken(value);
+          }).catch(e => {
+            console.log('error',e)
+            alert(e);
+          });
+      } else {
+        setToken(null);
+        //this.props.navigation.navigate('dupa');
+      }
+    } catch (e) {
+      alert(e);
+    }
+  };
+
+  const setUser = () => {
+    return new Promise((resolve, reject) => {
+      Auth.getMe().then(async x => {
+          console.log(x)
+          try {
+            await AsyncStorage.setItem('user', JSON.stringify(x));
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        }).catch(e => {
+          reject(e);
+        });
+    });
+  };
+
+
+    return (
+      <AuthContext.Provider value={{ token, setToken }}>
+        <NavigationContainer>
+          {token === null ? <StartStack/>: <TabNavigation/>}
+        </NavigationContainer>
+      </AuthContext.Provider>
+    );
 }
+
+
+// //   <RootStack.Screen
+// //   name="WelcomeScreen"
+// //   component={startStack}
+// //   options={{headerShown: false}}
+// // /> 
+// <RootStack.Screen
+//          name="navigation"
+//          component={tabNavigation}
+//          options={{headerShown: false}}
+//        /> */
