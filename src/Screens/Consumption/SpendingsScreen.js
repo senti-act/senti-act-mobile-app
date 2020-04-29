@@ -18,7 +18,6 @@ import * as shape from 'd3-shape'
 import UserService from '../../Networking/UserService';
 const { height, width } = Dimensions.get('window');
 
-// Datepicker data
 var lastWeekDay = moment().format('YYYY-MM-DD');
 var firstWeekDay = moment(lastWeekDay).subtract(7, "days").format('YYYY-MM-DD');
 
@@ -72,7 +71,6 @@ const HorizontalLine = (({ y }) => (
   />
 ))
 
-
 class SpendingsScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -84,28 +82,51 @@ class SpendingsScreen extends React.Component {
       xAxisData: '',
       dataCurrentPeriod: '',
       dataPreviousPeriod: '',
+      dailyConsumption:0,
 
       waterSavings: 40,
       wastewaterSavings: 75,
       totalSavings: 115,
 
-      current: '15 L',
-      previous: '20 L',
+      current: 0,
+      previous: 0,
+      reduced:0,
       regionReduction: 25,
 
-      // recommendedConsumption: recommendedDayConsumption,
       recommendedConsumption: 0.3,
      };
   }
 
   componentDidMount(){
     this.onButtonPress(this.state.selectedButton)
+    this.getDailyConsumption()
+  }
+
+  getDailyConsumption=()=>{
+    var currentDaysMinus = moment(currentDay).subtract(2,'day').format('YYYY-MM-DD');
+    var currentDay = moment().format('YYYY-MM-DD');
+    var currentDayPlus = moment(currentDay).add(1,'day').format('YYYY-MM-DD');
+
+    UserService.getUsageByDay(currentDaysMinus,currentDayPlus).then(data=>{
+      var curr= data[0][1].sumOfAvgL
+      var prev = data[0][0].sumOfAvgL
+      var red = ((prev - curr)/prev*100).toFixed(0)
+      this.setState({
+        dailyConsumption: curr,
+        current:curr, 
+        previous:prev,
+        reduced:red
+      })
+    }).catch(err=>{
+      alert(err)
+    })
   }
 
   getSelectedConsumption=(startDate,endDate)=>{
     var weekData = []
     UserService.getUsageByDay(startDate,endDate).then(data=>{
-      data.forEach(x => {
+      console.log(data)
+      data[0].forEach(x => {
         weekData.push(x.averageFlowPerDay.toFixed(2)*1)
       });
       console.log('current: '+weekData, startDate, endDate)
@@ -124,7 +145,7 @@ class SpendingsScreen extends React.Component {
   
     var weekData = []
     UserService.getUsageByDay(start,end).then(data=>{
-      data.forEach(x => {
+      data[0].forEach(x => {
         weekData.push(x.averageFlowPerDay.toFixed(2)*1)
       });
       this.setState({dataPreviousPeriod:weekData})
@@ -146,27 +167,45 @@ class SpendingsScreen extends React.Component {
       for(var i=0; i<=7; i++){
         dataDays.push(moment.weekdaysShort(todayNumber + i))
       }
-      
       this.setState({
         type:'week',
         firstDate:weekBeforeToday,
         lastDate:currentDay,
         xAxisData: dataDays,
       })
-
       this.getSelectedConsumption(weekBeforeToday,currentDayPlus)
       this.getPreviousConsumption(weekBeforeToday,currentDayPlus,'week')
     }
     else if (type === 'button2') {
       var monthBeforeToday=moment(currentDay).subtract(1,'month').format('YYYY-MM-DD')
       var monthBeforeTodayNoFormat=moment(currentDay).subtract(1,'month')    
-
       const days = []
+
       while (moment(currentDay).diff(monthBeforeTodayNoFormat, 'days') >= 0) {
-        days.push(monthBeforeTodayNoFormat.format('D'))
+        if(currentDay % 2 == 0){
+          if(monthBeforeTodayNoFormat.format('D') % 2 == 0){
+            var prev= moment(monthBeforeTodayNoFormat).subtract(1,'day').format('D')
+            if(prev%2==0){
+              days.push(' ')
+            }
+            days.push(monthBeforeTodayNoFormat.format('D'))
+          } else {
+            days.push(' ')
+          }
+        } 
+        if(currentDay % 2 !== 0){
+          if(monthBeforeTodayNoFormat.format('D') % 2 !== 0){
+            var prev= moment(monthBeforeTodayNoFormat).subtract(1,'day').format('D')
+            if(prev%2!==0){
+              days.push(' ')
+            }
+            days.push(monthBeforeTodayNoFormat.format('D'))
+          }else {
+            days.push(' ')
+          }
+        } 
         monthBeforeTodayNoFormat.add(1, 'days')
       }
-
       this.setState({
         type:'month',
         xAxisData: days,
@@ -177,16 +216,13 @@ class SpendingsScreen extends React.Component {
       this.getPreviousConsumption(monthBeforeToday,currentDayPlus, 'month')
 
     } else {
-
       var yearBeforeToday=moment(currentDay).subtract(1,'year').format('YYYY-MM-DD')
       var yearBeforeTodayNoFormat=moment(currentDay).subtract(1,'year')
-
       const months = []
       while (moment(currentDay).diff(yearBeforeTodayNoFormat, 'months') >= 0) {
         months.push(yearBeforeTodayNoFormat.format('MMM'))
         yearBeforeTodayNoFormat.add(1, 'months')
       }
-
       this.setState({
         type:'year',
         xAxisData: months,
@@ -221,134 +257,128 @@ class SpendingsScreen extends React.Component {
     const { route, navigation } = this.props;
     return (
       <ScrollView style={styles.scroll} contentContainerStyle={{alignItems: 'center',justifyContent: 'center'}}>
-         
-          {/* HEADER */}
-          <View style={{ flex: 1, marginTop: 40, paddingHorizontal:20, marginBottom:10 }}>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  width: '100%',
-                  height: 135,
-                  backgroundColor: '#aacce5',
-                  alignSelf: 'center',
-                  borderRadius: 15,
-                }}>
-                <View
-                  style={{
-                    flex: 1,
-                    borderRadius: 15,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
-                    Here you get an overview of your consumption
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    borderRadius: 15,
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  }}>
-                  <Image
-                    style={{ width: width / 2, height: width / 2.6, }}
-                    source={require('../../Assets/start/girlphone.png')}
-                  />
-                </View>
-              </View>
+        <View style={{ flex: 1, marginTop: 40, marginBottom:10 }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              width: '100%',
+              height: 135,
+              backgroundColor: '#aacce5',
+              alignSelf: 'center',
+              borderRadius: 15,
+            }}>
+            <View
+              style={{
+                flex: 1,
+                borderRadius: 15,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
+                Here you get an overview of your consumption
+              </Text>
             </View>
-          {/* HEADER */}
+            <View
+              style={{
+                flex: 1,
+                borderRadius: 15,
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+              }}>
+              <Image
+                style={{ width: width / 2, height: width / 2.6, }}
+                source={require('../../Assets/start/girlphone.png')}
+              />
+            </View>
+          </View>
+        </View>
 
-          <View style={styles.container}>
-            <View style={styles.content}>
+        <View style={styles.content}>
+          {/* DATE PICKER */}
+          <View style={styles.datepickerContainer}>
+            <TouchableOpacity onPress={() => this.decrement()}>
+              <Image
+                source={require('../../Assets/consumption/back.png')}
+                style={styles.arrow}
+              />
+            </TouchableOpacity>
+            <Text style={{ color: "#174A5A" }}>{this.state.firstDate + ' - ' + this.state.lastDate}</Text>
+            <TouchableOpacity onPress={() => this.increment()}>
+              <Image
+                source={require('../../Assets/consumption/next.png')}
+                style={{ width: 20, height: 20, tintColor: '#174A5A' }}
+              />
+            </TouchableOpacity>
+          </View>
 
+          <View style={{ flexDirection: 'row'}}>
+            <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
+              <TouchableOpacity style={{
+                backgroundColor: this.state.selectedButton === "button1" ? 'orange' : 'white',
+                borderColor: this.state.selectedButton === "button1" ? 'orange' : '#174A5A',
+                marginRight: 5,
+                borderRadius: 50,
+                borderWidth: 2,
+                width: '100%',
+                justifyContent: 'center',
+                padding: 4
+              }}
+                onPress={() => this.onButtonPress('button1')}>
+                <Text style={{
+                  textAlign: 'center',
+                  color: this.state.selectedButton === "button1" ? 'white' : '#174A5A'
+                }}>
+                  Week</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
+              <TouchableOpacity style={{
+                backgroundColor: this.state.selectedButton === "button2" ? 'orange' : 'white',
+                borderColor: this.state.selectedButton === "button2" ? 'orange' : '#174A5A',
+                marginRight: 5,
+                borderRadius: 50,
+                borderWidth: 2,
+                width: '100%',
+                justifyContent: 'center',
+                padding: 4
+              }}
+                onPress={()=>this.onButtonPress('button2')}>
+                <Text style={{
+                  textAlign: 'center',
+                  color: this.state.selectedButton === "button2" ? 'white' : '#174A5A'
+                }}>Month</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
+              <TouchableOpacity style={{
+                backgroundColor: this.state.selectedButton === "button3" ? 'orange' : 'white',
+                borderColor: this.state.selectedButton === "button3" ? 'orange' : '#174A5A',
+                marginRight: 5,
+                borderRadius: 50,
+                borderWidth: 2,
+                width: '100%',
+                justifyContent: 'center',
+                padding: 4
+              }}
+                onPress={() => this.onButtonPress('button3')}>
+                <Text style={{
+                  textAlign: 'center',
+                  color: this.state.selectedButton === "button3" ? 'white' : '#174A5A'
+                }}>Year</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
-              {/* DATE PICKER */}
-              <View style={styles.datepickerContainer}>
-                <TouchableOpacity onPress={() => this.decrement()}>
-                  <Image
-                    source={require('../../Assets/consumption/back.png')}
-                    style={styles.arrow}
-                  />
-                </TouchableOpacity>
-                <Text style={{ color: "#174A5A" }}>{this.state.firstDate + ' - ' + this.state.lastDate}</Text>
-                <TouchableOpacity onPress={() => this.increment()}>
-                  <Image
-                    source={require('../../Assets/consumption/next.png')}
-                    style={{ width: 20, height: 20, tintColor: '#174A5A' }}
-                  />
-                </TouchableOpacity>
-              </View>
-              {/* DATE PICKER BUTTONS - refactoring needed */}
-              <View style={{ flexDirection: 'row', width: '80%', alignSelf: 'center' }}>
-                <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
-                  <TouchableOpacity style={{
-                    backgroundColor: this.state.selectedButton === "button1" ? 'orange' : 'white',
-                    borderColor: this.state.selectedButton === "button1" ? 'orange' : '#174A5A',
-                    marginRight: 5,
-                    borderRadius: 50,
-                    borderWidth: 2,
-                    width: '100%',
-                    justifyContent: 'center',
-                    padding: 4
-                  }}
-                    onPress={() => this.onButtonPress('button1')}>
-                    <Text style={{
-                      textAlign: 'center',
-                      color: this.state.selectedButton === "button1" ? 'white' : '#174A5A'
-                    }}>
-                      Week</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
-                  <TouchableOpacity style={{
-                    backgroundColor: this.state.selectedButton === "button2" ? 'orange' : 'white',
-                    borderColor: this.state.selectedButton === "button2" ? 'orange' : '#174A5A',
-                    marginRight: 5,
-                    borderRadius: 50,
-                    borderWidth: 2,
-                    width: '100%',
-                    justifyContent: 'center',
-                    padding: 4
-                  }}
-                    onPress={()=>this.onButtonPress('button2')}>
-                    <Text style={{
-                      textAlign: 'center',
-                      color: this.state.selectedButton === "button2" ? 'white' : '#174A5A'
-                    }}>Month</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ padding: 10, width: '38%', paddingHorizontal: 2 }}>
-                  <TouchableOpacity style={{
-                    backgroundColor: this.state.selectedButton === "button3" ? 'orange' : 'white',
-                    borderColor: this.state.selectedButton === "button3" ? 'orange' : '#174A5A',
-                    marginRight: 5,
-                    borderRadius: 50,
-                    borderWidth: 2,
-                    width: '100%',
-                    justifyContent: 'center',
-                    padding: 4
-                  }}
-                    onPress={() => this.onButtonPress('button3')}>
-                    <Text style={{
-                      textAlign: 'center',
-                      color: this.state.selectedButton === "button3" ? 'white' : '#174A5A'
-                    }}>Year</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              <View style={{ flexDirection: 'row', width: '92%', alignSelf: 'center', marginTop: 10 }}>
+              <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
                 <View style={{ width: '50%', alignSelf: 'center' }}>
                   <Text style={styles.boldText}>Daily Consumption</Text>
-                  <Text style={styles.consumptionText}>470 L</Text>
+                  <Text style={styles.consumptionText}>{this.state.dailyConsumption} L</Text>
                 </View>
                 <View style={{ alignSelf: 'center', width: '50%' }}>
                   <Text style={styles.boldText}>Reduced Consumption</Text>
-                  <Text style={styles.consumptionText}>10%</Text>
+                  <Text style={styles.consumptionText}>{this.state.reduced + '%'}</Text>
                 </View>
               </View>
 
@@ -358,7 +388,7 @@ class SpendingsScreen extends React.Component {
                   <YAxis
                     style={{ top: 0, bottom: 0, height: 180, marginTop: 30 }}
                     data={this.state.dataCurrentPeriod}
-                    contentInset={{ top: 50, bottom: 0}}
+                    contentInset={{ top: 36, bottom: 0}}
 
                     numberOfTicks={5}
 
@@ -456,8 +486,6 @@ class SpendingsScreen extends React.Component {
               </View>
               {/* LEGEND FOR MULTILINE CHART */}
             </View>
-          </View>
-
 
           <View style={styles.consumptionContainer}>
 
@@ -480,10 +508,10 @@ class SpendingsScreen extends React.Component {
                       () => (
                         <View>
                           <Text style={{ fontSize: 20, color: '#174A5A' }}>
-                            {this.state.current}
+                            {this.state.current + ' L'} 
                           </Text>
                           <Text style={{ fontSize: 13, color: '#95ACB4' }}>
-                            ({this.state.previous})
+                            {this.state.previous+ ' L'}
                         </Text>
                         </View>
                       )
@@ -512,7 +540,7 @@ class SpendingsScreen extends React.Component {
             </TouchableOpacity>
 
             {/* Map (right card)     */}
-            <View style={styles.consumptionCard}>
+            <View style={[styles.consumptionCard, {marginLeft:10}]}>
               <Image source={require('../../Assets/consumption/map.png')} style={{ width: 135, height: 135, alignSelf: 'center' }} />
               <Text style={{ fontSize: 13, paddingHorizontal: 10, marginTop: 13, color: '#174A5A' }}>
                 In total, all players in the Northern Jutland region have reduced water consumption by:
@@ -548,7 +576,6 @@ class SpendingsScreen extends React.Component {
 const styles = StyleSheet.create({
   // Main components
   container: {
-    flex: 1,
     backgroundColor: '#EEF3F7',
     alignItems: 'center',
     justifyContent: 'center'
@@ -556,13 +583,15 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1,
     backgroundColor: '#EEF3F7',
+    width:'100%',
+    paddingHorizontal:20
   },
   content: {
+    width:'100%',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: 5,
-    padding: 10,
-    marginBottom: 5,
-    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,
@@ -571,24 +600,12 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
   },
-  // Header
-  header: {
-    padding: 10,
-    width: '98%',
-  },
-  headerText: {
-    borderRadius: 10,
-    width: '55%',
-    padding: 25,
-    fontSize: 16,
-    color: '#174A5A'
-  },
   // Datepicker
   datepickerContainer: {
-    flex: 0.8,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 15,
+    justifyContent: 'space-around',
+    marginTop: 15,
+    width:'100%'
   },
   arrow: {
     width: 20,
@@ -617,16 +634,14 @@ const styles = StyleSheet.create({
 
   // Section under multiline chart
   consumptionContainer: {
-    flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 10,
-    padding: 10,
+    paddingVertical: 10,
   },
   consumptionCard: {
     flex: 1,
     backgroundColor: 'white',
-    marginHorizontal: 5,
     borderRadius: 5,
     minHeight: 250,
     shadowColor: '#000',
@@ -648,9 +663,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
     borderRadius: 4,
-    padding: 10,
     backgroundColor: 'white',
-    width: '92%',
     marginBottom: 10,
     flexDirection: 'row',
     flexWrap: 'wrap',
