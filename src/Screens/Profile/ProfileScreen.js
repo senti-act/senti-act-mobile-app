@@ -6,6 +6,7 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
+  Dimensions
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,6 +14,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import UserService from '../../Networking/UserService'
 import AsyncStorage from '@react-native-community/async-storage';
 import { AuthContext } from '../../Context/AuthContext';
+const { height, width } = Dimensions.get('window');
 
 class ProfileScreen extends React.Component {
   constructor(props) {
@@ -61,32 +63,43 @@ class ProfileScreen extends React.Component {
             alignItems: 'center',
             flexDirection: 'column',
           }}>
-          <View style={{ flex: 4, paddingHorizontal: 20, paddingBottom: 20 }}>
-            <LinearGradient
-              colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
-              style={{
-                width: '100%',
-                height: 120,
-                borderRadius: 10,
-                flexDirection: 'row',
-              }}>
-              <View style={{ flex: 1, height: '100%', justifyContent: 'center' }}>
-                <Text
+          <View style={{ flex: 1, paddingHorizontal: 20, marginTop:50, marginBottom:20}}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  width: '100%',
+                  height: 135,
+                  backgroundColor: '#71c6c0',
+                  alignSelf: 'center',
+                  borderRadius: 15,
+                }}>
+                <View
                   style={{
-                    fontSize: 20,
-                    alignSelf: 'center',
-                    paddingLeft: 20,
-                    color: '#1a1352',
+                    flex: 1,
+                    borderRadius: 15,
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}>
+                  <Text
+                    style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
                   Good morning, {this.state.sentiUser.firstName}
-                </Text>
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    borderRadius: 15,
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                  }}>
+                  <Image
+                    style={{ width: width / 2.6, height: width / 2.5 }}
+                    source={require('../../Assets/easy.png')}
+                  />
+                </View>
               </View>
-              <View style={{ flex: 1, height: '110%' }}>
-                <Image
-                  style={{ width: '90%', height: '115%' }}
-                  source={require('../../Assets/easy.png')}></Image>
-              </View>
-            </LinearGradient>
+          
           </View>
 
           <View

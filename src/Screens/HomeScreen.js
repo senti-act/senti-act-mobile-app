@@ -371,7 +371,7 @@ class HomeScreen extends React.Component {
       <>
         <View style={styles.MainContainer}>
           <ScrollView style={{ paddingHorizontal: 20 }}>
-            <View style={{ flex: 1, marginTop: 40 }}>
+            <View style={{ flex: 1, marginTop: 50 }}>
               <View
                 style={{
                   flex: 1,

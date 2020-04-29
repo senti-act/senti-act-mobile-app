@@ -42,7 +42,7 @@ class TipsScreen extends React.Component {
       <>
         <View style={styles.MainContainer}>
           <ScrollView>
-            <View style={{flex: 1, margin: 10, marginTop: 40}}>
+            <View style={{flex: 1, margin: 20, marginTop: 40,}}>
               <View
                 style={{
                   flex: 1,
@@ -76,7 +76,7 @@ class TipsScreen extends React.Component {
                 </View>
               </View>
             </View>
-            <View style={{flex: 3}}>
+            <View style={{flex: 3, marginBottom:20}}>
               <FlatList
                 data={this.state.dataSource}
                 paddingHorizontal={10}
