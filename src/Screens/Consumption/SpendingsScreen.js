@@ -18,31 +18,19 @@ import UserService from '../../Networking/UserService';
 
 // Datepicker data
 var currentDay = moment().format('DD-MM-YY');
-var currentWeek = moment().format('W');
-var currentMonth = moment().format('MMMM YYYY');
-var currentYear = parseInt(moment().format('YYYY'));
-var firstWeekDay = moment().day("Monday").year(currentYear).week(currentWeek).format('YYYY-MM-DD');
-var lastWeekDay = moment().day("Sunday").year(currentYear).week(currentWeek).add(7, "days").format('YYYY-MM-DD');
+var lastWeekDay = moment().format('YYYY-MM-DD');
+var firstWeekDay = moment(lastWeekDay).subtract(7, "days").format('YYYY-MM-DD');
 
-// Charts  TEST data
-// here we store the real consumption data by category (week, month, year) from the current period
 const dataWeekCurrent = [0, 3, 5, 0.54, 0.99, 1.5, 1.30, 8.5, 0];
-const dataMonthCurrent = [0, 32.13, 12.31, 23.14, 45.52, 23.30, 0, 56.64, 32.13, 42.31, 56.74,
-  32.15, 12.36, 23.31, 45.35, 23.53, 0, 56.26, 32.41, 42.53, 56.72, 0, 34.21, 12.53, 26.31, 43.55, 23.63, 0, 56.36, 36.21, 42.23, 0];
-const dataYearCurrent = [0, 314.1, 564.3, 552.1, 111.1, 42, 1, 325.2, 321, 444, 333, 111, 0];
 
 // here we store the real consumption data by category (week, month, year) from the previous period
 const dataWeekPrevious = [0, 5, 0.45, 2.8, 0.8, 0.90, 1.2];
-const dataMonthPrevious = [0, 12.12, 32.13, 66.51, 21.42, 43.22, 65.55, 89.42, 12.23, 44.34, 65.55, 21.33, 43.44,
-  15.22, 32.21, 66.55, 21.32, 43.52, 65.35, 89.24, 12.52, 44.23, 63.55, 11.23, 43.44, 12.52, 32.13, 66.25, 21.42, 45.2, 65.5, 0]
-const dataYearPrevious = [0, 212.3, 342.1, 112.3, 786.5, 888.8, 854.5, 123.1, 314.1, 564.3, 552.1, 232, 0]
-
 // data for xAxis
 const indexToClipFrom = 31
 const dataYear = [' ', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Sep', 'Oct', 'Nov', 'Dec', ' '];
 const dataDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const recommendedDayConsumption = 0.95 // here we store recommended consumption
+const recommendedDayConsumption = 0.2 // here we store recommended consumption
 const weekdaySequence = moment(currentDay).isoWeekday()  //  sequenence of week day (1-7)
 
 // Other
@@ -96,11 +84,14 @@ const HorizontalLine = (({ y }) => (
 
 
 class SpendingsScreen extends React.Component {
-  componentDidMount() { }
   constructor(props) {
     super(props);
     this.state = {
-      date: firstWeekDay + ' - ' + lastWeekDay,
+      type:'week',
+      //date: firstWeekDay + ' - ' + lastWeekDay,
+      firstDate:firstWeekDay,
+      lastDate:lastWeekDay,
+
       lastDayMonth: '28',
       selectedButton: 'button1',
 
@@ -112,7 +103,8 @@ class SpendingsScreen extends React.Component {
       previous: '20 L',
       regionReduction: 25,
 
-      recommendedConsumption: recommendedDayConsumption,
+      // recommendedConsumption: recommendedDayConsumption,
+      recommendedConsumption: 0.3,
       recommendedMonthConsumption: 0,
 
       circleSequence: weekdaySequence - 1,
@@ -125,23 +117,18 @@ class SpendingsScreen extends React.Component {
     };
   }
 
-  clickHandler = (g) => {
-    this.setState({ date: g });
-  };
+  componentDidMount(){
+    this.onButtonPress(this.state.selectedButton)
+  }
 
   getSelectedConsumption=(startDate,endDate)=>{
     var weekData = []
     UserService.getUsageByDay(startDate,endDate).then(data=>{
-      // alert(JSON.stringify(x))
       data.forEach(x => {
-        // console.log(moment(x.d).isoWeekday())
-        // console.log(x.averageFlowPerDay.toFixed(2))
-        // weekData.push({day:moment(x.d).isoWeekday(),value:x.averageFlowPerDay.toFixed(2)})
         weekData.push(x.averageFlowPerDay.toFixed(2)*1)
-
       });
+      console.log('current: '+weekData, startDate, endDate)
       this.setState({dataCurrentPeriod:weekData})
-      console.log('THIS WEEK', startDate, weekData)
     }).catch(err=>{
       alert(err)
     })
@@ -150,138 +137,113 @@ class SpendingsScreen extends React.Component {
   getPreviousConsumption=(startDate,endDate,type)=>{
     var start = null;
     var end = null;
-    if(type == "week"){
-      start=moment(startDate).subtract(1,'week').format('YYYY-MM-DD')
-      end=moment(endDate).subtract(1,'week').format('YYYY-MM-DD')
-    }
-    else if (type == "month"){
-      start=moment(startDate).subtract(1,'month').format('YYYY-MM-DD')
-      end=moment(endDate).subtract(1,'month').format('YYYY-MM-DD')
-    }
-    else{
-      start=moment(startDate).subtract(1,'year').format('YYYY-MM-DD')
-      end=moment(endDate).subtract(1,'year').format('YYYY-MM-DD')
-    }
+
+    start=moment(startDate).subtract(1,type).format('YYYY-MM-DD')
+    end=moment(endDate).subtract(1,type).format('YYYY-MM-DD')
   
     var weekData = []
     UserService.getUsageByDay(start,end).then(data=>{
-      // alert(JSON.stringify(x))
       data.forEach(x => {
-        // console.log(moment(x.d).isoWeekday())
-        // console.log(x.averageFlowPerDay.toFixed(2))
-        // weekData.push({day:moment(x.d).isoWeekday(),value:x.averageFlowPerDay.toFixed(2)})
         weekData.push(x.averageFlowPerDay.toFixed(2)*1)
-
       });
       this.setState({dataPreviousPeriod:weekData})
-      console.log(weekData)
+      console.log('previous: '+weekData)
     }).catch(err=>{
       alert(err)
     })
   }
 
-
   // Changes data, color of the button when pressed
-  onButtonPress = (g, m) => {
-    if (m === 'button1') {
+  onButtonPress = (type) => {
+    var currentDay = moment().format('YYYY-MM-DD');
+    var currentDayPlus = moment(currentDay).add(1,'day').format('YYYY-MM-DD');
 
+    if (type === 'button1') {
+      var weekBeforeToday=moment(currentDay).subtract(1,'week').format('YYYY-MM-DD')
+      var todayNumber = moment(currentDay).weekday()
+      var dataDays = []
+      for(var i=0; i<=7; i++){
+        dataDays.push(moment.weekdaysShort(todayNumber + i))
+      }
+      
       this.setState({
+        type:'week',
+        firstDate:weekBeforeToday,
+        lastDate:currentDay,
         xAxisData: dataDays,
-        recommendedConsumption: recommendedDayConsumption,
+        //recommendedConsumption: recommendedDayConsumption,
         circleSequence: weekdaySequence - 1, // day sequence in current week  (for example: Friday = 5)
       })
 
-      this.getSelectedConsumption(firstWeekDay,lastWeekDay)
-      this.getPreviousConsumption(firstWeekDay,lastWeekDay,'week')
+      this.getSelectedConsumption(weekBeforeToday,currentDayPlus)
+      this.getPreviousConsumption(weekBeforeToday,currentDayPlus,'week')
     }
-    if (m === 'button2') {
-      var lastDayOfCurrentMonth = moment().month(currentMonth).daysInMonth() // last day of the CURRENT month
-      
-      let dataMonth = [...this.state.dataMonth];
-      dataMonth[30] = lastDayOfCurrentMonth.toString() // adding last day of the current month at the end of the xAxis
-      let recommendedMonthConsumption = recommendedDayConsumption * lastDayOfCurrentMonth
+    else if (type === 'button2') {
+      var monthBeforeToday=moment(currentDay).subtract(1,'month').format('YYYY-MM-DD')
+      var monthBeforeTodayNoFormat=moment(currentDay).subtract(1,'month')    
 
-      var monthSequence = parseInt(currentDay) // day sequence in current month (for example: 21.1 = 21)
-
-      var startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
-      var endOfMonth   = moment().endOf('month').format('YYYY-MM-DD');
+      const days = []
+      while (moment(currentDay).diff(monthBeforeTodayNoFormat, 'days') >= 0) {
+        days.push(monthBeforeTodayNoFormat.format('D'))
+        monthBeforeTodayNoFormat.add(1, 'days')
+      }
 
       this.setState({
-        xAxisData: dataMonth,
-        recommendedConsumption: recommendedMonthConsumption,
-        recommendedMonthConsumption: recommendedMonthConsumption,
-        // circleSequence: monthSequence - 1,
+        type:'month',
+        xAxisData: days,
+        firstDate:monthBeforeToday,
+        lastDate:currentDay
+        // recommendedConsumption: recommendedMonthConsumption,
+        // recommendedMonthConsumption: recommendedMonthConsumption,
+         //circleSequence: monthSequence-1,
       })
-      this.getSelectedConsumption(startOfMonth,endOfMonth)
-      this.getPreviousConsumption(startOfMonth,endOfMonth, 'month')
+      this.getSelectedConsumption(monthBeforeToday,currentDayPlus)
+      this.getPreviousConsumption(monthBeforeToday,currentDayPlus, 'month')
 
-    }
-    if (m === 'button3') {
-      let recommendedYearConsumption = this.state.recommendedMonthConsumption * 12
-      let yearSequence = parseInt(moment().date(currentMonth).format('M')) // month sequence in current year (for example: February = 2)
+    } else {
+
+      var yearBeforeToday=moment(currentDay).subtract(1,'year').format('YYYY-MM-DD')
+      var yearBeforeTodayNoFormat=moment(currentDay).subtract(1,'year')
+      // let recommendedYearConsumption = this.state.recommendedMonthConsumption * 12
+      // let yearSequence = parseInt(moment().date(currentMonth).format('M')) // month sequence in current year (for example: February = 2)
+
+      const months = []
+      while (moment(currentDay).diff(yearBeforeTodayNoFormat, 'months') >= 0) {
+        months.push(yearBeforeTodayNoFormat.format('MMM'))
+        yearBeforeTodayNoFormat.add(1, 'months')
+      }
 
       this.setState({
-        xAxisData: dataYear,
-        dataCurrentPeriod: dataYearCurrent,
-        dataPreviousPeriod: dataYearPrevious,
-        recommendedConsumption: recommendedYearConsumption,
-        circleSequence: yearSequence
+        type:'year',
+        xAxisData: months,
+        firstDate:yearBeforeToday,
+        lastDate:currentDay
+        // recommendedConsumption: recommendedYearConsumption,
+        // circleSequence: yearSequence
       })
+      this.getSelectedConsumption(yearBeforeToday,currentDayPlus)
+      this.getPreviousConsumption(yearBeforeToday,currentDayPlus, 'year')
     }
-    this.setState({ selectedButton: m, date: g })
+    this.setState({ selectedButton: type})
   }
 
   // Increment function for the datepicker
   increment = () => {
-    if (!isNaN(this.state.date)) {
-      // format: 2020
-      this.setState({ date: this.state.date + 1 })
-    }
-    else if (this.state.date.length < 15) {
-      // format: April
-      var mAdd = moment(this.state.date, "MMMM YYYY").add('month', 1).format("MMMM YYYY") // month increment +1
-      var lastDayMonth = moment().month(mAdd).daysInMonth().toString() // number of days in a month
-      let dataMonth = [...this.state.dataMonth];
-      dataMonth[31] = lastDayMonth // adding last day of the selected month at the end of the xAxis
-
-      this.setState({
-        date: mAdd,
-        lastDayMonth: lastDayMonth,
-        xAxisData: dataMonth
-      })
-    }
-    else if (this.state.date.length > 16) {
-      // format: 1st April 2020 - 7th April 2020
-      var first = moment(this.state.date, 'Do MMMM YYYY ').add('days', 7).format("Do MMMM YYYY  ");
-      var last = moment(this.state.date, '- Do MMMM YYYY').add('days', 7).format("- Do MMMM YYYY ");
-      this.setState({ date: first + last })
-    }
-
+    var firstDate = moment(this.state.firstDate).add(this.state.type, 1).format("YYYY-MM-DD");
+    var lastDate = moment(this.state.lastDate).add(this.state.type, 1).format("YYYY-MM-DD");
+    this.setState({ firstDate: firstDate, lastDate:lastDate })
+    this.getSelectedConsumption(firstDate, lastDate)
+    this.getPreviousConsumption(firstDate, lastDate, this.state.type)
   }
+
   // Decrement function for the datepicker
   decrement = () => {
-    if (!isNaN(this.state.date)) {
-      // format: 2020
-      this.setState({ date: this.state.date - 1 })
-    }
-    else if (this.state.date.length < 15) {
-      // format: April
-      var mSub = moment().month(this.state.date).subtract(1, 'month').format("MMMM YYYY")
-      var lastDayMonth = moment().month(mSub).daysInMonth().toString() // number of days in a month
-      let dataMonth = [...this.state.dataMonth];
-      dataMonth[32] = lastDayMonth // adding last day of the selected month at the end of the xAxis
-
-      this.setState({ date: mSub, xAxisData: dataMonth })
-    }
-    else if (this.state.date.length > 16) {
-      // format: 1st April 2020 - 7th April 2020
-      var firstDate = moment(this.state.date, 'Do MMMM YYYY ').subtract('days', 7).format("Do MMMM YYYY ");
-      var lastDate = moment(this.state.date, '- Do MMMM YYYY').subtract('days', 7).format("- Do MMMM YYYY");
-      this.setState({ date: firstDate + lastDate })
-    }
+    var firstDate = moment(this.state.firstDate).subtract(this.state.type, 1).format("YYYY-MM-DD");
+    var lastDate = moment(this.state.lastDate).subtract(this.state.type, 1).format("YYYY-MM-DD");
+    this.setState({ firstDate: firstDate, lastDate:lastDate })
+    this.getSelectedConsumption(firstDate, lastDate)
+    this.getPreviousConsumption(firstDate, lastDate, this.state.type)
   }
-
-
 
   render() {
     const { route, navigation } = this.props;
@@ -323,7 +285,7 @@ class SpendingsScreen extends React.Component {
                     style={styles.arrow}
                   />
                 </TouchableOpacity>
-                <Text style={{ color: "#174A5A" }}>{this.state.date}</Text>
+                <Text style={{ color: "#174A5A" }}>{this.state.firstDate + ' - ' + this.state.lastDate}</Text>
                 <TouchableOpacity onPress={() => this.increment()}>
                   <Image
                     source={require('../../Assets/consumption/next.png')}
@@ -344,7 +306,7 @@ class SpendingsScreen extends React.Component {
                     justifyContent: 'center',
                     padding: 4
                   }}
-                    onPress={() => this.onButtonPress(firstWeekDay + ' - ' + lastWeekDay, 'button1')}>
+                    onPress={() => this.onButtonPress('button1')}>
                     <Text style={{
                       textAlign: 'center',
                       color: this.state.selectedButton === "button1" ? 'white' : '#174A5A'
@@ -363,7 +325,7 @@ class SpendingsScreen extends React.Component {
                     justifyContent: 'center',
                     padding: 4
                   }}
-                    onPress={()=>this.onButtonPress(currentMonth, 'button2')}>
+                    onPress={()=>this.onButtonPress('button2')}>
                     <Text style={{
                       textAlign: 'center',
                       color: this.state.selectedButton === "button2" ? 'white' : '#174A5A'
@@ -381,7 +343,7 @@ class SpendingsScreen extends React.Component {
                     justifyContent: 'center',
                     padding: 4
                   }}
-                    onPress={() => this.onButtonPress(currentYear, 'button3')}>
+                    onPress={() => this.onButtonPress('button3')}>
                     <Text style={{
                       textAlign: 'center',
                       color: this.state.selectedButton === "button3" ? 'white' : '#174A5A'
@@ -389,9 +351,6 @@ class SpendingsScreen extends React.Component {
                   </TouchableOpacity>
                 </View>
               </View>
-              {/* DATE PICKER BUTTONS - refactoring needed */}
-              {/* DATE PICKER */}
-
 
               <View style={{ flexDirection: 'row', width: '92%', alignSelf: 'center', marginTop: 10 }}>
                 <View style={{ width: '50%', alignSelf: 'center' }}>
@@ -431,7 +390,7 @@ class SpendingsScreen extends React.Component {
                     <AreaChart
                       style={{ flex: 1 }}
                       data={this.state.dataPreviousPeriod}
-                      contentInset={{ top: 50, bottom: 0 }}
+                      contentInset={{ top: 50, bottom: 20 }}
                       svg={{
                         fill: 'url(#gradient)',
                         clipPath: 'url(#clip-path-1)',
@@ -453,14 +412,13 @@ class SpendingsScreen extends React.Component {
                         width: '100%',
                       }}
                       data={this.state.dataCurrentPeriod}
-                      contentInset={{ top: 50, bottom: 10 }}
+                      contentInset={{ top: 50, bottom: 20 }}
                       curve={shape.curveNatural}
                       numberOfTicks={5}
                       extras={[Line]}
                       animate={true}
                       animationDuration={500}
                       renderDecorator={({ x, y, index, value }) => (
-                        <View>
                           <L
                             key={'zero-axis'}
                             x1={'0%'}
@@ -471,25 +429,15 @@ class SpendingsScreen extends React.Component {
                             strokeDasharray={[7, 5]}
                             strokeWidth={3}
                           />
-                          <Circle
-                            key={index}
-                            cx={x(this.state.circleSequence)}
-                            cy={y(this.state.dataCurrentPeriod[this.state.circleSequence])}
-                            r={3}
-                            stroke={'#174A5A'}
-                            strokeWidth={6}
-                            fill={'#174A5A'}
-                          />
-                        </View>
                       )}>
                       <HorizontalLine></HorizontalLine>
                     </AreaChart>
 
-                    <View style={{ marginTop: 10, height: 10, width: '100%',  }}>
+                    <View style={{ marginTop: 10, height: 20, width: '100%',  }}>
                       <XAxis
                         data={this.state.xAxisData}
                         xAccessor={({ index }) => index}
-                        contentInset={{ left: 12, right: 12 }}
+                        contentInset={{ left: 12, right: 12, bottom:50}}
                         formatLabel={index => this.state.xAxisData[index]}
                         svg={{
                           fontSize: 12, fill: '#174A5A'
@@ -500,11 +448,7 @@ class SpendingsScreen extends React.Component {
                 </ScrollView>
               </View>
               <ScrollView horizontal={true}>
-
               </ScrollView>
-
-              {/* MULTILINE CHART */}
-
 
               {/* LEGEND FOR MULTILINE CHART */}
               <View style={{ flexDirection: 'row', width: '75%', justifyContent: 'center', alignSelf: 'center', marginVertical: 15, alignSelf: 'center' }}>
@@ -648,10 +592,6 @@ const styles = StyleSheet.create({
   header: {
     padding: 10,
     width: '98%',
-  },
-  headerTitle: {
-    fontWeight: 'bold',
-    fontSize: 20,
   },
   headerText: {
     borderRadius: 10,

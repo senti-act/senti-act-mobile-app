@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
-var baseApiAddress = 'http://192.168.87.107:4000';
+var baseApiAddress = 'https://services.senti.cloud/act/game-engine';
 
 const request = async function (options, isHeader=true) {
 
