@@ -6,36 +6,26 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Dimensions
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 // Chart libraries
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { AreaChart, YAxis, XAxis, Path } from 'react-native-svg-charts'
-import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L, Circle } from 'react-native-svg'
+import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L } from 'react-native-svg'
 import * as shape from 'd3-shape'
 import UserService from '../../Networking/UserService';
+const { height, width } = Dimensions.get('window');
 
 // Datepicker data
-var currentDay = moment().format('DD-MM-YY');
 var lastWeekDay = moment().format('YYYY-MM-DD');
 var firstWeekDay = moment(lastWeekDay).subtract(7, "days").format('YYYY-MM-DD');
 
-const dataWeekCurrent = [0, 3, 5, 0.54, 0.99, 1.5, 1.30, 8.5, 0];
-
-// here we store the real consumption data by category (week, month, year) from the previous period
-const dataWeekPrevious = [0, 5, 0.45, 2.8, 0.8, 0.90, 1.2];
 // data for xAxis
 const indexToClipFrom = 31
-const dataYear = [' ', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Sep', 'Oct', 'Nov', 'Dec', ' '];
-const dataDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const recommendedDayConsumption = 0.2 // here we store recommended consumption
-const weekdaySequence = moment(currentDay).isoWeekday()  //  sequenence of week day (1-7)
-
-// Other
-const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
-
 
 // Charts components
 const Gradient = () => (
@@ -88,12 +78,12 @@ class SpendingsScreen extends React.Component {
     super(props);
     this.state = {
       type:'week',
-      //date: firstWeekDay + ' - ' + lastWeekDay,
       firstDate:firstWeekDay,
       lastDate:lastWeekDay,
-
-      lastDayMonth: '28',
       selectedButton: 'button1',
+      xAxisData: '',
+      dataCurrentPeriod: '',
+      dataPreviousPeriod: '',
 
       waterSavings: 40,
       wastewaterSavings: 75,
@@ -105,16 +95,7 @@ class SpendingsScreen extends React.Component {
 
       // recommendedConsumption: recommendedDayConsumption,
       recommendedConsumption: 0.3,
-      recommendedMonthConsumption: 0,
-
-      circleSequence: weekdaySequence - 1,
-
-      xAxisData: dataDays,
-      dataCurrentPeriod: dataWeekCurrent,
-      dataPreviousPeriod: dataWeekPrevious,
-      dataMonth: ["1", "2", "3", "4", "5", "6", "7", "8", '9', '10', '11', '12'
-        , '13', '14', '15 ', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', "29", "30", "31"],
-    };
+     };
   }
 
   componentDidMount(){
@@ -171,8 +152,6 @@ class SpendingsScreen extends React.Component {
         firstDate:weekBeforeToday,
         lastDate:currentDay,
         xAxisData: dataDays,
-        //recommendedConsumption: recommendedDayConsumption,
-        circleSequence: weekdaySequence - 1, // day sequence in current week  (for example: Friday = 5)
       })
 
       this.getSelectedConsumption(weekBeforeToday,currentDayPlus)
@@ -192,10 +171,7 @@ class SpendingsScreen extends React.Component {
         type:'month',
         xAxisData: days,
         firstDate:monthBeforeToday,
-        lastDate:currentDay
-        // recommendedConsumption: recommendedMonthConsumption,
-        // recommendedMonthConsumption: recommendedMonthConsumption,
-         //circleSequence: monthSequence-1,
+        lastDate:currentDay,
       })
       this.getSelectedConsumption(monthBeforeToday,currentDayPlus)
       this.getPreviousConsumption(monthBeforeToday,currentDayPlus, 'month')
@@ -204,8 +180,6 @@ class SpendingsScreen extends React.Component {
 
       var yearBeforeToday=moment(currentDay).subtract(1,'year').format('YYYY-MM-DD')
       var yearBeforeTodayNoFormat=moment(currentDay).subtract(1,'year')
-      // let recommendedYearConsumption = this.state.recommendedMonthConsumption * 12
-      // let yearSequence = parseInt(moment().date(currentMonth).format('M')) // month sequence in current year (for example: February = 2)
 
       const months = []
       while (moment(currentDay).diff(yearBeforeTodayNoFormat, 'months') >= 0) {
@@ -218,8 +192,6 @@ class SpendingsScreen extends React.Component {
         xAxisData: months,
         firstDate:yearBeforeToday,
         lastDate:currentDay
-        // recommendedConsumption: recommendedYearConsumption,
-        // circleSequence: yearSequence
       })
       this.getSelectedConsumption(yearBeforeToday,currentDayPlus)
       this.getPreviousConsumption(yearBeforeToday,currentDayPlus, 'year')
@@ -248,29 +220,46 @@ class SpendingsScreen extends React.Component {
   render() {
     const { route, navigation } = this.props;
     return (
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.container}>
-
-
+      <ScrollView style={styles.scroll} contentContainerStyle={{alignItems: 'center',justifyContent: 'center'}}>
+         
           {/* HEADER */}
-          <View style={styles.header}>
-            <LinearGradient colors={['#aacce5', '#c5e9f4']}
-              style={{
-                width: '100%',
-                borderRadius: 10,
-                flexDirection: 'row',
-                padding: 3
-              }}>
-              <View style={{ width: '100%', position: "absolute" }}>
-                <Image source={require('../../Assets/start/girlphone.png')} style={{ width: '44%', height: 110, alignSelf: 'flex-end', marginTop: 10 }}></Image>
+          <View style={{ flex: 1, marginTop: 40, paddingHorizontal:20, marginBottom:10 }}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  width: '100%',
+                  height: 135,
+                  backgroundColor: '#aacce5',
+                  alignSelf: 'center',
+                  borderRadius: 15,
+                }}>
+                <View
+                  style={{
+                    flex: 1,
+                    borderRadius: 15,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
+                    Here you get an overview of your consumption
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    borderRadius: 15,
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                  }}>
+                  <Image
+                    style={{ width: width / 2, height: width / 2.6, }}
+                    source={require('../../Assets/start/girlphone.png')}
+                  />
+                </View>
               </View>
-              <View>
-                <Text style={styles.headerText}>
-                  Here you get an overview of your consumption
-              </Text>
-              </View>
-            </LinearGradient>
-          </View>
+            </View>
           {/* HEADER */}
 
           <View style={styles.container}>
@@ -483,7 +472,6 @@ class SpendingsScreen extends React.Component {
                     width={10}
                     fill={75}
                     tintColor="#174A5A"
-                    onAnimationComplete={() => console.log('onAnimationComplete')}
                     backgroundColor="white"
                     style={{
                       alignSelf: 'center'
@@ -506,7 +494,6 @@ class SpendingsScreen extends React.Component {
                     width={10}
                     fill={89}
                     tintColor="#AFDFDB"
-                    onAnimationComplete={() => console.log('onAnimationComplete')}
                     backgroundColor="white"
                     style={{
                       alignSelf: 'center',
@@ -523,8 +510,6 @@ class SpendingsScreen extends React.Component {
                 </Text>
               </View>
             </TouchableOpacity>
-            {/* Progress circle (left card) */}
-
 
             {/* Map (right card)     */}
             <View style={styles.consumptionCard}>
@@ -537,9 +522,7 @@ class SpendingsScreen extends React.Component {
                 {this.state.regionReduction} %
               </Text>
             </View>
-            {/* Map (right card)     */}
           </View>
-
 
           {/* Savings bottom card [pig]*/}
           <View style={styles.bottomConsumptionCard}>
@@ -551,31 +534,32 @@ class SpendingsScreen extends React.Component {
                 You've saved in the last week
               </Text>
               <Text style={{ fontSize: 14, color: '#174A5A' }}>
-                <B>{this.state.waterSavings} DKK</B> on water and <B>
-                  {this.state.wastewaterSavings} DKK</B> on wastewater. This gives
-                a total saving of <B>{this.state.totalSavings} DKK</B>.
+                <Text style={{fontWeight:'bold'}}>{this.state.waterSavings} DKK</Text> on water and <Text style={{fontWeight:'bold'}}>
+                  {this.state.wastewaterSavings} DKK</Text> on wastewater. This gives
+                a total saving of <Text style={{fontWeight:'bold'}}>{this.state.totalSavings} DKK</Text>.
               </Text>
             </View>
           </View>
-          {/* Savings bottom card [pig]*/}
-        </View>
       </ScrollView >
     );
   }
 }
 
 const styles = StyleSheet.create({
-
   // Main components
   container: {
     flex: 1,
     backgroundColor: '#EEF3F7',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
+  },
+  scroll: {
+    flex: 1,
+    backgroundColor: '#EEF3F7',
   },
   content: {
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 5,
     padding: 10,
     marginBottom: 5,
     shadowColor: '#000',
@@ -587,7 +571,6 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
   },
-
   // Header
   header: {
     padding: 10,
@@ -600,7 +583,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#174A5A'
   },
-
   // Datepicker
   datepickerContainer: {
     flex: 0.8,
@@ -613,15 +595,6 @@ const styles = StyleSheet.create({
     height: 20,
     tintColor: '#174A5A',
   },
-  // button: {
-  //   backgroundColor: 'rgba(0,0,0,0)',
-  //   marginRight: 5,
-  //   borderRadius: 50,
-  //   borderWidth: 2,
-  //   width: '100%',
-  //   justifyContent: 'center',
-  // },
-
   // Text
   boldText: {
     color: '#174A5A',
@@ -674,12 +647,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
-    borderRadius: 10,
+    borderRadius: 4,
     padding: 10,
     backgroundColor: 'white',
     width: '92%',
     marginBottom: 10,
-    shadowOpacity: 5,
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
