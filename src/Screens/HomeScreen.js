@@ -7,7 +7,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
-  FlatList,
+  RefreshControl,
 } from 'react-native';
 const { height, width } = Dimensions.get('window');
 import jebani from '../Assets/competition.png';
@@ -18,20 +18,26 @@ import UserService from '../Networking/UserService';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 
+import image1 from '../Assets/icons/1.png'
+import image2 from '../Assets/icons/2.png'
+import image3 from '../Assets/icons/3.png'
+import image4 from '../Assets/icons/4.png'
+import image5 from '../Assets/icons/5.png'
+import image6 from '../Assets/icons/6.png'
+import image7 from '../Assets/icons/7.png'
+
+var images = [image1,image2,image3,image4,image5,image6,image7]
+
 const BagdeBox = props => {
   return (
     <View style={styles.bagdeBoxContainer}>
       <View style={{ flex: 1, marginLeft: 10 }}>
-        <View
-          style={{
-            backgroundColor: 'black',
-            width: 50,
-            height: 50,
-            borderRadius: 999999,
-          }}
-        />
+      <LinearGradient style={{borderRadius: 999999,alignItems: 'center',justifyContent: 'center', width:50, height:50}}
+          colors={['#C0E9EE', '#80D0D8', '#46BAC6']}>
+        <Image source={images[props.bagdeId - 1]} style={{ flex:1, resizeMode:'center'}}/>
+        </LinearGradient>
       </View>
-      <View style={{ flex: 6, flexDirection: 'column', paddingTop: 10 }}>
+      <View style={{ flex: 5, flexDirection: 'column'}}>
         <Text style={styles.bagdeBoxTitle}>{props.title}</Text>
         <Text style={styles.bagdeBoxDescription}>{props.description}</Text>
       </View>
@@ -42,21 +48,12 @@ const BagdeBox = props => {
 const RulesBox = props => {
   return (
     <View style={styles.bagdeBoxContainer}>
-      <View style={{ flex: 1, marginLeft: 15 }}>
+      <View style={{marginLeft: 15 }}>
         <LinearGradient
           colors={['#C0E9EE', '#80D0D8', '#46BAC6']}
-          style={{
-            width: 55,
-            height: 55,
-            borderRadius: 999999,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+          style={{borderRadius: 999999,alignItems: 'center',justifyContent: 'center',width:50, height:50}}>
           <Image
-            style={{
-              width: 30,
-              height: 30,
-            }}
+            style={{aspectRatio:3/5, resizeMode:'contain', flex:1}}
             source={props.source}
           />
         </LinearGradient>
@@ -118,14 +115,21 @@ class HomeScreen extends React.Component {
       achievements: [],
       users: [],
       sortedUsers: [],
-      userId:''
+      userId:'',
+      avatarSource:null
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getAllUsers();
-    this.getId();
+    await this.getId();
     this.getAchievements();
+    this.getAvatar();
+  }
+
+  getAvatar= async()=>{
+    var avatar =  await AsyncStorage.getItem('avatar');
+    this.setState({avatarSource: avatar});   
   }
 
   getAllUsers = () => {
@@ -156,10 +160,11 @@ class HomeScreen extends React.Component {
     var id = await AsyncStorage.getItem('id')
     AchievementService.getForUser(id)
       .then(x => {
-        this.setState({ achievements: x });
+        this.setState({ achievements: x,refreshing: false });
       })
       .catch(err => {
         console.log(err)
+        this.setState({refreshing: false});
       });
   };
 
@@ -168,23 +173,12 @@ class HomeScreen extends React.Component {
       case 'badges': {
         //PUT BREAK HERE LATER !!!! --> karcsi !!
         return (
-          <View
-            style={{
-              height: '100%',
-              backgroundColor: 'white',
-              borderRadius: 10,
-              marginTop: 10,
-            }}>
-            <View style={styles.userBoxContainer}>
+          <View style={{flex:1,backgroundColor: 'white',borderRadius: 10, marginTop:10}}>
+            <View style={[styles.userBoxContainer,{alignSelf:'flex-start'}]}>
               <View style={{ flex: 2, marginLeft: 10 }}>
-                <View
-                  style={{
-                    backgroundColor: 'black',
-                    width: 90,
-                    height: 90,
-                    borderRadius: 999999,
-                  }}
-                />
+                <View style={{backgroundColor: '#F6F6F6',width: 90,height: 90,borderRadius: 999999}}>
+                {this.state.avatarSource?<Image source={{uri:this.state.avatarSource}} style={{flex:1, borderRadius: 500,}} />:null}
+                </View>
               </View>
               <Text style={styles.userBoxPoints}>
                 <Text style={{ fontWeight: 'bold', fontSize: 16 }}>1500</Text>
@@ -198,7 +192,7 @@ class HomeScreen extends React.Component {
             </View>
             {this.state.achievements.length > 0 ? (
               this.state.achievements.map(x => {
-                return <BagdeBox title={x.name} description={x.description} />;
+                return <BagdeBox title={x.name} description={x.description} bagdeId={x.badge_id}/>;
               })
             ) : (
               <View style={{width:'100%', height:30, justifyContent:'center', alignItems:'center'}}>
@@ -229,9 +223,11 @@ class HomeScreen extends React.Component {
         const thirdPlace = require('../Assets/thirdplace.png');
         const drop = require('../Assets/drop.png');
 
+        // var myIndex = list.filter(x=>x.id === this.state.userId)
+        var indexOfUser = list.findIndex(x => x.id ===this.state.userId);
+        // alert(list2)
         return (
-          <View>
-            <View >
+          <View style={{paddingVertical:20}}>
               <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 10 }}> The following days are left of the competition</Text>
               <View style={{ flexDirection: 'row', flexWrap: "wrap" }}>
                 <Progress.Bar progress={calculateMonthProgress} width={240} height={10} color={'#184858'} style={styles.progressBarLb} />
@@ -239,63 +235,54 @@ class HomeScreen extends React.Component {
               </View>
               <View >
                 <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15,  }}>The best players</Text>
-                <FlatList
-                  maxToRenderPerBatch={1}
-                  windowSize={1}
-                  initialNumToRender={3}
-                  data={list}
-                  renderItem={({ item, index }) =>
-                    <LinearGradient colors={index === userLoggedIn ? colors : colorsDefault} >
-                      <View style={styles.containerLb}>
-                        <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
-                            <Image style={{ paddingLeft:5 }} source={
-                              index === 0 ? firstPlace : firstPlace &&
-                                index === 1 ? secondPlace : secondPlace &&
-                                  index === 2 ? thirdPlace : thirdPlace}></Image>
-                            <Text style={styles.textLb2}>{item.nickname}</Text>
-                        </View>
-                        <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                          <Text style={styles.textLb3}>{item.xp}</Text>
-                          <View style={{ width: "30%" }}>
-                            <Image style={styles.dropProp} source={drop} />
-                          </View>
-                        </View>
-                      </View >
-                    </LinearGradient>
-                  }
-                ></FlatList>
+                <ScrollView>
+                  {list.slice(0,3).map((item,index) => {
+                     return  <LinearGradient colors={index === userLoggedIn ? colors : colorsDefault} >
+                     <View style={styles.containerLb}>
+                       <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
+                           <Image style={{ paddingLeft:5 }} source={
+                             index === 0 ? firstPlace : firstPlace &&
+                               index === 1 ? secondPlace : secondPlace &&
+                                 index === 2 ? thirdPlace : thirdPlace}></Image>
+                           <Text style={styles.textLb2}>{item.nickname}</Text>
+                       </View>
+                       <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                         <Text style={styles.textLb3}>{item.xp}</Text>
+                         <View style={{ width: "30%" }}>
+                           <Image style={styles.dropProp} source={drop} />
+                         </View>
+                       </View>
+                     </View >
+                   </LinearGradient>
+                   })}
+                    
+                  </ScrollView>
               </View>
 
               <View>
                 <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15 }}>Other players</Text>
-                <FlatList
-                  maxToRenderPerBatch={3}
-                  windowSize={1}
-                  initialNumToRender={4}
-                  initialScrollIndex={userLoggedIn}
-                  data={list}
-                  renderItem={({ item, index }) =>
-                    <LinearGradient colors={index === userLoggedIn ? colors : colorsDefault}>
-                      <View style={styles.containerLb}>
-                      <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
-                          <Text style={{width: '20%', textAlign:'center', color: '#2F5D6C', fontWeight:'bold'}}>{index + 1}</Text>
-                          <Text style={styles.textLb2}>{item.nickname}</Text>
-                        </View>
-                        <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                          <Text style={styles.textLb3}>{item.xp}</Text>
-                          <View style={{ width: "30%" }}>
-                            <Image style={styles.dropProp} source={drop} />
-                          </View>
-                        </View>
-                      </View >
-                    </LinearGradient>
-                  }
-                ></FlatList>
+               
+                  <ScrollView>
+                  {list.slice(indexOfUser-1,indexOfUser+2).map((item,index) => {
+                     return <LinearGradient colors={item.id === this.state.userId ? colors : colorsDefault}>
+                     <View style={styles.containerLb}>
+                     <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
+                         <Text style={{width: '20%', textAlign:'center', color: '#2F5D6C', fontWeight:'bold'}}>{list.findIndex(x => x.id ===item.id)}</Text>
+                         <Text style={styles.textLb2}>{item.nickname}</Text>
+                       </View>
+                       <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                         <Text style={styles.textLb3}>{item.xp}</Text>
+                         <View style={{ width: "30%" }}>
+                           <Image style={styles.dropProp} source={drop} />
+                         </View>
+                       </View>
+                     </View >
+                   </LinearGradient>
+                   })}
+                    
+                  </ScrollView>
               </View>
             </View>
-            <View style={{ height: '100%', backgroundColor: 'white', borderRadius: 10, marginTop: 10 }}>
-            </View>
-          </View >
         )
       }
       case 'rules': {
@@ -312,28 +299,28 @@ class HomeScreen extends React.Component {
               <RulesBox
                 title="Competitions"
                 description="Competitions will last one month, at the end of which all the points will be reset and a new competition will start."
-                source={require('../Assets/start/trophy.png')}
+                source={require('../Assets/icons/rule_1.png')}
               />
             </View>
             <View style={styles.rulesView}>
               <RulesBox
                 title="Point calculation"
                 description="The points awarded are based on % of improvement compared to last month's average, and bonus points according to your relative consumption."
-                source={require('../Assets/start/trophy.png')}
+                source={require('../Assets/icons/rule_2.png')}
               />
             </View>
             <View style={styles.rulesView}>
               <RulesBox
                 title="Levels"
                 description="You will gain levels the more you play the game, mainly through acquiring badges, but also logging in daily and sharing the game."
-                source={require('../Assets/start/trophy.png')}
+                source={require('../Assets/icons/rule_3.png')}
               />
             </View>
             <View style={styles.rulesView}>
               <RulesBox
                 title="Badges"
                 description="Badges are the main way of leveling up, and you will get them for all sorts of achievements, you can check some of them in the badges tab."
-                source={require('../Assets/start/trophy.png')}
+                source={require('../Assets/icons/rule_4.png')}
               />
             </View>
           </View>
@@ -368,81 +355,79 @@ class HomeScreen extends React.Component {
 
   render() {
     return (
-      <>
-        <View style={styles.MainContainer}>
-          <ScrollView style={{ paddingHorizontal: 20 }}>
-            <View style={{ flex: 1, marginTop: 50 }}>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  width: '100%',
-                  height: 135,
-                  backgroundColor: '#33AFA3',
-                  alignSelf: 'center',
-                  borderRadius: 15,
-                }}>
-                <View
-                  style={{
-                    flex: 1,
-                    borderRadius: 15,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Text
-                    style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
-                    {this.state.text}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flex: 1,
-                    borderRadius: 15,
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  }}>
-                  <Image
-                    style={{ width: width / 2.6, height: width / 2.5 }}
-                    source={jebani}
-                  />
-                </View>
-              </View>
+      <ScrollView style={{ paddingHorizontal: 20,flex:1 }} contentContainerStyle={{justifyContent:'center'}}
+      refreshControl={
+        <RefreshControl refreshing={this.state.refreshing} onRefresh={() => this.getAchievements()} tintColor={'#174A5A'} colors={['#174A5A']} />}>
+        <View style={{ flex: 1, marginTop: 50 }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              width: '100%',
+              height: 135,
+              backgroundColor: '#33AFA3',
+              alignSelf: 'center',
+              borderRadius: 15,
+            }}>
+            <View
+              style={{
+                flex: 1,
+                borderRadius: 15,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
+                {this.state.text}
+              </Text>
             </View>
             <View
               style={{
-                marginTop: 20,
-                height: 50,
-                flexDirection: 'row',
+                flex: 1,
                 borderRadius: 15,
+                alignItems: 'center',
+                justifyContent: 'flex-end',
               }}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.changeView('badges');
-                }}
-                style={styles.tab}>
-                <Text style={styles.boldText}>Bagdes</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  this.changeView('leaderboard');
-                }}
-                style={styles.tab}>
-                <Text style={styles.boldText}>Leaderboard</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  this.changeView('rules');
-                }}
-                style={styles.tab}>
-                <Text style={styles.boldText}>Game Rules</Text>
-              </TouchableOpacity>
+              <Image
+                style={{ width: width / 2.6, height: width / 2.5 }}
+                source={jebani}
+              />
             </View>
-            <View style={{ width: '100%', flex: 1 }}>
-              {this.decide(this.state.status)}
-            </View>
-          </ScrollView>
+          </View>
         </View>
-      </>
+        <View
+          style={{
+            marginTop: 20,
+            height: 50,
+            flexDirection: 'row',
+            borderRadius: 15,
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              this.changeView('badges');
+            }}
+            style={styles.tab}>
+            <Text style={styles.boldText}>Bagdes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.changeView('leaderboard');
+            }}
+            style={styles.tab}>
+            <Text style={styles.boldText}>Leaderboard</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.changeView('rules');
+            }}
+            style={styles.tab}>
+            <Text style={styles.boldText}>Game Rules</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ width: '100%', flex: 1 }}>
+          {this.decide(this.state.status)}
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -453,15 +438,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bagdeBoxContainer: {
-    height: 120,
+    // height: 120,
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
     alignItems: 'center',
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical:20
   },
   bagdeBoxTitle: {
-    flex: 1,
+    // flex: 1,
     alignSelf: 'flex-start',
     color: '#174A5A',
     fontSize: 16,
@@ -469,8 +457,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   bagdeBoxProgressTitle: {
-    flex: 1,
-    alignSelf: 'flex-start',
+    // flex: 1,
+    // alignSelf: 'flex-start',
     color: '#174A5A',
     fontSize: 16,
     fontWeight: 'bold',
@@ -478,20 +466,20 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   bagdeBoxDescription: {
-    flex: 4,
+    // flex: 4,
     paddingLeft: 10,
     paddingTop: 10,
-    alignSelf: 'flex-start',
+    // alignSelf: 'flex-start',
     color: '#174A5A',
     fontSize: 14,
   },
   userBoxContainer: {
-    height: 150,
+    // height: 150,
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
-    alignItems: 'center',
     flex: 1,
+    paddingVertical:10,
   },
   userBoxPoints: {
     flex: 1,

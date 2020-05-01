@@ -7,12 +7,87 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-community/async-storage';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ModalDropdown from 'react-native-modal-dropdown';
+import ImagePicker from 'react-native-image-picker';
+import UserService from '../../Networking/UserService'
+const { height, width } = Dimensions.get('window');
 
 class AccountSettings extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      avatarSource: '',
+    };
+  }
+ 
+  pickImage = async () => {
+     // More info on all the options is below in the API Reference... just some common use cases shown here
+      const options = {
+        title: 'Select Avatar',
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+      };
+    /**
+      * The first arg is the options object for customization (it can also be null or omitted for default options),
+      * The second arg is the callback which sends object: response (more info in the API Reference)
+      */
+    ImagePicker.showImagePicker(options, async (response)=> {
+      // console.log('Response = ', response); 
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        // const source = { uri: response.uri };
+        // const source = response.uri
+
+        // You can also display the image using data:
+        const source =  'data:image/jpeg;base64,' + response.data 
+        await AsyncStorage.setItem('avatar', source);
+
+        this.setState({avatarSource: source,});
+
+        //endpoint to udpate user picture here 
+        //this.updatePicture()
+      }
+    });
+  }
+
+  // updatePicture=async()=>{
+  //   var id = await AsyncStorage.getItem('id');
+  //   data={image:this.state.avatarSource}
+  //   UserService.updateUser(id,data).then(x=>{
+  //     console.log(x)
+  //     // var id = await AsyncStorage.getItem('user');
+  //     UserService.getById(id).then( async x=>{
+  //       await AsyncStorage.setItem('user',JSON.stringify(x))
+  //       var user =  await AsyncStorage.getItem('user');
+  //       console.log(user)
+  //     }).catch(err=>{
+  //       console.log(err)
+  //     })
+  //   }).catch(err=>{
+  //     console.log(err)
+  //   })
+  // }
+
+  async componentDidMount (){
+    var avatar =  await AsyncStorage.getItem('avatar');
+    this.setState({
+      avatarSource: avatar,
+    });    
+    // user = JSON.parse(user)
+    // // var imagData = 'data:image/png;base64,' + btoa(user[0].image.data);
+    // var img = Buffer.from(user[0].image.data,'base64')
+    // let base64String = btoa(String.fromCharCode(...new Uint8Array(user[0].image.data)));
+  }
 
   render() {
     const user = this.props.route.params.user
@@ -24,26 +99,26 @@ class AccountSettings extends React.Component {
             alignItems: 'center',
             flexDirection: 'column',
           }}>
-          <View style={{ padding: 20 }}>
-            <LinearGradient
-              colors={['#a6d8d5', '#71c6c0', '#38b0a4']}
-              style={{
-                width: '100%',
-                height: 80,
-                borderRadius: 10,
-                flexDirection: 'row',
-              }}>
-              <View style={{ flex: 1, height: '100%', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 24, alignSelf: 'center' }}>
-                  picture here
+          <View style={{ flex: 1, paddingHorizontal: 20, marginVertical: 20 }}>
+            <View
+              style={{ flex: 1, flexDirection: 'row', width: '100%', height: 80, backgroundColor: '#38b0a4', alignSelf: 'center', borderRadius: 15, }}>
+              <View style={{ flex: 1, borderRadius: 15, alignItems: 'flex-start', justifyContent: 'center', marginTop: 15, marginLeft: 20 }}>
+                <Text
+                  style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
+                  <TouchableOpacity onPress={()=>this.pickImage()} style={{ backgroundColor: '#F6F6F6', width: 80, height: 80, borderRadius: 500 }}>
+                  <Image source={{uri:this.state.avatarSource}} style={{flex:1, borderRadius: 500,}} />
+                  </TouchableOpacity>
                 </Text>
               </View>
-              <View style={{ flex: 1, height: '100%' }}>
+              <View
+                style={{ flex: 1, borderRadius: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginTop: 90, marginRight: 20 }}>
                 <Image
-                  style={{ resizeMode: 'contain', width: '100%', height: '60%' }}
-                  source={require('../../Assets/settings.png')}></Image>
+                  style={{ width: width / 4.5, height: width / 6 }}
+                  source={require('../../Assets/settings.png')}
+                />
               </View>
-            </LinearGradient>
+            </View>
+
           </View>
           <View
             style={{
@@ -55,7 +130,7 @@ class AccountSettings extends React.Component {
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Email</Text>
               <View style={{ justifyContent: 'center' }}>
-                <Text style={styles.secondRowText}>{user.userName}</Text>
+                <Text style={styles.secondRowText}>{user.email}</Text>
               </View>
             </View>
             <View style={styles.box}>

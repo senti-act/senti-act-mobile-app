@@ -42,12 +42,21 @@ function getUsageByDay(startDate,endDate) {
   });
 }
 
+function updateUser(id, data){
+  return request({
+    url: `/api/users/${id}`,
+    method: 'PUT',
+    data: data,
+  });
+}
+
 const UserService = {
   getAllUsers,
   registerUser,
   getById,
   getByUuid,
-  getUsageByDay
+  getUsageByDay,
+  updateUser
 };
 
 export default UserService;

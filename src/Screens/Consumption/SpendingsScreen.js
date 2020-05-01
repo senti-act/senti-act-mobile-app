@@ -158,7 +158,7 @@ class SpendingsScreen extends React.Component {
   // Changes data, color of the button when pressed
   onButtonPress = (type) => {
     var currentDay = moment().format('YYYY-MM-DD');
-    var currentDayPlus = moment(currentDay).add(1,'day').format('YYYY-MM-DD');
+    var currentDayPlus = moment(currentDay).add(2,'day').format('YYYY-MM-DD');
 
     if (type === 'button1') {
       var weekBeforeToday=moment(currentDay).subtract(1,'week').format('YYYY-MM-DD')
