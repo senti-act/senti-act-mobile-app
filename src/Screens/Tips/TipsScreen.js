@@ -17,6 +17,7 @@ import toilet from '../../Assets/tips/toilet.png';
 import tojvask from '../../Assets/tips/tojvask.png';
 import vandhanen from '../../Assets/tips/vandhanen.png';
 import jebani from '../../Assets/tips/jebani.png';
+import NotifService from '../../NotificationManager/NotifService.js';
 
 const {height, width} = Dimensions.get('window');
 
@@ -32,8 +33,18 @@ class TipsScreen extends React.Component {
         {id: 5, img: vandhanen, title: 'Using the faucet'},
         {id: 6, img: splidevand, title: 'Using your water waste'},
       ],
+      
     };
+    this.notif = new NotifService(
+      this.onRegister.bind(this),
+      this.onNotif.bind(this),
+    );
   }
+
+  onRegister(token) {console.log(token)}
+  onNotif(notif) {console.log(notif)}
+//            this.notif.localNotif();
+
 
   componentDidMount() {}
 
