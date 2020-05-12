@@ -42,10 +42,8 @@ class ConsumptionScreen extends React.Component {
 
     if(this.state.type==='week'){
       max=4000
-
     } else if (this.state.type ==='month'){
       max=16000
-
     } else {
       max = 192000
     }

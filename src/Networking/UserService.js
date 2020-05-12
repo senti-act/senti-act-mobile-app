@@ -50,13 +50,21 @@ function updateUser(id, data){
   });
 }
 
+function getWeeklySavings(orgId){
+  return request({
+    url: `/api/users/weeklyPrice/${orgId}`,
+    method: 'GET'
+  });
+}
+
 const UserService = {
   getAllUsers,
   registerUser,
   getById,
   getByUuid,
   getUsageByDay,
-  updateUser
+  updateUser,
+  getWeeklySavings
 };
 
 export default UserService;

@@ -21,18 +21,19 @@ class RegistrationScreen extends React.Component {
 
   registerUser() {
     if (this.state.isChecked) {
-      UserService.registerUser(
-        this.state.nickname,
-        this.state.adults,
-        this.state.children,
-      )
-        .then(() => {
-          //alert('succesfully created new user');
-          this.props.navigation.navigate('startGuideSkipStack')
-        })
-        .catch(err => {
-          alert(JSON.stringify(err));
-        });
+      // UserService.registerUser(
+      //   this.state.nickname,
+      //   this.state.adults,
+      //   this.state.children,
+      // )
+      //   .then(() => {
+      //     //alert('succesfully created new user');
+      //     this.props.navigation.navigate('startGuideSkipStack')
+      //   })
+      //   .catch(err => {
+      //     alert(JSON.stringify(err));
+      //   });
+      alert("Not here yet ;)")
     } else {
       alert(
         'You need to accept terms and conditions in order to create an account',

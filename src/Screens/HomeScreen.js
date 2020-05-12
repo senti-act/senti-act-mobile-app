@@ -1,16 +1,7 @@
 import * as React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
+import {Text,View,StyleSheet,ScrollView,Image,Dimensions,TouchableOpacity,RefreshControl} from 'react-native';
 const { height, width } = Dimensions.get('window');
-import jebani from '../Assets/competition.png';
+import headerPic from '../Assets/competition.png';
 import * as Progress from 'react-native-progress';
 import AchievementService from '../Networking/AchievementService';
 import LinearGradient from 'react-native-linear-gradient';
@@ -25,6 +16,11 @@ import image4 from '../Assets/icons/4.png'
 import image5 from '../Assets/icons/5.png'
 import image6 from '../Assets/icons/6.png'
 import image7 from '../Assets/icons/7.png'
+import firstPlace from '../Assets/firstplace.png'
+import secondPlace from'../Assets/secondplace.png'
+import thirdPlace from'../Assets/thirdplace.png'
+import drop from'../Assets/drop.png'
+
 
 var images = [image1,image2,image3,image4,image5,image6,image7]
 
@@ -58,7 +54,7 @@ const RulesBox = props => {
           />
         </LinearGradient>
       </View>
-      <View style={{ flex: 6, flexDirection: 'column', margin: 10 }}>
+      <View style={{flex:1, flexDirection: 'column', marginHorizontal: 10 }}>
         <Text style={styles.bagdeBoxTitle}>{props.title}</Text>
         <Text style={styles.bagdeBoxDescription}>{props.description}</Text>
       </View>
@@ -109,13 +105,12 @@ class HomeScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      value: 0,
       status: 'badges',
       text: 'Reduce your water consumption and earn badges',
       achievements: [],
       users: [],
-      sortedUsers: [],
       userId:'',
+      userXP:0,
       avatarSource:null
     };
   }
@@ -125,6 +120,13 @@ class HomeScreen extends React.Component {
     await this.getId();
     this.getAchievements();
     this.getAvatar();
+  }
+
+  refresh=()=>{
+    this.getAchievements();
+    this.getAllUsers();
+    this.getAvatar();
+    this.getId();
   }
 
   getAvatar= async()=>{
@@ -148,7 +150,8 @@ class HomeScreen extends React.Component {
     var uuid = user.uuid
     UserService.getByUuid(uuid).then(async x =>{
       this.setState({
-        userId:x[0].id
+        userId:x[0].id,
+        userXP:x[0].xp
       })
       await AsyncStorage.setItem('id', x[0].id);
     }).catch(err=>{
@@ -171,9 +174,8 @@ class HomeScreen extends React.Component {
   decide = () => {
     switch (this.state.status) {
       case 'badges': {
-        //PUT BREAK HERE LATER !!!! --> karcsi !!
         return (
-          <View style={{flex:1,backgroundColor: 'white',borderRadius: 10, marginTop:10}}>
+          <View style={{flex:1,backgroundColor: 'white',borderRadius: 10, marginTop:10, marginBottom:10}}>
             <View style={[styles.userBoxContainer,{alignSelf:'flex-start'}]}>
               <View style={{ flex: 2, marginLeft: 10 }}>
                 <View style={{backgroundColor: '#F6F6F6',width: 90,height: 90,borderRadius: 999999}}>
@@ -181,9 +183,7 @@ class HomeScreen extends React.Component {
                 </View>
               </View>
               <Text style={styles.userBoxPoints}>
-                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>1500</Text>
-                points
-              </Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 15 }}>{this.state.userXP}</Text>{"\n"}points</Text>
               <Text style={styles.userBoxDescr}>
                 Here you can see all your badges that you have won as you
                 contribute to reducing your water usage. Unlock more badges on
@@ -195,106 +195,93 @@ class HomeScreen extends React.Component {
                 return <BagdeBox title={x.name} description={x.description} bagdeId={x.badge_id}/>;
               })
             ) : (
-              <View style={{width:'100%', height:30, justifyContent:'center', alignItems:'center'}}>
-                <Text style={styles.userBoxDescr}>You don't have any achievements yet :/</Text>
+              <View style={{width:'100%', height:30, justifyContent:'center', alignItems:'center', marginTop:10}}>
+                <Text style={styles.userBoxDescr}>You don't have any achievements yet :(</Text>
                 </View>
               )}
-            {/* <BagdeBox title='Expert' description='You have been an active player for 3 months and you have therefore earned the title as an expert.'></BagdeBox>
-              <BagdeBoxProgress title='Water Expert' description='You have been reduced you water consumption by 10%.' progress={0.8}></BagdeBoxProgress>
-              <BagdeBox title='Water Chuj' description='You have been reduced you water consumption by 10%.'></BagdeBox>
-              <BagdeBoxProgress title='Karol Badge' description='siema kurwa' progress={0.2}></BagdeBoxProgress> */}
+              {/* <BagdeBoxProgress title='Karol Badge' description='siema kurwa' progress={0.2}></BagdeBoxProgress>  */}
           </View>
         );
       }
 
       case 'leaderboard': {
-        const currentDate = new Date().getDate();
+        const currentDate = moment().format('DD');
         const lastDayOfCurrentMonth = moment().endOf('month').format('DD');
         const calculateMonthProgress = currentDate / lastDayOfCurrentMonth;
-
-        const list = this.state.users.sort((a, b) => { return b.xp - a.xp; });
-        const userLoggedIn = 5;   // ID of user that is currently logged in
 
         const colors = ['#C0E9EE', '#80D0D8', '#46BAC6'];
         const colorsDefault = ['white', 'white', 'white',];
 
-        const firstPlace = require('../Assets/firstplace.png');
-        const secondPlace = require('../Assets/secondplace.png');
-        const thirdPlace = require('../Assets/thirdplace.png');
-        const drop = require('../Assets/drop.png');
-
-        // var myIndex = list.filter(x=>x.id === this.state.userId)
+        const list = this.state.users.sort((a, b) => {return b.xp - a.xp});
         var indexOfUser = list.findIndex(x => x.id ===this.state.userId);
-        // alert(list2)
+        
         return (
-          <View style={{paddingVertical:20}}>
-              <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 10 }}> The following days are left of the competition</Text>
-              <View style={{ flexDirection: 'row', flexWrap: "wrap" }}>
-                <Progress.Bar progress={calculateMonthProgress} width={240} height={10} color={'#184858'} style={styles.progressBarLb} />
-                <Text style={styles.textLb}>{lastDayOfCurrentMonth - currentDate} days left</Text>
-              </View>
-              <View >
-                <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15,  }}>The best players</Text>
-                <ScrollView>
-                  {list.slice(0,3).map((item,index) => {
-                     return  <LinearGradient colors={index === userLoggedIn ? colors : colorsDefault} >
-                     <View style={styles.containerLb}>
-                       <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
-                           <Image style={{ paddingLeft:5 }} source={
-                             index === 0 ? firstPlace : firstPlace &&
-                               index === 1 ? secondPlace : secondPlace &&
-                                 index === 2 ? thirdPlace : thirdPlace}></Image>
-                           <Text style={styles.textLb2}>{item.nickname}</Text>
-                       </View>
-                       <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                         <Text style={styles.textLb3}>{item.xp}</Text>
-                         <View style={{ width: "30%" }}>
-                           <Image style={styles.dropProp} source={drop} />
-                         </View>
-                       </View>
-                     </View >
-                   </LinearGradient>
-                   })}
-                    
-                  </ScrollView>
-              </View>
-
-              <View>
-                <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 15 }}>Other players</Text>
-               
-                  <ScrollView>
-                  {list.slice(indexOfUser-1,indexOfUser+2).map((item,index) => {
-                     return <LinearGradient colors={item.id === this.state.userId ? colors : colorsDefault}>
-                     <View style={styles.containerLb}>
-                     <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
-                         <Text style={{width: '20%', textAlign:'center', color: '#2F5D6C', fontWeight:'bold'}}>{list.findIndex(x => x.id ===item.id)}</Text>
-                         <Text style={styles.textLb2}>{item.nickname}</Text>
-                       </View>
-                       <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                         <Text style={styles.textLb3}>{item.xp}</Text>
-                         <View style={{ width: "30%" }}>
-                           <Image style={styles.dropProp} source={drop} />
-                         </View>
-                       </View>
-                     </View >
-                   </LinearGradient>
-                   })}
-                    
-                  </ScrollView>
-              </View>
+          <View style={{paddingVertical:10}}>
+            <Text style={{ color: '#2F5D6C', fontWeight: 'bold', marginBottom: 3, marginTop: 10 }}> The following days are left of the competition</Text>
+            <View style={{ flexDirection: 'row', justifyContent:'center', marginTop:10}}>
+              <Progress.Bar progress={calculateMonthProgress} width={220} height={50} color={'#184858'} style={styles.progressBarLb} />
+              <Text style={styles.textLb}>{lastDayOfCurrentMonth - currentDate} days left</Text>
             </View>
+            {list.findIndex(x => x.id ===this.state.userId)>=3?
+              <>
+              <Text style={{color: '#2F5D6C', fontWeight: 'bold', marginBottom: 10, marginTop: 20}}>The best players</Text>
+              {list.slice(0,3).map((item,index) => {
+                    return  (
+                    <LinearGradient colors={item.id === this.state.userId ? colors : colorsDefault}>
+                    <View style={styles.containerLb}>
+                      <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
+                          <Image style={{ paddingLeft:5 }} source={index === 0 ? firstPlace : firstPlace && index === 1 ? secondPlace : secondPlace &&index === 2 ? thirdPlace : thirdPlace}></Image>
+                          <Text style={styles.textLb2}>{item.nickname}</Text>
+                      </View>
+                      <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Text style={styles.textLb3}>{item.xp}</Text>
+                        <Image source={drop}/>
+                      </View>
+                    </View >
+                  </LinearGradient>)}
+                  )}
+              <Text style={{color: '#2F5D6C', fontWeight: 'bold', marginBottom: 10, marginTop: 20 }}>Other players</Text>
+              {list.slice(indexOfUser-1,indexOfUser+2).map((item,index) => {
+                      return (
+                      <LinearGradient colors={item.id === this.state.userId ? colors : colorsDefault}>
+                      <View style={styles.containerLb}>
+                      <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
+                          <Text style={{width: '20%', textAlign:'center', color: '#2F5D6C', fontWeight:'bold'}}>{list.findIndex(x => x.id ===item.id)+1}</Text>
+                          <Text style={styles.textLb2}>{item.nickname}</Text>
+                        </View>
+                        <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                          <Text style={styles.textLb3}>{item.xp}</Text>
+                          <Image source={drop}/>
+                        </View>
+                      </View >
+                    </LinearGradient>)
+                    })}
+             </>:<>
+                  <Text style={{color: '#2F5D6C', fontWeight: 'bold', marginBottom: 10, marginTop: 20}}>The best players</Text>
+                   {list.slice(0,6).map((item,index) => {
+                    return  (
+                    <LinearGradient colors={item.id === this.state.userId ? colors : colorsDefault}>
+                    <View style={styles.containerLb}>
+                      <View style={{flexDirection: 'row', width: "70%", justifyContent: 'space-between', alignItems: 'center'}}>
+                        {index<3? <Image style={{ paddingLeft:5 }} source={index === 0 ? firstPlace : firstPlace && index === 1 ? secondPlace : secondPlace &&index === 2 ? thirdPlace : thirdPlace}></Image>
+                        :<Text style={{width: '20%', textAlign:'center', color: '#2F5D6C', fontWeight:'bold'}}>{list.findIndex(x => x.id ===item.id)+1}</Text>
+                      }
+                          <Text style={styles.textLb2}>{item.nickname}</Text>
+                      </View>
+                      <View style={{width: '30%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Text style={styles.textLb3}>{item.xp}</Text>
+                        <Image source={drop}/>
+                      </View>
+                    </View >
+                  </LinearGradient>)}
+                  )}
+                  </>}
+          </View>
         )
       }
       case 'rules': {
         return (
-          <View
-            style={{
-              backgroundColor: 'white',
-              borderRadius: 15,
-              flexDirection: 'column',
-              marginTop: 10,
-              marginBottom: 10,
-            }}>
+          <View style={{backgroundColor: 'white',borderRadius: 10,flexDirection: 'column',marginTop: 10,marginBottom: 10,}}>
             <View style={styles.rulesView}>
               <RulesBox
                 title="Competitions"
@@ -357,71 +344,28 @@ class HomeScreen extends React.Component {
     return (
       <ScrollView style={{ paddingHorizontal: 20,flex:1 }} contentContainerStyle={{justifyContent:'center'}}
       refreshControl={
-        <RefreshControl refreshing={this.state.refreshing} onRefresh={() => this.getAchievements()} tintColor={'#174A5A'} colors={['#174A5A']} />}>
+        <RefreshControl refreshing={this.state.refreshing} onRefresh={() => this.refresh()} tintColor={'#174A5A'} colors={['#174A5A']} />}>
         <View style={{ flex: 1, marginTop: 50 }}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              width: '100%',
-              height: 135,
-              backgroundColor: '#33AFA3',
-              alignSelf: 'center',
-              borderRadius: 15,
-            }}>
-            <View
-              style={{
-                flex: 1,
-                borderRadius: 15,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
+          <View style={{flex: 1,flexDirection: 'row',width: '100%',height: 135,backgroundColor: '#33AFA3',alignSelf: 'center',borderRadius: 15}}>
+            <View style={{flex: 1,borderRadius: 15,alignItems: 'center',justifyContent: 'center',}}>
+              <Text style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
                 {this.state.text}
               </Text>
             </View>
-            <View
-              style={{
-                flex: 1,
-                borderRadius: 15,
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-              }}>
-              <Image
-                style={{ width: width / 2.6, height: width / 2.5 }}
-                source={jebani}
-              />
+            <View style={{flex: 1,borderRadius: 15,alignItems: 'center',justifyContent: 'flex-end'}}>
+              <Image style={{ width: width / 2.6, height: width / 2.5 }} source={headerPic}/>
             </View>
           </View>
         </View>
-        <View
-          style={{
-            marginTop: 20,
-            height: 50,
-            flexDirection: 'row',
-            borderRadius: 15,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              this.changeView('badges');
-            }}
-            style={styles.tab}>
-            <Text style={styles.boldText}>Bagdes</Text>
+        <View style={{marginTop: 20,height: 50,flexDirection: 'row',borderRadius: 15}}>
+          <TouchableOpacity onPress={() => {this.changeView('badges')}} style={styles.tab}>
+            <Text style={[styles.boldText,this.state.status==='badges'?{color:'#FA831B',fontWeight: 'bold'}:null]}>Bagdes</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.changeView('leaderboard');
-            }}
-            style={styles.tab}>
-            <Text style={styles.boldText}>Leaderboard</Text>
+          <TouchableOpacity onPress={() => {this.changeView('leaderboard')}}style={styles.tab}>
+            <Text style={[styles.boldText,this.state.status==='leaderboard'?{color:'#FA831B',fontWeight: 'bold'}:null]}>Leaderboard</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              this.changeView('rules');
-            }}
-            style={styles.tab}>
-            <Text style={styles.boldText}>Game Rules</Text>
+          <TouchableOpacity onPress={() => {this.changeView('rules')}}style={styles.tab}>
+            <Text style={[styles.boldText,this.state.status==='rules'?{color:'#FA831B',fontWeight: 'bold'}:null]}>Game Rules</Text>
           </TouchableOpacity>
         </View>
         <View style={{ width: '100%', flex: 1 }}>
@@ -433,19 +377,13 @@ class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  MainContainer: {
-    justifyContent: 'center',
-    flex: 1,
-  },
   bagdeBoxContainer: {
-    // height: 120,
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     paddingVertical:20
   },
   bagdeBoxTitle: {
@@ -498,7 +436,6 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontSize: 15,
-    fontWeight: 'bold',
     color: '#174A5A',
   },
   tab: {
@@ -512,10 +449,9 @@ const styles = StyleSheet.create({
     borderBottomColor: 'lightgray',
   },
   progressBarLb: {
-    height: 10,
+    height: 16,
     alignSelf: 'center',
-    marginBottom: 10,
-    width: '70%',
+    borderRadius:20
   },
   textLb: {
     color: '#2F5D6C',
@@ -538,20 +474,11 @@ const styles = StyleSheet.create({
   },
   containerLb: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     borderBottomWidth: 1,
     padding: 15,
     borderBottomColor: '#A2B7BD',
-    borderRadius: 10,
     justifyContent: 'center',
   },
-  dropProp: {
-    width: 18,
-    height: 26,
-    alignSelf: "flex-end",
-    paddingRight:5
-  },
-
 });
 
 export default HomeScreen;

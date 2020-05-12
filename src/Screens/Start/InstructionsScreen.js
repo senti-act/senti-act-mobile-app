@@ -97,7 +97,6 @@ class InstructionsScreen extends React.Component {
             fontWeight="normal"
             x="29.7"
             y="118.5">
-            {' '}
             Create an account
           </Text>
         </Svg>

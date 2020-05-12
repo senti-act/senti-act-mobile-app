@@ -16,7 +16,7 @@ export default class NotifService {
     });
   }
 
-  localNotif(soundName) {
+  localNotif(title, message) {
     this.lastId++;
     PushNotification.localNotification({
       /* Android Only Properties */
@@ -25,8 +25,8 @@ export default class NotifService {
       vibrate: true, // (optional) default: true
       vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
       /* iOS and Android properties */
-      title: 'Local Notification', // (optional)
-      message: 'My Notification Message', // (required)
+      title: title, // (optional)
+      message: message, // (required)
       number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
       actions: '["Yes", "No"]', // (Android only) See the doc for notification actions to know more
     });

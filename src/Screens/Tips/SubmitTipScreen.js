@@ -8,11 +8,10 @@ import {
 } from 'react-native';
 import Switches from 'react-native-switches';
 import {TextInput} from 'react-native-gesture-handler';
-import ModalDropdown from 'react-native-modal-dropdown';
 import RNPickerSelect from 'react-native-picker-select';
 import TipsService from '../../Networking/TipsService';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import NotifService from '../../NotificationManager/NotifService.js';
 
 class SubmitTipScreen extends React.Component {
   constructor(props) {
@@ -23,32 +22,27 @@ class SubmitTipScreen extends React.Component {
       title: '',
       description: '',
     };
+    this.notif = new NotifService(
+      this.onRegister.bind(this),
+      this.onNotif.bind(this),
+    );
   }
+
+  onRegister(token) {console.log(token)}
+  onNotif(notif) {console.log(notif)}
 
   async submitTip() {
     var id = await AsyncStorage.getItem('id');
     TipsService.SubmitTip(this.state.category, this.state.title, this.state.description, id,this.state.anonymous) 
       .then(() => {
-        alert('succesfully submitted the tip');
+        this.notif.localNotif();
+        alert('Succesfully submitted the tip. We will review it and decide to put it in the app.');
+        this.notif.localNotif('Achievement get! Subbmited tip for the first time', 'Congrats, you received 500xp');
       })
       .catch(err => {
         alert(JSON.stringify(err));
       });
   }
-
-  submission = (anonymous, category, description, title) => {
-    alert(
-        'Anonymous: ' +
-        anonymous +
-        ', Category: ' +
-        category +
-        ', Advice: ' +
-        description +
-        'Title: ' + title,
-    );
-  };
-
-  componentDidMount() {}
 
   render(){
     const categories =
@@ -78,12 +72,8 @@ class SubmitTipScreen extends React.Component {
               </Text>
               {/* </View> */}
           </View>
-          <View style={{backgroundColor: 'white',borderRadius: 10,flexDirection: 'column',marginTop: 15}}>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                borderBottomColor: 'lightgray',
-              }}>
+          <View style={{backgroundColor: 'white',borderRadius: 10,flexDirection: 'column',marginTop: 15, }}>
+            <View style={{borderBottomWidth: 1,borderBottomColor: 'lightgray'}}>
               <Text style={[styles.boldTitle,{textAlign:'center'}]}> Fill out the form</Text>
             </View>
             <View style={styles.box}>
@@ -104,8 +94,7 @@ class SubmitTipScreen extends React.Component {
             </View>
             <View style={styles.box}>
               <Text style={styles.text}> Category </Text>
-              <View
-                style={styles.viewPicker}>
+              <View style={styles.viewPicker}>
                 <RNPickerSelect
                   onValueChange={value => {
                     this.setState({
@@ -142,28 +131,23 @@ class SubmitTipScreen extends React.Component {
             </View>
             <View style={{flexDirection: 'column',margin: 10,}}>
                 <Text style={styles.boldText}> Title of your advice</Text>
-              <View style={{margin: 10,borderWidth: 1,borderColor: '#BBD7E9',borderRadius: 10,backgroundColor: '#f8f8ff',}}>
+              <View style={{margin: 10,borderWidth: 1,borderColor: '#BBD7E9',borderRadius: 15,backgroundColor: '#f8f8ff',}}>
                 <TextInput
                   onChangeText={title => this.setState({title})}
                   value={this.state.title}
                   multiline={true}
-                  style={[styles.text,{paddingLeft:10}]}
+                  autoCorrect={false}
+                  style={{fontSize:15,color: '#174A5A',paddingLeft:10, height:28}}
                 />
               </View>
               <Text style={styles.boldText}> Enter your advice!</Text>
-              <View
-                style={{
-                  margin: 10,
-                  borderWidth: 1,
-                  borderColor: '#BBD7E9',
-                  borderRadius: 17,
-                  backgroundColor: '#f8f8ff',
-                }}>
+              <View style={{margin: 10,borderWidth: 1,borderColor: '#BBD7E9',borderRadius: 15,backgroundColor: '#f8f8ff',}}>
                 <TextInput
                   onChangeText={description => this.setState({description})}
                   value={this.state.description}
                   multiline={true}
-                  style={[styles.text,{paddingLeft:10}]}
+                  autoCorrect={false}
+                  style={{fontSize:15,color: '#174A5A',paddingLeft:10, height:80}}
                 />
               </View>
              
@@ -190,7 +174,6 @@ class SubmitTipScreen extends React.Component {
 
 const styles = {
   box: {
-    // height: 60,
     flex:1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -201,11 +184,7 @@ const styles = {
   },
   text: {
     fontSize: 15,
-    // paddingLeft: 15,
-    // paddingRight: 15,
     color: '#174A5A',
-    // alignSelf: 'center',
-
   },
   boldText: {
     fontSize: 15,
@@ -219,7 +198,6 @@ const styles = {
     color: '#174A5A',
     paddingTop: 15,
     paddingBottom: 10,
-    // alignSelf: 'center',
   },
   viewPicker:{
     height: 35,

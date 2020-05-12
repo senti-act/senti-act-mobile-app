@@ -45,7 +45,6 @@ class TipsScreen extends React.Component {
   onNotif(notif) {console.log(notif)}
 //            this.notif.localNotif();
 
-
   componentDidMount() {}
 
   render() {

@@ -6,12 +6,11 @@ import {
   Image,
   SafeAreaView,
   TouchableOpacity,
-  ActivityIndicator,
   Dimensions
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import ModalDropdown from 'react-native-modal-dropdown';
+import RNPickerSelect from 'react-native-picker-select';
 import ImagePicker from 'react-native-image-picker';
 import UserService from '../../Networking/UserService'
 const { height, width } = Dimensions.get('window');
@@ -182,18 +181,39 @@ class AccountSettings extends React.Component {
             <View style={styles.box}>
               <Text style={styles.firstRowText}>Show my data in: </Text>
               <View style={{ height: '60%', paddingLeft: 30 }}>
-                <ModalDropdown
-                  options={['Liters', 'm3']}
-                  textStyle={{ color: '#174A5A' }}
-                  dropdownTextStyle={{ fontSize: 18, color: '#174A5A' }}
-                  dropdownTextHighlightStyle={{
-                    fontSize: 20,
-                    color: '#174A5A',
-                  }}></ModalDropdown>
+              <RNPickerSelect
+                  onValueChange={value => {
+                    this.setState({
+                      category: value,
+                    });
+                  }}
+                  placeholder={{label: 'Select',value: null,color: '#2E5C6B',
+                  }}
+                  items={[
+                    {label: 'Liters', value: '1'},
+                    {label: 'M3', value: '2'}
+                  ]}
+                  style={{
+                    inputAndroid: {
+                      color: '#174A5A',                    
+                    },
+                    iconContainer: {
+                      right: 10,
+                      top: -4,
+                    },
+                    placeholder: {
+                      color: '#174A5A',                    
+                    },
+                    inputIOS:{
+                      color: '#174A5A',                    
+                    }
+                  }}
+                  useNativeAndroidPickerStyle={false}
+                />
               </View>
             </View>
           </View>
-          <View
+          <TouchableOpacity
             style={{
               backgroundColor: 'white',
               borderRadius: 10,
@@ -213,15 +233,13 @@ class AccountSettings extends React.Component {
               }}>
               Delete data and profile
             </Text>
-
-            <TouchableOpacity></TouchableOpacity>
             <EvilIcons
               style={{ alignSelf: 'center', width: '20%', paddingLeft: 20 }}
               size={36}
               name={'trash'}
               color="#174A5A"
             />
-          </View>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
     );

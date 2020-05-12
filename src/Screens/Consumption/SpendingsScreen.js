@@ -10,20 +10,19 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
-// Chart libraries
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { AreaChart, YAxis, XAxis, Path } from 'react-native-svg-charts'
 import { ClipPath, Defs, LinearGradient as LiGr, Rect, Stop, Line as L } from 'react-native-svg'
 import * as shape from 'd3-shape'
 import UserService from '../../Networking/UserService';
 const { height, width } = Dimensions.get('window');
+import AsyncStorage from '@react-native-community/async-storage';
 
 var lastWeekDay = moment().format('YYYY-MM-DD');
 var firstWeekDay = moment(lastWeekDay).subtract(7, "days").format('YYYY-MM-DD');
 
 // data for xAxis
 const indexToClipFrom = 31
-
 const recommendedDayConsumption = 0.2 // here we store recommended consumption
 
 // Charts components
@@ -83,23 +82,20 @@ class SpendingsScreen extends React.Component {
       dataCurrentPeriod: '',
       dataPreviousPeriod: '',
       dailyConsumption:0,
-
-      waterSavings: 40,
-      wastewaterSavings: 75,
-      totalSavings: 115,
-
       current: 0,
       previous: 0,
       reduced:0,
       regionReduction: 25,
 
       recommendedConsumption: 0.3,
+      savings:{}
      };
   }
 
   componentDidMount(){
     this.onButtonPress(this.state.selectedButton)
     this.getDailyConsumption()
+    this.getWeeklySavings()
   }
 
   getDailyConsumption=()=>{
@@ -155,7 +151,6 @@ class SpendingsScreen extends React.Component {
     })
   }
 
-  // Changes data, color of the button when pressed
   onButtonPress = (type) => {
     var currentDay = moment().format('YYYY-MM-DD');
     var currentDayPlus = moment(currentDay).add(2,'day').format('YYYY-MM-DD');
@@ -252,6 +247,18 @@ class SpendingsScreen extends React.Component {
     this.getSelectedConsumption(firstDate, lastDate)
     this.getPreviousConsumption(firstDate, lastDate, this.state.type)
   }
+  
+  getWeeklySavings=async()=>{
+    var user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user)
+    var orgId = user.org.uuid
+
+    UserService.getWeeklySavings(orgId).then(x=>{
+      this.setState({savings:x})
+    }).catch(err=>{
+      this.console.log(err)
+    })
+  }
 
   render() {
     const { route, navigation } = this.props;
@@ -296,7 +303,7 @@ class SpendingsScreen extends React.Component {
         </View>
 
         <View style={styles.content}>
-          {/* DATE PICKER */}
+
           <View style={styles.datepickerContainer}>
             <TouchableOpacity onPress={() => this.decrement()}>
               <Image
@@ -304,7 +311,7 @@ class SpendingsScreen extends React.Component {
                 style={styles.arrow}
               />
             </TouchableOpacity>
-            <Text style={{ color: "#174A5A" }}>{this.state.firstDate + ' - ' + this.state.lastDate}</Text>
+            <Text style={{ color: "#174A5A", fontSize: 13}}>{this.state.firstDate + ' - ' + this.state.lastDate}</Text>
             <TouchableOpacity onPress={() => this.increment()}>
               <Image
                 source={require('../../Assets/consumption/next.png')}
@@ -313,12 +320,11 @@ class SpendingsScreen extends React.Component {
             </TouchableOpacity>
           </View>
 
-          <View style={{ flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row', width: '100%', alignSelf: 'center',paddingHorizontal:10}}>
             <View style={{ padding: 10, width: '33%', paddingHorizontal: 2 }}>
               <TouchableOpacity style={{
                 backgroundColor: this.state.selectedButton === "button1" ? 'orange' : 'white',
                 borderColor: this.state.selectedButton === "button1" ? 'orange' : '#174A5A',
-                marginRight: 5,
                 borderRadius: 50,
                 borderWidth: 2,
                 width: '100%',
@@ -337,7 +343,6 @@ class SpendingsScreen extends React.Component {
               <TouchableOpacity style={{
                 backgroundColor: this.state.selectedButton === "button2" ? 'orange' : 'white',
                 borderColor: this.state.selectedButton === "button2" ? 'orange' : '#174A5A',
-                marginRight: 5,
                 borderRadius: 50,
                 borderWidth: 2,
                 width: '100%',
@@ -355,7 +360,6 @@ class SpendingsScreen extends React.Component {
               <TouchableOpacity style={{
                 backgroundColor: this.state.selectedButton === "button3" ? 'orange' : 'white',
                 borderColor: this.state.selectedButton === "button3" ? 'orange' : '#174A5A',
-                marginRight: 5,
                 borderRadius: 50,
                 borderWidth: 2,
                 width: '100%',
@@ -389,9 +393,7 @@ class SpendingsScreen extends React.Component {
                     style={{ top: 0, bottom: 0, height: 180, marginTop: 30 }}
                     data={this.state.dataCurrentPeriod}
                     contentInset={{ top: 36, bottom: 0}}
-
                     numberOfTicks={5}
-
                     svg={{
                       fontSize: 13,
                       fill: '#174A5A',
@@ -484,12 +486,11 @@ class SpendingsScreen extends React.Component {
                   <Text style={styles.smallText}>Recommended</Text>
                 </View>
               </View>
-              {/* LEGEND FOR MULTILINE CHART */}
             </View>
 
           <View style={styles.consumptionContainer}>
 
-            {/* Progress circle (left card) - REFACTORING? */}
+            {/* Progress circle */}
             <TouchableOpacity
               style={styles.consumptionCard}
               onPress={() => navigation.navigate('ConsumptionScreen')}>
@@ -555,16 +556,16 @@ class SpendingsScreen extends React.Component {
           {/* Savings bottom card [pig]*/}
           <View style={styles.bottomConsumptionCard}>
             <View style={{ width: '25%' }}>
-              <Image source={require('../../Assets/consumption/pig.png')} style={{ width: 71, height: 67 }} />
+              <Image source={require('../../Assets/consumption/pig.png')} style={{alignSelf:'center'}} />
             </View>
-            <View style={{ width: '75%' }}>
-              <Text style={{ fontWeight: 'bold', color: '#174A5A', marginBottom: 5, fontSize: 15 }}>
+            <View style={{ width: '75%', paddingHorizontal:5 }}>
+              <Text style={{ fontWeight: 'bold', color: '#174A5A', marginBottom: 5, fontSize: 15, marginTop:5 }}>
                 You've saved in the last week
               </Text>
-              <Text style={{ fontSize: 14, color: '#174A5A' }}>
-                <Text style={{fontWeight:'bold'}}>{this.state.waterSavings} DKK</Text> on water and <Text style={{fontWeight:'bold'}}>
-                  {this.state.wastewaterSavings} DKK</Text> on wastewater. This gives
-                a total saving of <Text style={{fontWeight:'bold'}}>{this.state.totalSavings} DKK</Text>.
+              <Text style={{ fontSize: 14, color: '#174A5A', }}>
+                <Text style={{fontWeight:'bold'}}>{this.state.savings.waterSaved} DKK</Text> on water and <Text style={{fontWeight:'bold'}}>
+                  {this.state.savings.sewageSaved} DKK</Text> on wastewater. This gives
+                a total saving of <Text style={{fontWeight:'bold'}}>{this.state.savings.total} DKK</Text>.
               </Text>
             </View>
           </View>
@@ -603,9 +604,12 @@ const styles = StyleSheet.create({
   // Datepicker
   datepickerContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     marginTop: 15,
-    width:'100%'
+    width:'100%',
+    alignItems:'center',
+    marginBottom: 10,
+    paddingHorizontal:10
   },
   arrow: {
     width: 20,
@@ -635,15 +639,12 @@ const styles = StyleSheet.create({
   // Section under multiline chart
   consumptionContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 10,
     paddingVertical: 10,
   },
   consumptionCard: {
     flex: 1,
     backgroundColor: 'white',
     borderRadius: 5,
-    minHeight: 250,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -662,11 +663,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
-    borderRadius: 4,
+    borderRadius: 5,
     backgroundColor: 'white',
     marginBottom: 10,
     flexDirection: 'row',
-    flexWrap: 'wrap',
   },
 });
 
