@@ -55,7 +55,7 @@ class ConsumptionScreen extends React.Component {
     UserService.getUsageByDay(startDate,endDate).then(data=>{
       this.setState({currentConsumption:data[1][0].sumOfAvgL})
     }).catch(err=>{
-      alert(err)
+      console.log(err)
     })
   }
 
@@ -69,7 +69,7 @@ class ConsumptionScreen extends React.Component {
     UserService.getUsageByDay(start,end).then(data=>{
       this.setState({previousConsumpion:data[1][0].sumOfAvgL})
     }).catch(err=>{
-      alert(err)
+      console.log(err)
     })
   }
 

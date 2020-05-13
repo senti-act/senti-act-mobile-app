@@ -114,7 +114,7 @@ class SpendingsScreen extends React.Component {
         reduced:red
       })
     }).catch(err=>{
-      alert(err)
+      console.log(err)
     })
   }
 
@@ -128,7 +128,7 @@ class SpendingsScreen extends React.Component {
       console.log('current: '+weekData, startDate, endDate)
       this.setState({dataCurrentPeriod:weekData})
     }).catch(err=>{
-      alert(err)
+      console.log(err)
     })
   }
 
@@ -147,7 +147,7 @@ class SpendingsScreen extends React.Component {
       this.setState({dataPreviousPeriod:weekData})
       console.log('previous: '+weekData)
     }).catch(err=>{
-      alert(err)
+      console.log(err)
     })
   }
 

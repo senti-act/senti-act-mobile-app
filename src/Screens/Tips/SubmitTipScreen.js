@@ -41,7 +41,7 @@ class SubmitTipScreen extends React.Component {
         }
       })
       .catch(err => {
-        alert(JSON.stringify(err));
+        console.log(JSON.stringify(err));
       });
   }
 

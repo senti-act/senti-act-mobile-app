@@ -155,7 +155,7 @@ class HomeScreen extends React.Component {
       })
       await AsyncStorage.setItem('id', x[0].id);
     }).catch(err=>{
-      alert(JSON.stringify(err))
+      console.log(JSON.stringify(err))
     })
   }
 

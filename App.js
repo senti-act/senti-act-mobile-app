@@ -398,14 +398,13 @@ export default function App(props) {
             setToken(value);
           }).catch(e => {
             console.log('error',e)
-            alert(e);
           });
       } else {
         setToken(null);
         //this.props.navigation.navigate('dupa');
       }
     } catch (e) {
-      alert(e);
+      console.log(e);
     }
   };
 

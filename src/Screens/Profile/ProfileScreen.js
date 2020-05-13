@@ -159,7 +159,7 @@ class ProfileScreen extends React.Component {
                 setToken(null)
                 //this.props.navigation.navigate('WelcomeScreen');
               } catch (e) {
-                alert(e.message);
+                console.log(e.message);
               }
             }}
             style={[

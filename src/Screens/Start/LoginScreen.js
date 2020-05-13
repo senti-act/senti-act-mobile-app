@@ -58,19 +58,19 @@ class LoginScreen extends React.Component {
                   // this.props.navigation.navigate('navigation');
                 })
                   .catch(err => {
-                    alert(JSON.stringify(err));
+                    console.log(JSON.stringify(err));
                   })
               }
             }
             this.setState({ loading: false });
           } catch (e) {
             this.setState({ loading: false });
-            alert(e.message);
+            console.log(e.message);
           }
         })
         .catch(() => {
           this.setState({ loading: false });
-          alert('Cannot login. Wrong data');
+          console.log('Cannot login. Wrong data');
         });
     } else {
       this.setState({ loading: false });
