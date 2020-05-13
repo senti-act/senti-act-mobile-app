@@ -114,13 +114,13 @@ class ProfileScreen extends React.Component {
               style={styles.touchable}
               onPress={() => navigation.navigate('Account', {user: this.state.sentiUser})}>
               <Text style={styles.text}>Account setting</Text>
-              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
+              <Ionicons style={{flex:1,textAlign:'right',marginRight:30}} size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.touchable}
               onPress={() => navigation.navigate('Notifications')}>
               <Text style={styles.text}>Notifications</Text>
-              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
+              <Ionicons style={{flex:1,textAlign:'right',marginRight:30}} size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.touchable} 
               onPress={() => navigation.navigate('Privacy policy')}>
@@ -128,7 +128,7 @@ class ProfileScreen extends React.Component {
                 style={styles.text}>
                 Privacy Policy
               </Text>
-              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
+              <Ionicons style={{flex:1,textAlign:'right',marginRight:30}} size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.touchable}
               onPress={() => navigation.navigate('FAQ')}>
@@ -136,7 +136,7 @@ class ProfileScreen extends React.Component {
                 style={styles.text}>
                 FAQ
               </Text>
-              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
+              <Ionicons style={{flex:1,textAlign:'right',marginRight:30}} size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.touchable}
               onPress={() => navigation.navigate('About')}>
@@ -144,11 +144,11 @@ class ProfileScreen extends React.Component {
                 style={styles.text}>
                 About Senti.act
               </Text>
-              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
+              <Ionicons style={{flex:1,textAlign:'right',marginRight:30}} size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.touchable}>
               <Text style={styles.text}>Create user in the household</Text>
-              <Ionicons size={28} name={'ios-arrow-forward'} color="#174A5A" />
+              <Ionicons style={{flex:1,textAlign:'right',marginRight:30}} size={28} name={'ios-arrow-forward'} color="#174A5A" />
             </TouchableOpacity>
           </View>
 
@@ -174,7 +174,7 @@ class ProfileScreen extends React.Component {
               },
             ]}>
             <Text style={styles.text}>Log out</Text>
-            <AntDesign size={20} name={'poweroff'} color="black" />
+            <AntDesign style={{flex:1,textAlign:'right',marginRight:30}} size={20} name={'poweroff'} color="black" />
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>

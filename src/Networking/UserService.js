@@ -57,6 +57,30 @@ function getWeeklySavings(orgId){
   });
 }
 
+function getUserActivity(id){
+  return request({
+    url: `/api/activity/users/${id}`,
+    method: 'GET'
+  });
+}
+
+function postSession(id) {
+  return request({
+    url: `/api/activity/`,
+    method: 'POST',
+    data: {
+      user_id:id
+    }
+  });
+}
+
+function getPoints(id){
+  return request({
+    url: `/api/users/points/${id}`,
+    method: 'GET'
+  });
+}
+
 const UserService = {
   getAllUsers,
   registerUser,
@@ -64,7 +88,10 @@ const UserService = {
   getByUuid,
   getUsageByDay,
   updateUser,
-  getWeeklySavings
+  getWeeklySavings,
+  getUserActivity,
+  postSession,
+  getPoints
 };
 
 export default UserService;

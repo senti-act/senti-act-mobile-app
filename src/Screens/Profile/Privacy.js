@@ -10,23 +10,23 @@ class Privacy extends React.Component {
         {
           title: 'Our data policy',
           body:
-            'Data policies are norms regulating management and publication of research data. They range from recommendations to enforcements. There is much variation in their scope and content across countries and across disciplines in single countries. ',
+            'Tbu',
         },
         {
           title: 'Which types of data do we collect?',
-          body: "All data types are equally accepted, we don't discriminate",
+          body: "Tbu",
         },
         {
           title: 'How do we use this information?',
-          body: "For all kinds of weird stuff, you woulnd't want to know",
+          body: "Tbu",
         },
         {
           title: 'How is the information shared?',
-          body: 'internet',
+          body: 'tbu',
         },
         {
           title: 'How do I delete my data',
-          body: "can't",
+          body: "tbu",
         },
       ],
     };

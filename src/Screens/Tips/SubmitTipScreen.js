@@ -34,10 +34,11 @@ class SubmitTipScreen extends React.Component {
   async submitTip() {
     var id = await AsyncStorage.getItem('id');
     TipsService.SubmitTip(this.state.category, this.state.title, this.state.description, id,this.state.anonymous) 
-      .then(() => {
-        this.notif.localNotif();
+      .then((x) => {
         alert('Succesfully submitted the tip. We will review it and decide to put it in the app.');
-        this.notif.localNotif('Achievement get! Subbmited tip for the first time', 'Congrats, you received 500xp');
+        if(x===true){
+          this.notif.localNotif('Achievement get! Subbmited tip for the first time', 'Congrats, you received 500xp');
+        }
       })
       .catch(err => {
         alert(JSON.stringify(err));

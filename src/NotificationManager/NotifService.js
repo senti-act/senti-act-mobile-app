@@ -27,7 +27,6 @@ export default class NotifService {
       /* iOS and Android properties */
       title: title, // (optional)
       message: message, // (required)
-      number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
       actions: '["Yes", "No"]', // (Android only) See the doc for notification actions to know more
     });
   }
@@ -44,7 +43,6 @@ export default class NotifService {
       /* iOS and Android properties */
       title: 'Local Notification', // (optional)
       message: 'My Notification Message', // (required)
-      number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
       actions: '["Yes", "No"]', // (Android only) See the doc for notification actions to know more
     });
   }

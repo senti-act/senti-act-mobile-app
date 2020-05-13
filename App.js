@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Text, View, SafeAreaView} from 'react-native';
+import React, {useState, useEffect, useRef,} from 'react';
+import {Text, View, SafeAreaView, AppState} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -36,6 +36,9 @@ import DisplayTips from './src/Screens/Tips/DisplayTips';
 //Consumption screens
 import ConsumptionScreen from './src/Screens/Consumption/ConsumptionScreen';
 import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
+import UserService from './src/Networking/UserService';
+import moment from 'moment';
+import NotifService from './src/NotificationManager/NotifService'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,28 +56,8 @@ const StartStack = ()=> {
   return (
     <Stack.Navigator
       initialRouteName="WelcomeScreen"
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#EEF3F7',
-          height:
-            Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
-          shadowRadius: 0,
-          shadowOffset: {
-            height: 0,
-          },
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 20,
-          color: '#174A5A',
-          letterSpacing: 1,
-        },
-        headerTintColor: '#174A5A',
-        headerBackTitleVisible: false,
-        headerBackTitleStyle: {
-          paddingLeft: 30,
-        },
-      }}
+      screenOptions={{...stackOptions()}}
+
       headerMode="float">
       <Stack.Screen
         name="WelcomeScreen"
@@ -200,10 +183,7 @@ const competitionStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Competition"
-      screenOptions={{
-        header: () => <Header title="Competition" />,
-        gestureEnabled: true,
-      }}
+      screenOptions={{...stackOptions()}}
       headerMode="float">
       <Stack.Screen name="Competition" component={HomeScreen} />
     </Stack.Navigator>
@@ -214,10 +194,7 @@ const spendingsStack=()=> {
   return (
     <Stack.Navigator
       initialRouteName="My water status"
-      screenOptions={{
-        header: () => <Header title="Consumption" />,
-        gestureEnabled: true,
-      }}
+      screenOptions={{...stackOptions()}}
       headerMode="float">
       <Stack.Screen
         name="My water consumption"
@@ -226,6 +203,7 @@ const spendingsStack=()=> {
       <Stack.Screen
         name="ConsumptionScreen"
         component={ConsumptionScreen}
+        options={{title: 'Consumption'}}
       />
     </Stack.Navigator>
   );
@@ -235,28 +213,7 @@ const tipsStack=()=> {
   return (
     <Stack.Navigator
       initialRouteName="Tips and tricks"
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#EEF3F7',
-          height:
-            Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
-          shadowRadius: 0,
-          shadowOffset: {
-            height: 0,
-          },
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontSize: 20,
-          color: '#174A5A',
-          letterSpacing: 1,
-        },
-        headerTintColor: '#174A5A',
-        headerBackTitleVisible: false,
-        headerBackTitleStyle: {
-          paddingLeft: 30,
-        },
-      }}
+      screenOptions={{...stackOptions()}}
       headerMode="float">
       <Stack.Screen
         name="Tips and tricks"
@@ -294,14 +251,39 @@ const tipsStack=()=> {
   );
 }
 
+const stackOptions = () => {
+  return { headerStyle: {
+    backgroundColor: '#EEF3F7',
+    height:
+      Platform.OS === 'android' ? 60 : DeviceInfo.hasNotch() ? 100 : 70,
+    shadowRadius: 0,
+    shadowOffset: {
+      height: 0,
+    },
+  },
+  headerTitleStyle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: '#174A5A',
+    letterSpacing: 1,
+  },
+  headerTintColor: '#174A5A',
+  headerBackTitleVisible: false,
+  headerLeftContainerStyle:{
+    marginLeft:20
+  },
+  headerBackTitleStyle: {
+    paddingLeft: 30,
+  },
+}
+}
+
+
 const profileStack=()=> {
   return (
     <Stack.Navigator
       initialRouteName="Profile"
-      screenOptions={{
-        header: () => <Header title="Profile" />,
-        gestureEnabled: true,
-      }}
+      screenOptions={{...stackOptions()}}
       headerMode="float">
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Account" component={AccountSettings} />
@@ -325,15 +307,19 @@ const TabNavigation = () => {
           if (route.name === 'Competition') {
             iconName = focused ? 'trophy' : 'trophy';
             size = focused ? 30 : 28;
+            color= focused ?'#0AB4A1':'white';
           } else if (route.name === 'Consumption') {
             iconName = focused ? 'drop' : 'drop';
             size = focused ? 30 : 28;
+            color= focused ?'#0AB4A1':'white';
           } else if (route.name === 'Tips') {
             iconName = focused ? 'info' : 'info';
             size = focused ? 30 : 28;
+            color= focused ?'#0AB4A1':'white';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'user' : 'user';
             size = focused ? 30 : 28;
+            color= focused ?'#0AB4A1':'white';
           }
           return <LineIcons name={iconName} size={size} color={color} />;
         },
@@ -341,13 +327,13 @@ const TabNavigation = () => {
       tabBarOptions={{
         activeTintColor: 'white',
         inactiveTintColor: 'white',
-        activeBackgroundColor: '#1f657a',
         inactiveBackgroundColor: '#174A5A',
         style: {
-          height: 90,
+          padding:5,
+          height: 100,
           backgroundColor: '#174A5A',
         },
-        labelStyle: {fontSize: 12, paddingBottom: 5},
+        labelStyle: {fontSize: 12,},
       }}>
       <Tab.Screen name="Competition" component={competitionStack} />
       <Tab.Screen name="Consumption" component={spendingsStack} />
@@ -358,12 +344,50 @@ const TabNavigation = () => {
 }
 
 export default function App(props) {
-  
+
+  const notif = new NotifService(onRegister,onNotif);
+  const onRegister=(token)=> {console.log(token)}
+  const onNotif=(notif) =>{console.log(notif)}
+
   const [token,setToken] = useState(null);
 
   useEffect(() => {
     checkToken()
+
+    AppState.addEventListener("change", _handleAppStateChange);
+    console.log('listener added')
+
+    return () => {
+      AppState.removeEventListener("change", _handleAppStateChange);
+      console.log('listener removed')
+
+    };
   }, []);
+
+  const _handleAppStateChange = async nextAppState => {
+    if (nextAppState === "active") {
+      var id = await AsyncStorage.getItem('id')
+      var today = moment().format('YYYY-MM-DD')
+      UserService.getUserActivity(id).then(x=>{
+        if (x.length < 1 || moment(x.date).format('YYYY-MM-DD') !== today) {
+          //here we call the endpoint for daily point calculation
+          UserService.getPoints(id).then(x=>{
+            notif.localNotif('You have gained', `${x} points today.`);
+          }).catch(err =>{
+            console.log(err)
+          })
+          // then we post a new session
+          UserService.postSession(id).then(x=>{
+            console.log(x)
+          }).catch(err=>{
+            console.log(err)
+          })
+        }        
+      }).catch(err=>{
+        console.log(err)
+      })
+    }
+  };
 
   const checkToken = async () => {
     try {
@@ -388,7 +412,6 @@ export default function App(props) {
   const setUser = () => {
     return new Promise((resolve, reject) => {
       Auth.getMe().then(async x => {
-          console.log(x)
           try {
             await AsyncStorage.setItem('user', JSON.stringify(x));
             resolve();
@@ -401,7 +424,6 @@ export default function App(props) {
     });
   };
 
-
     return (
       <AuthContext.Provider value={{ token, setToken }}>
         <NavigationContainer>
@@ -409,7 +431,7 @@ export default function App(props) {
         </NavigationContainer>
       </AuthContext.Provider>
     );
-}
+
 
 
 // //   <RootStack.Screen
@@ -422,3 +444,4 @@ export default function App(props) {
 //          component={tabNavigation}
 //          options={{headerShown: false}}
 //        /> */
+    }
