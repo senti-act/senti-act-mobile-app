@@ -12,11 +12,11 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nickname: 'cbroberg',
+      nickname: '',
       //cbroberg
-      password: 'webhouse',
+      password: '',
       //webhouse
-      organisation: 'hfsundbyvester',
+      organisation: '',
       //hfsundbyvester
       users: [],
       loading: false,
