@@ -47,7 +47,6 @@ class AccountSettings extends React.Component {
         // const source = { uri: response.uri };
         // const source = response.uri
 
-        // You can also display the image using data:
         const source =  'data:image/jpeg;base64,' + response.data 
         await AsyncStorage.setItem('avatar', source);
 
@@ -102,12 +101,9 @@ class AccountSettings extends React.Component {
             <View
               style={{ flex: 1, flexDirection: 'row', width: '100%', height: 80, backgroundColor: '#38b0a4', alignSelf: 'center', borderRadius: 15, }}>
               <View style={{ flex: 1, borderRadius: 15, alignItems: 'flex-start', justifyContent: 'center', marginTop: 15, marginLeft: 20 }}>
-                <Text
-                  style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
                   <TouchableOpacity onPress={()=>this.pickImage()} style={{ backgroundColor: '#F6F6F6', width: 80, height: 80, borderRadius: 500 }}>
-                  <Image source={{uri:this.state.avatarSource}} style={{flex:1, borderRadius: 500,}} />
+                    {this.state.avatarSource===null?null:<Image source={{uri:this.state.avatarSource}} style={{flex:1, borderRadius: 500}} />}
                   </TouchableOpacity>
-                </Text>
               </View>
               <View
                 style={{ flex: 1, borderRadius: 15, alignItems: 'flex-end', justifyContent: 'flex-end', marginTop: 90, marginRight: 20 }}>

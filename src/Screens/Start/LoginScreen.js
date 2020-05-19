@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image, ActivityIndicator, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TouchableOpacity, Image, ActivityIndicator, Dimensions, KeyboardAvoidingView, SafeAreaView,ScrollView} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import UserService from '../../Networking/UserService';
 import Auth from '../../Networking/Auth';
@@ -12,11 +12,11 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nickname: '',
+      nickname: 'cbroberg',
       //cbroberg
-      password: '',
+      password: 'webhouse',
       //webhouse
-      organisation: '',
+      organisation: 'hfsundbyvester',
       //hfsundbyvester
       users: [],
       loading: false,
@@ -81,7 +81,7 @@ class LoginScreen extends React.Component {
     return new Promise((resolve, reject) => {
       Auth.getMe()
         .then(async x => {
-          console.log(x)
+          //console.log(x)
           try {
             await AsyncStorage.setItem('user', JSON.stringify(x));
             resolve();
@@ -100,53 +100,64 @@ class LoginScreen extends React.Component {
     return (
     <AuthContext.Consumer>
       {({setToken})=>(
-      <View style={{ alignItems: "center", width: '100%', backgroundColor: 'white', padding: 30, paddingVertical: 50, height: '100%' }}>
-        <KeyboardAvoidingView style={styles.wholePageContainer}
-          behavior={Platform.OS === 'android' ? null : 'padding'}
-          enabled>
-          <Text style={styles.title}>Welcome to</Text>
-          <Image source={require('../../Assets/start/logo.png')} style={styles.logo}></Image>
-          <Image source={require('../../Assets/start/group.png')} style={styles.picture}></Image>
-          <TextInput style={styles.textInputLong} mode='outlined' label='Nickname' underlineColor='#184B5B'
-            theme={{ colors: { primary: '#2C5A69', background: '#003489' } }}
-            onChangeText={text => this.setState({ nickname: text })}
-            autoCapitalize="none"
-            autoCorrect={false} />
-          <TextInput style={styles.textInputLong} mode='outlined' label='Password' underlineColor='#184B5B'
-            theme={{ colors: { primary: '#2C5A69', background: '#003489' } }}
-            onChangeText={text => this.setState({ password: text })}
-            autoCapitalize="none"
-            autoCorrect={false} />
-          <TextInput style={styles.textInputLong} mode='outlined' label='OrganisationID' underlineColor='#184B5B'
-            theme={{ colors: { primary: '#2C5A69', background: '#003489' } }}
-            onChangeText={text => this.setState({ organisation: text })}
-            autoCapitalize="none"
-            autoCorrect={false} />
-          <View style={{ flexDirection: 'row', padding: 10, width: '100%', justifyContent: 'space-between' }}>
-            <TouchableOpacity
-            //onPress={() => navigation.navigate('ReportScreen')}
-            >
-              <Text style={{ color: 'black', fontSize: 14 }}>Unable to login?</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('DataSyncScreen')}>
-              <Text style={{ justifyContent: 'flex-end', color: 'black', fontSize: 14, fontWeight: 'bold' }}>Sign up</Text>
-            </TouchableOpacity>
+        <KeyboardAvoidingView style={{flex:1,justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:'white'}}
+          behavior={Platform.OS === 'android' ? null : 'position'}>
+          <SafeAreaView style={{flex:1}}>
+          <View style={{flex:3,justifyContent:'center',alignItems:'center',width:width}}> 
+            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+              <Text style={styles.title}>Welcome to</Text>
+            </View>
+            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+              <Image source={require('../../Assets/start/logo.png')} style={{resizeMode:'contain',width: 200}}></Image>
+            </View>
+            <View style={{flex:2,justifyContent:'center',alignItems:'center'}}>
+              <Image source={require('../../Assets/start/group.png')} style={{resizeMode:'contain',width: 200}}></Image>
+            </View>
           </View>
-          <TouchableOpacity style={styles.buttonStyle}
-            onPress={() => this.handleLogin(setToken)}
-            //onPress={() => navigation.navigate('navigation')}
-            >
-            <Text style={{ alignSelf: 'center', color: 'white', fontSize: 14, fontWeight: '500' }}>Login</Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
 
+          <View style={{flex:2,  justifyContent:'center',alignItems:'center', paddingHorizontal:20}}>
+            <TextInput style={styles.textInputLong} mode='outlined' label='Nickname' underlineColor='#184B5B'
+              theme={{ colors: { primary: '#2C5A69', background: '#003489' } }}
+              onChangeText={text => this.setState({ nickname: text })}
+              autoCapitalize="none"
+              autoCorrect={false} />
+            <TextInput style={styles.textInputLong} mode='outlined' label='Password' underlineColor='#184B5B'
+              theme={{ colors: { primary: '#2C5A69', background: '#003489' } }}
+              onChangeText={text => this.setState({ password: text })}
+              autoCapitalize="none"
+              autoCorrect={false} />
+            <TextInput style={styles.textInputLong} mode='outlined' label='OrganisationID' underlineColor='#184B5B'
+              theme={{ colors: { primary: '#2C5A69', background: '#003489' } }}
+              onChangeText={text => this.setState({ organisation: text })}
+              autoCapitalize="none"
+              autoCorrect={false} />
+          </View>
+
+          <View style={{flex:1, paddingHorizontal:20}}>
+            <View style={{ flex:1,flexDirection:'row', justifyContent:'space-between', alignContent:'center' }}>
+            <TouchableOpacity>
+                <Text style={{ color: 'black', fontSize: 14 }}>Unable to login?</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('DataSyncScreen')}>
+                <Text style={{ justifyContent: 'flex-end', color: 'black', fontSize: 14, fontWeight: 'bold' }}>Sign up</Text>
+              </TouchableOpacity>
+            </View>
+              <View style={{flex:2}}>
+            <TouchableOpacity style={styles.buttonStyle} onPress={() => this.handleLogin(setToken)}>
+              <Text style={{ alignSelf: 'center', color: 'white', fontSize: 14, fontWeight: '500' }}>Login</Text>
+            </TouchableOpacity>
+            </View>
+          </View>
+          
         {this.state.loading ? (
           <View style={styles.overlay}>
             <ActivityIndicator size="large" color="white" />
             <Text style={{ color: 'white' }}>Logging in</Text>
           </View>) : null}
-      </View >
+
+          </SafeAreaView >
+          </KeyboardAvoidingView>         
+          
       )}
       </AuthContext.Consumer>
     )
@@ -160,7 +171,6 @@ const styles = {
     padding: 10,
     width: '40%',
     justifyContent: 'center',
-    marginVertical: 20,
     alignSelf: 'center'
   },
   title: {
@@ -197,11 +207,10 @@ const styles = {
     alignItems: 'center',
   },
   wholePageContainer: {
-    flex: 1,
-    width: '100%',
+    flex:1,
+    height:'100%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column',
   },
 };
 

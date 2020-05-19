@@ -57,14 +57,14 @@ class SubmitTipScreen extends React.Component {
     ]
 
     return (
-      <SafeAreaView style={{height: '100%', width: '100%'}}>
+      <SafeAreaView style={{flex:1}}>
         <ScrollView
-          style={{flex: 1,paddingHorizontal:20}}
+          style={{flex: 1,paddingHorizontal:20,marginBottom:10}}
           contentContainerStyle={{
-            alignItems: 'center',
             flexDirection: 'column'
           }}>
-          <View style={{ marginTop: 10,backgroundColor: '#BBD7E9',alignSelf: 'center',borderRadius: 15,height: 120}}>
+          {/* <View style={{justifyContent:'center'}}> */}
+          <View style={{ padding: 10,backgroundColor: '#BBD7E9',alignSelf: 'center',borderRadius: 15,felx:1,}}>
               {/* <View style={{marginHorizontal:20}}> */}
               <Text style={[styles.boldTitle,{paddingHorizontal:10}]}>Contribute to the change with your knowledge</Text>
               <Text style={[styles.text,{paddingHorizontal:10}]}>
@@ -73,9 +73,9 @@ class SubmitTipScreen extends React.Component {
               </Text>
               {/* </View> */}
           </View>
-          <View style={{backgroundColor: 'white',borderRadius: 10,flexDirection: 'column',marginTop: 15, }}>
+          <View style={{backgroundColor: 'white',borderRadius: 10,flexDirection: 'column',marginTop: 15, flex:1}}>
             <View style={{borderBottomWidth: 1,borderBottomColor: 'lightgray'}}>
-              <Text style={[styles.boldTitle,{textAlign:'center'}]}> Fill out the form</Text>
+              <Text style={[styles.boldTitle,{textAlign:'center',marginTop:5}]}> Fill out the form</Text>
             </View>
             <View style={styles.box}>
               <Text style={styles.text}> Anonymous lookup</Text>
@@ -154,19 +154,20 @@ class SubmitTipScreen extends React.Component {
              
             </View>
             <View style={{flex:1, paddingHorizontal:20}}>
-                <Text style={styles.text}>
+                <Text style={{color: '#174A5A',fontSize:13}}>
                   * Please note that your submission must be read and approved
                   before it becomes visible in the app. You will receive a
                   notification when this occurs.
                 </Text>
               </View>
-            <View style={{flex:1}}>
+            <View style={{flex:1,padding:10}}>
               <TouchableOpacity onPress={() =>this.submitTip()}
                 style={{alignSelf: 'center',width: '30%',height: 40,backgroundColor: '#FF8000',borderRadius: 10,justifyContent:'center',}}>
                 <Text style={{color: 'white',alignSelf: 'center',fontSize: 20,}}>Submit</Text>
               </TouchableOpacity>
             </View>
           </View>
+          {/* </View> */}
         </ScrollView>
       </SafeAreaView>
     );
@@ -182,6 +183,7 @@ const styles = {
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
     paddingHorizontal: 10,
+    paddingVertical:10,
   },
   text: {
     fontSize: 15,
@@ -197,7 +199,7 @@ const styles = {
     fontSize: 14,
     fontWeight: 'bold',
     color: '#174A5A',
-    paddingTop: 15,
+    paddingTop: 5,
     paddingBottom: 10,
   },
   viewPicker:{

@@ -81,6 +81,13 @@ function getPoints(id){
   });
 }
 
+function getBenchmark(id){
+  return request({
+    url: `/api/users/benchmark/${id}`,
+    method: 'GET'
+  });
+}
+
 const UserService = {
   getAllUsers,
   registerUser,
@@ -91,7 +98,8 @@ const UserService = {
   getWeeklySavings,
   getUserActivity,
   postSession,
-  getPoints
+  getPoints,
+  getBenchmark
 };
 
 export default UserService;

@@ -83,7 +83,7 @@ class ProfileScreen extends React.Component {
                   }}>
                   <Text
                     style={{ paddingLeft: 20, fontSize: 18, color: '#174a5a' }}>
-                  Good morning, {this.state.sentiUser.firstName}
+                  Hello, {this.state.sentiUser.firstName}
                   </Text>
                 </View>
                 <View

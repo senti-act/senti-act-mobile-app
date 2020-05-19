@@ -14,6 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import moment from 'moment';
 import UserService from '../../Networking/UserService';
+import AsyncStorage from '@react-native-community/async-storage';
 const { height, width } = Dimensions.get('window');
 
 var lastWeekDay = moment().format('YYYY-MM-DD');
@@ -28,12 +29,25 @@ class ConsumptionScreen extends React.Component {
       selectedButton: 'button1',
       type:'week',
       firstDate:firstWeekDay,
-      lastDate:lastWeekDay
+      lastDate:lastWeekDay,
+      benchmark:0
     }
   }
 
   componentDidMount(){
     this.onButtonPress('button1')
+    this.getBenchmark()
+  }
+
+  getBenchmark=async()=>{
+    var id = await AsyncStorage.getItem('id')
+    UserService.getBenchmark(id).then(x=>{
+      this.setState({
+        benchmark:x.benchmark
+      })
+    }).catch(err=>{
+      console.log(err)
+    })
   }
 
   calculatePercentage=(c)=>{
@@ -334,27 +348,77 @@ class ConsumptionScreen extends React.Component {
               <View>
                 <Text style={styles.boldText}>My consumption status</Text>
               </View>
-              <View style={{ width: '78%', alignSelf: 'center' }}>
-                <Text style={{ textAlign: 'center', color: '#174A5A', marginVertical: 10 }}>
-                  To this date. you have used less water
-                  than last week.
+              <View style={{ alignSelf: 'center', paddingHorizontal:10}}>
+                <Text style={{ textAlign: 'center', color: '#174A5A' }}>
+                  To this date you have used {this.state.previousConsumpion>this.state.currentConsumption?<Text>less water than last week.</Text>:<Text>more water than last week.</Text>}   
                 </Text>
               </View>
-              <View style={styles.buttonBottomRow}>
-                <View style={{ width: '33%', marginHorizontal: 10 }}>
-                  <TouchableOpacity style={styles.buttonStyle}
-                    onPress={() => navigation.goBack()}>
-                    <Text style={{ textAlign: 'center', color: '#174A5A' }}>Previous period</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ width: '50%', marginHorizontal: 10 }}>
-                  <TouchableOpacity style={styles.buttonStyle}
-                    onPress={() => navigation.goBack()}>
-                    <Text style={{ textAlign: 'center', color: '#174A5A' }}>Average of all players</Text>
-                  </TouchableOpacity>
+              <View>
+                <AnimatedCircularProgress
+                  size={180}
+                  width={10}
+                  fill={this.calculatePercentage(this.state.currentConsumption)}
+                  tintColor="#174A5A"
+                  backgroundColor="white"
+                  style={{alignSelf: 'center'}}>{() => (
+                      <View>
+                        <Text style={{ fontSize: 25, color: '#174A5A' }}>
+                          {this.state.currentConsumption} L
+                        </Text>
+                        <Text style={{ fontSize: 18, color: '#95ACB4' }}>
+                          ({this.state.benchmark} L)
+                        </Text>
+                      </View>
+                )}
+                </AnimatedCircularProgress>
+                <AnimatedCircularProgress
+                  size={145}
+                  width={10}
+                  fill={this.calculatePercentage(this.state.benchmark)}
+                  tintColor="orange"
+                  onAnimationComplete={() => console.log('onAnimationComplete')}
+                  backgroundColor="white"
+                  style={{
+                    alignSelf: 'center',
+                    position: 'absolute',
+                    marginTop: 17
+                  }}>
+                </AnimatedCircularProgress>
+                <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <TouchableHighlight
+                      style={styles.circleMyConsumption}
+                      underlayColor="#ccc">
+                      <Text></Text>
+                    </TouchableHighlight>
+                    <Text style={styles.smallText}>Current period</Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      margin: 5,
+                      flex: 1,
+                      alignSelf: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <TouchableHighlight
+                      style={[styles.circleAvgConsumption, {backgroundColor:'orange'}]}
+                      underlayColor="#ccc">
+                      <Text></Text>
+                    </TouchableHighlight>
+                    <Text style={styles.smallText}>National benchmark</Text>
+                  </View>
                 </View>
               </View>
-          </View>
+              
+              
+            </View>
       </ScrollView >
     );
   }
