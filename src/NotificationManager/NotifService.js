@@ -27,7 +27,7 @@ export default class NotifService {
       /* iOS and Android properties */
       title: title, // (optional)
       message: message, // (required)
-      actions: '["Yes", "No"]', // (Android only) See the doc for notification actions to know more
+      actions: '["Yes", "No"]', // (Android only)
     });
   }
 
