@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 
 class WelcomeScreen extends React.Component {
     constructor(props) {
@@ -9,27 +9,27 @@ class WelcomeScreen extends React.Component {
     render() {
         const { navigation } = this.props;
         return (
-            <View style={{ flex:1,paddingVertical:30 }}>
-                <View style={{justifyContent:'center',alignItems:'center',flex:1,}}>
-                <View style={{flex:2}}>
-                    <Image source={require('../../Assets/start/groupWelcome.png')} style={[styles.picture],{resizeMode:'contain'}}></Image>
-                </View>
-                <View style={{flex:1,justifyContent:'center'}}>
-                    <Text style={styles.title}>Welcome to</Text>
-                    <Image source={require('../../Assets/start/logo.png')} style={styles.logo}></Image>
-                </View>
-                <View style={{ flex: 1, width: '100%' }}>
-                    <TouchableOpacity disabled style={styles.buttonStyle}
-                        onPress={() => navigation.navigate('InstructionsScreen')}>
-                        <Text style={{ alignSelf: 'center', color: 'white', fontSize: 16, fontWeight:'bold' }}>Get Started</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonStyle}
-                        onPress={() => navigation.navigate('Login')}>
-                        <Text style={{ alignSelf: 'center', color: 'white', fontSize: 16 , fontWeight:'bold'}}>Login</Text>
-                    </TouchableOpacity>
-                </View>
-                </View>
-            </View >
+            // <SafeAreaView style={{ flex:1}}>
+                <SafeAreaView style={{flex:1,}}>
+                    <View style={{flex:2, justifyContent:'center',alignItems:'center',marginTop:20}}>
+                        <Image source={require('../../Assets/start/groupWelcome.png')} style={{resizeMode:'contain',width:240}}></Image>
+                    </View>
+                    <View style={{flex:1,justifyContent:'center'}}>
+                        <Text style={styles.title}>Welcome to</Text>
+                        <Image source={require('../../Assets/start/logo.png')} style={styles.logo}></Image>
+                    </View>
+                    <View style={{ flex: 1, width: '100%' }}>
+                        <TouchableOpacity disabled style={styles.buttonStyle}
+                            onPress={() => navigation.navigate('InstructionsScreen')}>
+                            <Text style={{ alignSelf: 'center', color: 'white', fontSize: 16, fontWeight:'bold' }}>Get Started</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonStyle}
+                            onPress={() => navigation.navigate('Login')}>
+                            <Text style={{ alignSelf: 'center', color: 'white', fontSize: 16 , fontWeight:'bold'}}>Login</Text>
+                        </TouchableOpacity>
+                    </View>
+                </SafeAreaView>
+            // </SafeAreaView >
         )
     }
 }

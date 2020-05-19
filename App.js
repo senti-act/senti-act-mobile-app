@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef,} from 'react';
-import {Text, View, SafeAreaView, AppState} from 'react-native';
+import {Text, View, SafeAreaView, AppState, Dimensions} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -39,6 +39,7 @@ import SpendingsScreen from './src/Screens/Consumption/SpendingsScreen';
 import UserService from './src/Networking/UserService';
 import moment from 'moment';
 import NotifService from './src/NotificationManager/NotifService'
+const { width, height } = Dimensions.get('screen');
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -330,10 +331,10 @@ const TabNavigation = () => {
         inactiveBackgroundColor: '#174A5A',
         style: {
           padding:5,
-          height: 100,
+          height: height/9,
           backgroundColor: '#174A5A',
         },
-        labelStyle: {fontSize: 12,},
+        labelStyle: {fontSize: 12},
       }}>
       <Tab.Screen name="Competition" component={competitionStack} />
       <Tab.Screen name="Consumption" component={spendingsStack} />
@@ -365,7 +366,7 @@ export default function App(props) {
   }, []);
 
   const _handleAppStateChange = async nextAppState => {
-    if (nextAppState === "active") {
+    if (nextAppState === "active" && token !== null) {
       var id = await AsyncStorage.getItem('id')
       var today = moment().format('YYYY-MM-DD')
       UserService.getUserActivity(id).then(x=>{

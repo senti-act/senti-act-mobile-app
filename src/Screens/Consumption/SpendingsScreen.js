@@ -531,12 +531,14 @@ class SpendingsScreen extends React.Component {
                     }}>
                   </AnimatedCircularProgress>
                 </View>
-                <Text style={styles.boldText}>
+                <View style={{padding:10}}>
+                <Text style={{color: '#174A5A',fontSize: 13,fontWeight: 'bold',}}>
                   My consumption status?
                 </Text>
-                <Text style={{ fontSize: 13, paddingHorizontal: 10, color: '#174A5A' }}>
+                <Text style={{ fontSize: 13, color: '#174A5A' }}>
                   To this date, you should us less water than the last week
                 </Text>
+                </View>
               </View>
             </TouchableOpacity>
 
@@ -555,7 +557,7 @@ class SpendingsScreen extends React.Component {
 
           {/* Savings bottom card [pig]*/}
           <View style={styles.bottomConsumptionCard}>
-            <View style={{ width: '25%' }}>
+            <View style={{ width: '25%', padding:10}}>
               <Image source={require('../../Assets/consumption/pig.png')} style={{alignSelf:'center'}} />
             </View>
             <View style={{ width: '75%', paddingHorizontal:5 }}>

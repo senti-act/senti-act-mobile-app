@@ -177,13 +177,13 @@ class HomeScreen extends React.Component {
         return (
           <View style={{flex:1,backgroundColor: 'white',borderRadius: 10, marginTop:10, marginBottom:10}}>
             <View style={[styles.userBoxContainer,{alignSelf:'flex-start'}]}>
-              <View style={{ flex: 2, marginLeft: 10 }}>
+              <View style={{ flex: 2, marginLeft: 10}}>
                 <View style={{backgroundColor: '#F6F6F6',width: 90,height: 90,borderRadius: 999999}}>
                 {this.state.avatarSource?<Image source={{uri:this.state.avatarSource}} style={{flex:1, borderRadius: 500,}} />:null}
                 </View>
               </View>
               <Text style={styles.userBoxPoints}>
-                <Text style={{ fontWeight: 'bold', fontSize: 15 }}>{this.state.userXP}</Text>{"\n"}points</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 13 }}>{this.state.userXP}</Text>{"\n"}points</Text>
               <Text style={styles.userBoxDescr}>
                 Here you can see all your badges that you have won as you
                 contribute to reducing your water usage. Unlock more badges on
@@ -359,7 +359,7 @@ class HomeScreen extends React.Component {
         </View>
         <View style={{marginTop: 20,height: 50,flexDirection: 'row',borderRadius: 15}}>
           <TouchableOpacity onPress={() => {this.changeView('badges')}} style={styles.tab}>
-            <Text style={[styles.boldText,this.state.status==='badges'?{color:'#FA831B',fontWeight: 'bold'}:null]}>Bagdes</Text>
+            <Text style={[styles.boldText,this.state.status==='badges'?{color:'#FA831B',fontWeight: 'bold'}:null]}>Badges</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {this.changeView('leaderboard')}}style={styles.tab}>
             <Text style={[styles.boldText,this.state.status==='leaderboard'?{color:'#FA831B',fontWeight: 'bold'}:null]}>Leaderboard</Text>
@@ -421,18 +421,17 @@ const styles = StyleSheet.create({
   },
   userBoxPoints: {
     flex: 1,
-    paddingLeft: 20,
     alignSelf: 'center',
     textAlign: 'center',
     color: '#174A5A',
     fontSize: 12,
   },
   userBoxDescr: {
-    flex: 5,
-    paddingLeft: 20,
     alignSelf: 'center',
     color: '#174A5A',
     fontSize: 14,
+    flex:4,
+    paddingLeft:10
   },
   boldText: {
     fontSize: 15,
