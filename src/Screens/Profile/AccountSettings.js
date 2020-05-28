@@ -24,7 +24,6 @@ class AccountSettings extends React.Component {
   }
  
   pickImage = async () => {
-     // More info on all the options is below in the API Reference... just some common use cases shown here
       const options = {
         title: 'Select Avatar',
         storageOptions: {
@@ -32,10 +31,7 @@ class AccountSettings extends React.Component {
           path: 'images',
         },
       };
-    /**
-      * The first arg is the options object for customization (it can also be null or omitted for default options),
-      * The second arg is the callback which sends object: response (more info in the API Reference)
-      */
+
     ImagePicker.showImagePicker(options, async (response)=> {
       // console.log('Response = ', response); 
 

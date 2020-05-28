@@ -125,7 +125,6 @@ class SpendingsScreen extends React.Component {
       data[0].forEach(x => {
         weekData.push(x.averageFlowPerDay.toFixed(2)*1)
       });
-      console.log('current: '+weekData, startDate, endDate)
       this.setState({dataCurrentPeriod:weekData})
     }).catch(err=>{
       console.log(err)
@@ -145,7 +144,6 @@ class SpendingsScreen extends React.Component {
         weekData.push(x.averageFlowPerDay.toFixed(2)*1)
       });
       this.setState({dataPreviousPeriod:weekData})
-      console.log('previous: '+weekData)
     }).catch(err=>{
       console.log(err)
     })
