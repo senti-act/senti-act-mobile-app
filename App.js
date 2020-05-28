@@ -369,11 +369,14 @@ export default function App(props) {
     if (nextAppState === "active" && token !== null) {
       var id = await AsyncStorage.getItem('id')
       var today = moment().format('YYYY-MM-DD')
+      console.log('')
       UserService.getUserActivity(id).then(x=>{
         if (x.length < 1 || moment(x[0].date).format('YYYY-MM-DD') !== today) {
+          console.log('')
           //here we call the endpoint for daily point calculation
           UserService.getPoints(id).then(x=>{
             notif.localNotif('You have gained', `${x} points today.`);
+            console.log(JSON.stringify(x))
           }).catch(err =>{
             console.log(err)
           })

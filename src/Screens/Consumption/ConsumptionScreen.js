@@ -50,6 +50,28 @@ class ConsumptionScreen extends React.Component {
     })
   }
 
+  getMonthlyBenchmark=async()=>{
+    var id = await AsyncStorage.getItem('id')
+    UserService.getBenchmark(id).then(x=>{
+      this.setState({
+        benchmark:x.benchmark*4
+      })
+    }).catch(err=>{
+      console.log(err)
+    })
+  }
+
+  getYearlyBenchmark=async()=>{
+    var id = await AsyncStorage.getItem('id')
+    UserService.getBenchmark(id).then(x=>{
+      this.setState({
+        benchmark:x.benchmark*52
+      })
+    }).catch(err=>{
+      console.log(err)
+    })
+  }
+
   calculatePercentage=(c)=>{
     var max = 0
     var res = 0
@@ -92,7 +114,8 @@ class ConsumptionScreen extends React.Component {
     var currentDayPlus = moment(currentDay).add(1,'day').format('YYYY-MM-DD');
 
     if (type === 'button1') {
-      var weekBeforeToday=moment(currentDay).subtract(1,'week').format('YYYY-MM-DD')     
+      var weekBeforeToday=moment(currentDay).subtract(1,'week').format('YYYY-MM-DD')
+      this.getBenchmark()
       this.setState({
         type:'week',
         firstDate:weekBeforeToday,
@@ -103,7 +126,8 @@ class ConsumptionScreen extends React.Component {
     }
     else if (type === 'button2') {
       var monthBeforeToday=moment(currentDay).subtract(1,'month').format('YYYY-MM-DD')
-     
+      this.getMonthlyBenchmark()
+
       this.setState({
         type:'month',
         firstDate:monthBeforeToday,
@@ -114,10 +138,12 @@ class ConsumptionScreen extends React.Component {
 
     } else {
       var yearBeforeToday=moment(currentDay).subtract(1,'year').format('YYYY-MM-DD')
+      this.getYearlyBenchmark()
+
       this.setState({
         type:'year',
         firstDate:yearBeforeToday,
-        lastDate:currentDay
+        lastDate:currentDay,
       })
       this.getSelectedConsumption(yearBeforeToday,currentDayPlus)
       this.getPreviousConsumption(yearBeforeToday,currentDayPlus, 'year')
